@@ -1,0 +1,14 @@
+{
+  "name": "Sahneva",
+  "short_name": "Sahneva",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48 64x64"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#815be0",
+  "background_color": "#fcfcfc"
+}

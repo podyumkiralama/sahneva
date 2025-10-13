@@ -1,0 +1,59 @@
+/* styles/globals.css */
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  overflow-x: clip; /* yatay scroll'u kes */
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---- Utilities ---- */
+:root { --container: 1200px; }
+
+.container { @apply max-w-screen-xl mx-auto px-4; }
+.card { @apply bg-white rounded-2xl p-5 shadow; }
+.btn { @apply inline-block px-5 py-3 rounded-2xl font-semibold shadow hover:opacity-90 transition; }
+.btn-primary { @apply bg-primary text-white; }
+.btn-accent  { @apply bg-accent text-white; }
+.header { @apply sticky top-0 z-50 bg-white border-b; }
+.footer { @apply bg-neutral text-white mt-16; }
+.link   { @apply text-primary hover:underline; }
+
+/* ---- Brand tweaks ---- */
+h1, h2, h3 { @apply text-neutral; }
+h1 { @apply text-5xl md:text-6xl font-extrabold; }
+h2 { @apply text-3xl md:text-4xl font-bold; }
+h3 { @apply text-xl md:text-2xl font-semibold; }
+
+/* ---- Full-bleed ---- */
+.full-bleed {
+  position: relative;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  inline-size: 100svw;
+  width: 100vw;
+  min-height: 60vh;
+  overflow-x: clip;
+}
+@media (min-width: 768px) { .full-bleed { min-height: 70vh; } }
+
+/* ---- FAQ ---- */
+.faq-glass{
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(99,102,241,.10), transparent),
+    radial-gradient(900px 500px at 110% 10%, rgba(16,185,129,.10), transparent),
+    rgba(255,255,255,.72);
+  backdrop-filter: saturate(120%) blur(4px);
+}
+.faq-chip{ border:1px solid rgba(0,0,0,.06); background:#fff; transition:.2s ease; }
+.faq-chip:hover{ background:#f8fafc; transform:translateY(-1px); }
+.faq-card{ border:1px solid rgba(0,0,0,.06); transition:border-color .2s ease, box-shadow .2s ease, transform .15s ease; }
+.faq-card[open]{ border-color:#6366f1; box-shadow:0 10px 30px rgba(2,6,23,.08); transform:translateY(-1px); }
+details[open] .faq-anim{ animation:faqFade .25s ease; }
+@keyframes faqFade{ from{opacity:0; transform:translateY(-4px);} to{opacity:1; transform:translateY(0);} }
+
+/* Smooth scrolling */
+html { scroll-behavior: smooth; }

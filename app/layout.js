@@ -7,21 +7,26 @@ import Script from "next/script";
 
 const inter = Inter({
   subsets: ["latin"],
-  preload: false,           // kritik yolu kısalt
-  display: "optional",      // FOIT yok, sistem fontu ile başla
-  fallback: ["system-ui","-apple-system","Segoe UI","Roboto","Arial","sans-serif"],
+  preload: true,                 // Next/font otomatik <link rel="preload" as="font"> ekler
+  display: "swap",               // FOIT yok, Lighthouse dostu
+  fallback: ["system-ui", "-apple-system", "Segoe UI", "Roboto", "Arial", "sans-serif"],
   adjustFontFallback: true,
 });
 
 export const metadata = {
   metadataBase: new URL("https://sahneva.com"),
-  title: { default: "Sahneva – Etkinlik Prodüksiyon & Organizasyon", template: "%s | Sahneva" },
-  description: "Sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri. Türkiye geneli.",
+  title: {
+    default: "Sahneva – Etkinlik Prodüksiyon & Organizasyon",
+    template: "%s | Sahneva",
+  },
+  description:
+    "Sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri. Türkiye geneli.",
   manifest: "/site.webmanifest",
   alternates: { canonical: "https://sahneva.com" },
   openGraph: {
     title: "Sahneva – Etkinlik Prodüksiyon & Organizasyon",
-    description: "Sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri. Türkiye geneli.",
+    description:
+      "Sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri. Türkiye geneli.",
     url: "https://sahneva.com",
     siteName: "Sahneva",
     images: ["/img/og.jpg"],
@@ -31,7 +36,8 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Sahneva – Etkinlik Prodüksiyon & Organizasyon",
-    description: "Sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri. Türkiye geneli.",
+    description:
+      "Sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri. Türkiye geneli.",
     images: ["/img/og.jpg"],
     creator: "@sahneva",
   },
@@ -44,7 +50,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="tr" suppressHydrationWarning>
       <head>
-        {/* Kritik CSS – ilk boyayı hızlandırır */}
+        {/* Küçük kritik CSS (hero/spacing) */}
         <style id="critical-css">{`
           .pt-16{padding-top:4rem}
           @media (min-width:768px){.md\\:pt-20{padding-top:5rem}}
@@ -57,13 +63,20 @@ export default function RootLayout({ children }) {
           .font-extrabold{font-weight:800}
         `}</style>
 
-        {/* Preconnect – sadece gtag.js için gerekli */}
-        <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="anonymous" />
-        {/* analytics endpoint’i için dns-prefetch; gereksiz preconnect uyarısını önler */}
+        {/* GA için gerekli bağlantılar */}
+        <link
+          rel="preconnect"
+          href="https://www.googletagmanager.com"
+          crossOrigin="anonymous"
+        />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
 
-        {/* GA4 – kritik yol dışında yüklensin */}
-        <Script id="ga4-src" strategy="lazyOnload" src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} />
+        {/* GA4: kritik yol dışında */}
+        <Script
+          id="ga4-src"
+          strategy="lazyOnload"
+          src={https://www.googletagmanager.com/gtag/js?id=${GA_ID}}
+        />
         <Script
           id="ga4-init"
           strategy="lazyOnload"
@@ -73,9 +86,10 @@ export default function RootLayout({ children }) {
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
               gtag('config', '${GA_ID}', { page_path: location.pathname + location.search });
+
               (function(history){
                 const send = () => { if (!window.gtag) return; gtag('config','${GA_ID}',{page_path:location.pathname+location.search}); };
-                const wrap = t => { const o=history[t]; return function(){ const r=o.apply(this,arguments); try{send()}catch(e){} return r; } };
+                const wrap = t => { const o=history[t]; return function(){ const r=o.apply(this,arguments); try{send()}catch(_){} return r; } };
                 history.pushState = wrap('pushState');
                 history.replaceState = wrap('replaceState');
                 addEventListener('popstate', send);
@@ -84,7 +98,7 @@ export default function RootLayout({ children }) {
           }}
         />
 
-        {/* Trusted Types */}
+        {/* Trusted Types: Next + default policy */}
         <Script id="tt-policy" strategy="beforeInteractive">{`
           (function () {
             if (!window.trustedTypes) return;
@@ -104,41 +118,116 @@ export default function RootLayout({ children }) {
         `}</Script>
       </head>
 
-      <body className={`${inter.className} scroll-smooth`}>
+      <body className={${inter.className} scroll-smooth}>
         <Navbar />
-        <main id="main" role="main" className="pt-16 md:pt-20">{children}</main>
+        <main id="main" role="main" className="pt-16 md:pt-20">
+          {children}
+        </main>
         <Footer />
 
         {/* JSON-LD: Organization */}
-        <Script id="ld-org" type="application/ld+json" strategy="afterInteractive"
-          dangerouslySetInnerHTML={{__html: JSON.stringify({
-            "@context":"https://schema.org","@type":"Organization",
-            name:"Sahneva", url:"https://sahneva.com", logo:"https://sahneva.com/img/logo.png",
-            contactPoint:[{"@type":"ContactPoint",telephone:"+90 545 304 8671",contactType:"customer service",areaServed:"TR",availableLanguage:["Turkish"]}],
-            sameAs:["https://www.instagram.com/sahneva","https://www.youtube.com/@sahneva"]
-          })}} />
+        <Script
+          id="ld-org"
+          type="application/ld+json"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "Sahneva",
+              url: "https://sahneva.com",
+              logo: "https://sahneva.com/img/logo.png",
+              contactPoint: [
+                {
+                  "@type": "ContactPoint",
+                  telephone: "+90 545 304 8671",
+                  contactType: "customer service",
+                  areaServed: "TR",
+                  availableLanguage: ["Turkish"],
+                },
+              ],
+              sameAs: [
+                "https://www.instagram.com/sahneva",
+                "https://www.youtube.com/@sahneva",
+              ],
+            }),
+          }}
+        />
 
         {/* JSON-LD: LocalBusiness */}
-        <Script id="ld-local" type="application/ld+json" strategy="afterInteractive"
-          dangerouslySetInnerHTML={{__html: JSON.stringify({
-            "@context":"https://schema.org","@type":"LocalBusiness",
-            name:"Sahneva", image:"https://sahneva.com/img/logo.png", url:"https://sahneva.com",
-            telephone:"+90 545 304 8671",
-            address:{"@type":"PostalAddress",addressLocality:"İstanbul",addressCountry:"TR"},
-            priceRange:"$$", openingHours:"Mo-Fr 09:00-19:00"
-          })}} />
+        <Script
+          id="ld-local"
+          type="application/ld+json"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "LocalBusiness",
+              name: "Sahneva",
+              image: "https://sahneva.com/img/logo.png",
+              url: "https://sahneva.com",
+              telephone: "+90 545 304 8671",
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "İstanbul",
+                addressCountry: "TR",
+              },
+              priceRange: "$$",
+              openingHours: "Mo-Fr 09:00-19:00",
+            }),
+          }}
+        />
 
         {/* JSON-LD: FAQPage */}
-        <Script id="ld-faq" type="application/ld+json" strategy="afterInteractive"
-          dangerouslySetInnerHTML={{__html: JSON.stringify({
-            "@context":"https://schema.org","@type":"FAQPage",
-            mainEntity:[
-              {"@type":"Question","name":"Podyum kurulumu ne kadar sürer?","acceptedAnswer":{"@type":"Answer","text":"Podyum kurulumu, ölçülere ve zemin koşullarına göre değişmekle birlikte genellikle 1–3 saat arasında tamamlanır. Teknik ekibimiz güvenli ve hızlı montaj yapar."}},
-              {"@type":"Question","name":"LED ekranlar dış mekanda kullanılabilir mi?","acceptedAnswer":{"@type":"Answer","text":"Evet, IP65 korumalı LED ekranlarımız yağmur ve güneş ışığına karşı dayanıklıdır. Açık hava konserleri, mitingler ve festivaller için güvenle kullanılabilir."}},
-              {"@type":"Question","name":"Ses ve ışık sistemlerinde teknik ekip sağlıyor musunuz?","acceptedAnswer":{"@type":"Answer","text":"Evet, profesyonel ses ve ışık sistemleri kiralama hizmetimizde her zaman teknik ekip desteği sunuyoruz. Kurulum, canlı yönetim ve etkinlik boyunca anlık destek dahildir."}},
-              {"@type":"Question","name":"Çadır kiralamada kurulum ve söküm hizmeti dahil mi?","acceptedAnswer":{"@type":"Answer","text":"Evet, çadır kiralama hizmetimizde kurulum ve söküm hizmeti fiyata dahildir. Ayrıca zemin kaplama, güvenlik önlemleri ve yan aksesuarlar da talebe göre eklenebilir."}}
-            ]
-          })}} />
+        <Script
+          id="ld-faq"
+          type="application/ld+json"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: [
+                {
+                  "@type": "Question",
+                  name: "Podyum kurulumu ne kadar sürer?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text:
+                      "Podyum kurulumu, ölçülere ve zemin koşullarına göre değişmekle birlikte genellikle 1–3 saat arasında tamamlanır. Teknik ekibimiz güvenli ve hızlı montaj yapar.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "LED ekranlar dış mekanda kullanılabilir mi?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text:
+                      "Evet, IP65 korumalı LED ekranlarımız yağmur ve güneş ışığına karşı dayanıklıdır. Açık hava konserleri, mitingler ve festivaller için güvenle kullanılabilir.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Ses ve ışık sistemlerinde teknik ekip sağlıyor musunuz?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text:
+                      "Evet, profesyonel ses ve ışık sistemleri kiralama hizmetimizde her zaman teknik ekip desteği sunuyoruz. Kurulum, canlı yönetim ve etkinlik boyunca anlık destek dahildir.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Çadır kiralamada kurulum ve söküm hizmeti dahil mi?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text:
+                      "Evet, çadır kiralama hizmetimizde kurulum ve söküm hizmeti fiyata dahildir. Ayrıca zemin kaplama, güvenlik önlemleri ve yan aksesuarlar da talebe göre eklenebilir.",
+                  },
+                },
+              ],
+            }),
+          }}
+        />
       </body>
     </html>
   );

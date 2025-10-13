@@ -14,19 +14,18 @@ const nextConfig = {
     minimumCacheTTL: 31536000, // 1 yıl (saniye)
   },
 
-  // 🧹 Prod’da gereksiz console logları temizle (error/warn hariç)
+  // 🧹 Prod’da gereksiz console.log’ları temizle (error/warn hariç)
   compiler: {
     removeConsole:
       process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
-    transformMixedEsModules: true, // ESM bağımlılıklarında daha doğru ağaç sarsma
   },
 
-  // 🚀 Modern tarayıcılar için build (gereksiz polyfill/transpile'ı azaltır)
+  // 🚀 Modern build
   swcMinify: true,
   experimental: {
     optimizePackageImports: ["lucide-react"],
-    legacyBrowsers: false, // kritik: IE/çok eski Android için polyfill’leri bırak
-    esmExternals: true,    // ESM bağımlılıklarını ESM olarak tut
+    legacyBrowsers: false,  // eski tarayıcı polyfill’lerini bırak
+    esmExternals: true,
   },
 
   // ✅ Güvenlik + Cache başlıkları
@@ -41,6 +40,8 @@ const nextConfig = {
           { key: "X-Frame-Options",           value: "SAMEORIGIN" },
           { key: "X-Content-Type-Options",    value: "nosniff" },
           { key: "Referrer-Policy",           value: "strict-origin-when-cross-origin" },
+          { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+          { key: "Cross-Origin-Resource-Policy", value: "same-origin" },
           { key: "Permissions-Policy",        value: "camera=(), microphone=(), geolocation=()" },
           {
             key: "Content-Security-Policy",
@@ -52,8 +53,9 @@ const nextConfig = {
               "frame-src https://www.google.com https://maps.google.com https://www.google.com.tr",
               "img-src 'self' data: blob: https:",
               "font-src 'self' data:",
+              // GA + Cloudflare Insights (beacon) izinleri
               "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://static.cloudflareinsights.com",
-              "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://stats.g.doubleclick.net https://www.googletagmanager.com",
+              "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://stats.g.doubleclick.net https://www.googletagmanager.com https://cloudflareinsights.com https://anon.cloudflareinsights.com",
               "style-src 'self' 'unsafe-inline'",
               "worker-src 'self' blob:",
               "upgrade-insecure-requests",
@@ -101,9 +103,8 @@ const nextConfig = {
     ];
   },
 
-  // ⚠️ Redirects burada yok.
-  // www → sahneva.com ve http → https yönlendirmelerini
-  // Vercel > Project > Settings > Domains üzerinden yönet.
+  // ⚠ Yönlendirmeler
+  // www ↔ apex ve http → https yönlendirmelerini Vercel veya Cloudflare Redirect Rules üzerinden yönet.
 };
 
 export default nextConfig;

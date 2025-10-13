@@ -1,11 +1,34 @@
 // app/sitemap.js
-export default async function sitemap() {
-  const base = "https://sahneva.com";
+import { services } from "@/lib/data";
+
+const site = "https://sahneva.com";
+
+export default function sitemap() {
   const now = new Date().toISOString();
-  return [
-    { url: `${base}/`, lastModified: now, changeFrequency: "weekly", priority: 1.0 },
-    { url: `${base}/hizmetler`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/projeler`,  lastModified: now, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/iletisim`,  lastModified: now, changeFrequency: "yearly",  priority: 0.6 },
+
+  // Kanonik tekil sayfalar (hizmetler DAHİL)
+  const singles = [
+    "/",
+    "/hizmetler",
+    "/podyum-kiralama",
+    "/led-ekran-kiralama",
+    "/ses-isik-sistemleri",   // hiçbir alias/canonical remap YOK
+    "/cadir-kiralama",
+    "/masa-sandalye-kiralama",
+    "/hakkimizda",
+    "/iletisim",
+    "/sss",
   ];
+
+  // Servis slug'larını direkt ekle (hiçbir dönüştürme yok)
+  const servicePaths = (services ?? []).map((s) => `/${s.slug}`);
+
+  // Tekilleştir
+  const uniquePaths = Array.from(new Set([...singles, ...servicePaths]));
+
+  // Next.js sitemap çıktısı
+  return uniquePaths.map((p) => ({
+    url: site + p,
+    lastModified: now,
+  }));
 }

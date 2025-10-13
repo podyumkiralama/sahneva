@@ -7,8 +7,8 @@ import Script from "next/script";
 
 const inter = Inter({
   subsets: ["latin"],
-  preload: false,
-  display: "optional",
+  preload: false,           // kritik yolu kısalt
+  display: "optional",      // FOIT yok, sistem fontu ile başla
   fallback: ["system-ui","-apple-system","Segoe UI","Roboto","Arial","sans-serif"],
   adjustFontFallback: true,
 });
@@ -42,8 +42,9 @@ export default function RootLayout({ children }) {
   const GA_ID = "G-J5YK10YLLC";
 
   return (
-    <html lang="tr">
+    <html lang="tr" suppressHydrationWarning>
       <head>
+        {/* Kritik CSS – ilk boyayı hızlandırır */}
         <style id="critical-css">{`
           .pt-16{padding-top:4rem}
           @media (min-width:768px){.md\\:pt-20{padding-top:5rem}}
@@ -56,10 +57,12 @@ export default function RootLayout({ children }) {
           .font-extrabold{font-weight:800}
         `}</style>
 
-        {/* Preconnect – yalnız GTM */}
-        <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="" />
+        {/* Preconnect – sadece gtag.js için gerekli */}
+        <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="anonymous" />
+        {/* analytics endpoint’i için dns-prefetch; gereksiz preconnect uyarısını önler */}
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
 
-        {/* GA4 */}
+        {/* GA4 – kritik yol dışında yüklensin */}
         <Script id="ga4-src" strategy="lazyOnload" src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} />
         <Script
           id="ga4-init"
@@ -81,7 +84,7 @@ export default function RootLayout({ children }) {
           }}
         />
 
-        {/* Trusted Types policy */}
+        {/* Trusted Types */}
         <Script id="tt-policy" strategy="beforeInteractive">{`
           (function () {
             if (!window.trustedTypes) return;
@@ -103,7 +106,7 @@ export default function RootLayout({ children }) {
 
       <body className={`${inter.className} scroll-smooth`}>
         <Navbar />
-        <main className="pt-16 md:pt-20">{children}</main>
+        <main id="main" role="main" className="pt-16 md:pt-20">{children}</main>
         <Footer />
 
         {/* JSON-LD: Organization */}
@@ -111,7 +114,7 @@ export default function RootLayout({ children }) {
           dangerouslySetInnerHTML={{__html: JSON.stringify({
             "@context":"https://schema.org","@type":"Organization",
             name:"Sahneva", url:"https://sahneva.com", logo:"https://sahneva.com/img/logo.png",
-            contactPoint:[{"@type":"ContactPoint",telephone:"+90 545 304 8671",contactType:"customer service",areaServed:"TR",availableLanguage":["Turkish"]}],
+            contactPoint:[{"@type":"ContactPoint",telephone:"+90 545 304 8671",contactType:"customer service",areaServed:"TR",availableLanguage:["Turkish"]}],
             sameAs:["https://www.instagram.com/sahneva","https://www.youtube.com/@sahneva"]
           })}} />
 

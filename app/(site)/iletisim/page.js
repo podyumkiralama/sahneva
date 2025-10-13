@@ -131,7 +131,7 @@ export default function ContactPage() {
         </a>
         <a
           href={WHATSAPP_URL}
-          target="_blank"
+          target="_blank" rel="noopener noreferrer"
           rel="noopener noreferrer"
           className="flex flex-col items-center text-green-600 font-semibold"
         >
@@ -139,7 +139,7 @@ export default function ContactPage() {
         </a>
         <a
           href={MAPS_URL}
-          target="_blank"
+          target="_blank" rel="noopener noreferrer"
           rel="noopener noreferrer"
           className="flex flex-col items-center text-indigo-600 font-semibold"
         >
@@ -158,7 +158,7 @@ function ContactCard({ icon, title, info, href, color }) {
       <p className="text-neutral-600 mb-4">{info}</p>
       <a
         href={href}
-        target="_blank"
+        target="_blank" rel="noopener noreferrer"
         rel="noopener noreferrer"
         className={`inline-flex items-center justify-center ${color} text-white font-semibold px-5 py-2 rounded-full shadow transition-all`}
       >

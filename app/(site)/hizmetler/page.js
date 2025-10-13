@@ -50,7 +50,7 @@ export default function ServicesPage() {
               </Link>
               <a
                 href="https://wa.me/905453048671?text=Merhaba%20Sahneva%2C%20hizmetleriniz%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum."
-                target="_blank"
+                target="_blank" rel="noopener noreferrer"
                 rel="noopener noreferrer"
                 className="rounded-lg bg-green-600 px-5 py-2 font-semibold text-white hover:opacity-90"
               >

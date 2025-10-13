@@ -1,4 +1,4 @@
-// app/layout.jsx
+// app/layout.js
 import "../styles/globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -9,7 +9,7 @@ const inter = Inter({
   subsets: ["latin"],
   preload: false,
   display: "optional",
-  fallback: ["system-ui","-apple-system","Segoe UI","Roboto","Arial","sans-serif"],
+  fallback: ["system-ui", "-apple-system", "Segoe UI", "Roboto", "Arial", "sans-serif"],
   adjustFontFallback: true,
 });
 
@@ -21,7 +21,8 @@ export const metadata = {
   alternates: { canonical: "https://sahneva.com" },
   openGraph: {
     title: "Sahneva – Etkinlik Prodüksiyon & Organizasyon",
-    description: "Sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri. Türkiye geneli.",
+    description:
+      "Sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri. Türkiye geneli.",
     url: "https://sahneva.com",
     siteName: "Sahneva",
     images: ["/img/og.jpg"],
@@ -31,7 +32,8 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Sahneva – Etkinlik Prodüksiyon & Organizasyon",
-    description: "Sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri. Türkiye geneli.",
+    description:
+      "Sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri. Türkiye geneli.",
     images: ["/img/og.jpg"],
     creator: "@sahneva",
   },
@@ -44,6 +46,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="tr">
       <head>
+        {/* Kritik birkaç yardımcı kural */}
         <style id="critical-css">{`
           .pt-16{padding-top:4rem}
           @media (min-width:768px){.md\\:pt-20{padding-top:5rem}}
@@ -56,32 +59,34 @@ export default function RootLayout({ children }) {
           .font-extrabold{font-weight:800}
         `}</style>
 
-        {/* Preconnect – yalnız GTM */}
+        {/* Sadece GTM için preconnect (GA domainine gerek yok) */}
         <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="" />
 
-        {/* GA4 */}
-        <Script id="ga4-src" strategy="lazyOnload" src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} />
+        {/* GA4 – kritik yol dışında */}
+        <Script
+          id="ga4-src"
+          strategy="lazyOnload"
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+        />
         <Script
           id="ga4-init"
           strategy="lazyOnload"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', '${GA_ID}', { page_path: location.pathname + location.search });
-              (function(history){
-                const send = () => { if (!window.gtag) return; gtag('config','${GA_ID}',{page_path:location.pathname+location.search}); };
-                const wrap = t => { const o=history[t]; return function(){ const r=o.apply(this,arguments); try{send()}catch(e){} return r; } };
-                history.pushState = wrap('pushState');
-                history.replaceState = wrap('replaceState');
-                addEventListener('popstate', send);
-              })(window.history);
-            `,
-          }}
-        />
+        >{`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${GA_ID}', { page_path: location.pathname + location.search });
 
-        {/* Trusted Types policy */}
+          (function(history){
+            const send = () => { if (!window.gtag) return; gtag('config','${GA_ID}',{page_path:location.pathname+location.search}); };
+            const wrap = t => { const o=history[t]; return function(){ const r=o.apply(this,arguments); try{send()}catch(e){} return r; } };
+            history.pushState = wrap('pushState');
+            history.replaceState = wrap('replaceState');
+            addEventListener('popstate', send);
+          })(window.history);
+        `}</Script>
+
+        {/* Trusted Types */}
         <Script id="tt-policy" strategy="beforeInteractive">{`
           (function () {
             if (!window.trustedTypes) return;
@@ -106,36 +111,94 @@ export default function RootLayout({ children }) {
         <main className="pt-16 md:pt-20">{children}</main>
         <Footer />
 
-        {/* JSON-LD: Organization */}
-        <Script id="ld-org" type="application/ld+json" strategy="afterInteractive"
-          dangerouslySetInnerHTML={{__html: JSON.stringify({
-            "@context":"https://schema.org","@type":"Organization",
-            name:"Sahneva", url:"https://sahneva.com", logo:"https://sahneva.com/img/logo.png",
-            contactPoint:[{"@type":"ContactPoint",telephone:"+90 545 304 8671",contactType:"customer service",areaServed:"TR",availableLanguage":["Turkish"]}],
-            sameAs:["https://www.instagram.com/sahneva","https://www.youtube.com/@sahneva"]
-          })}} />
+        {/* JSON-LD: Organization (children ile, no dangerouslySetInnerHTML) */}
+        <Script id="ld-org" type="application/ld+json" strategy="afterInteractive">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: "Sahneva",
+            url: "https://sahneva.com",
+            logo: "https://sahneva.com/img/logo.png",
+            contactPoint: [
+              {
+                "@type": "ContactPoint",
+                telephone: "+90 545 304 8671",
+                contactType: "customer service",
+                areaServed: "TR",
+                availableLanguage: ["Turkish"],
+              },
+            ],
+            sameAs: [
+              "https://www.instagram.com/sahneva",
+              "https://www.youtube.com/@sahneva",
+            ],
+          })}
+        </Script>
 
         {/* JSON-LD: LocalBusiness */}
-        <Script id="ld-local" type="application/ld+json" strategy="afterInteractive"
-          dangerouslySetInnerHTML={{__html: JSON.stringify({
-            "@context":"https://schema.org","@type":"LocalBusiness",
-            name:"Sahneva", image:"https://sahneva.com/img/logo.png", url:"https://sahneva.com",
-            telephone:"+90 545 304 8671",
-            address:{"@type":"PostalAddress",addressLocality:"İstanbul",addressCountry:"TR"},
-            priceRange:"$$", openingHours:"Mo-Fr 09:00-19:00"
-          })}} />
+        <Script id="ld-local" type="application/ld+json" strategy="afterInteractive">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "LocalBusiness",
+            name: "Sahneva",
+            image: "https://sahneva.com/img/logo.png",
+            url: "https://sahneva.com",
+            telephone: "+90 545 304 8671",
+            address: {
+              "@type": "PostalAddress",
+              addressLocality: "İstanbul",
+              addressCountry: "TR",
+            },
+            priceRange: "$$",
+            openingHours: "Mo-Fr 09:00-19:00",
+          })}
+        </Script>
 
         {/* JSON-LD: FAQPage */}
-        <Script id="ld-faq" type="application/ld+json" strategy="afterInteractive"
-          dangerouslySetInnerHTML={{__html: JSON.stringify({
-            "@context":"https://schema.org","@type":"FAQPage",
-            mainEntity:[
-              {"@type":"Question","name":"Podyum kurulumu ne kadar sürer?","acceptedAnswer":{"@type":"Answer","text":"Podyum kurulumu, ölçülere ve zemin koşullarına göre değişmekle birlikte genellikle 1–3 saat arasında tamamlanır. Teknik ekibimiz güvenli ve hızlı montaj yapar."}},
-              {"@type":"Question","name":"LED ekranlar dış mekanda kullanılabilir mi?","acceptedAnswer":{"@type":"Answer","text":"Evet, IP65 korumalı LED ekranlarımız yağmur ve güneş ışığına karşı dayanıklıdır. Açık hava konserleri, mitingler ve festivaller için güvenle kullanılabilir."}},
-              {"@type":"Question","name":"Ses ve ışık sistemlerinde teknik ekip sağlıyor musunuz?","acceptedAnswer":{"@type":"Answer","text":"Evet, profesyonel ses ve ışık sistemleri kiralama hizmetimizde her zaman teknik ekip desteği sunuyoruz. Kurulum, canlı yönetim ve etkinlik boyunca anlık destek dahildir."}},
-              {"@type":"Question","name":"Çadır kiralamada kurulum ve söküm hizmeti dahil mi?","acceptedAnswer":{"@type":"Answer","text":"Evet, çadır kiralama hizmetimizde kurulum ve söküm hizmeti fiyata dahildir. Ayrıca zemin kaplama, güvenlik önlemleri ve yan aksesuarlar da talebe göre eklenebilir."}}
-            ]
-          })}} />
+        <Script id="ld-faq" type="application/ld+json" strategy="afterInteractive">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              {
+                "@type": "Question",
+                name: "Podyum kurulumu ne kadar sürer?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text:
+                    "Podyum kurulumu, ölçülere ve zemin koşullarına göre değişmekle birlikte genellikle 1–3 saat arasında tamamlanır. Teknik ekibimiz güvenli ve hızlı montaj yapar.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "LED ekranlar dış mekanda kullanılabilir mi?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text:
+                    "Evet, IP65 korumalı LED ekranlarımız yağmur ve güneş ışığına karşı dayanıklıdır. Açık hava konserleri, mitingler ve festivaller için güvenle kullanılabilir.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Ses ve ışık sistemlerinde teknik ekip sağlıyor musunuz?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text:
+                    "Evet, profesyonel ses ve ışık sistemleri kiralama hizmetimizde her zaman teknik ekip desteği sunuyoruz. Kurulum, canlı yönetim ve etkinlik boyunca anlık destek dahildir.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Çadır kiralamada kurulum ve söküm hizmeti dahil mi?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text:
+                    "Evet, çadır kiralama hizmetimizde kurulum ve söküm hizmeti fiyata dahildir. Ayrıca zemin kaplama, güvenlik önlemleri ve yan aksesuarlar da talebe göre eklenebilir.",
+                },
+              },
+            ],
+          })}
+        </Script>
       </body>
     </html>
   );

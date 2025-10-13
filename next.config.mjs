@@ -1,4 +1,4 @@
-// next.config.mjs — Sahneva Production (redirects kaldırıldı)
+// next.config.mjs — Sahneva Production (modern build + güvenli başlıklar)
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -6,26 +6,34 @@ const nextConfig = {
   trailingSlash: false,
   poweredByHeader: false,
 
+  // ⚡ Görsel optimizasyonu — uzun ömürlü cache
   images: {
     deviceSizes: [320, 360, 375, 414, 480, 640, 750, 828, 1080, 1200, 1920],
     imageSizes:  [16, 24, 32, 48, 64, 96, 128, 192, 256, 384, 512],
     formats: ["image/avif", "image/webp"],
-    minimumCacheTTL: 31536000, // 1 yıl
+    minimumCacheTTL: 31536000, // 1 yıl (saniye)
   },
 
+  // 🧹 Prod’da gereksiz console logları temizle (error/warn hariç)
   compiler: {
     removeConsole:
       process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
+    transformMixedEsModules: true, // ESM bağımlılıklarında daha doğru ağaç sarsma
   },
 
+  // 🚀 Modern tarayıcılar için build (gereksiz polyfill/transpile'ı azaltır)
+  swcMinify: true,
   experimental: {
     optimizePackageImports: ["lucide-react"],
+    legacyBrowsers: false, // kritik: IE/çok eski Android için polyfill’leri bırak
+    esmExternals: true,    // ESM bağımlılıklarını ESM olarak tut
   },
 
+  // ✅ Güvenlik + Cache başlıkları
   async headers() {
     return [
+      // ❶ HTML ve dinamik rotalar (10 dk cache — güvenli)
       {
-        // HTML ve dinamik rotalar
         source:
           "/((?!_next/static|_next/image|_next/data|favicon.ico|robots.txt|sitemap.xml|img/|fonts/).*)",
         headers: [
@@ -55,37 +63,37 @@ const nextConfig = {
         ],
       },
 
-      // Next statikleri — 1 yıl
+      // ❷ Next statikleri (hash’li dosyalar) — 1 yıl, immutable
       {
         source: "/_next/static/:path*",
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
       },
 
-      // Next Image çıktısı — 1 yıl
+      // ❸ Next Image optimizer çıktısı — 1 yıl, immutable
       {
         source: "/_next/image",
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
       },
 
-      // SSG JSON — 1 yıl
+      // ❹ SSG JSON’ları — 1 yıl, immutable
       {
         source: "/_next/data/:path*",
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
       },
 
-      // public/img — 1 yıl
+      // ❺ public/img altındaki görseller — 1 yıl, immutable
       {
         source: "/img/:path*",
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
       },
 
-      // fonts — 1 yıl
+      // ❻ (Varsa) font dosyaları — 1 yıl, immutable
       {
         source: "/fonts/:path*",
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
       },
 
-      // robots/sitemap/favicon — 1 gün
+      // ❼ robots/sitemap/favicon — 1 gün
       {
         source: "/:file(robots.txt|sitemap.xml|favicon.ico)",
         headers: [{ key: "Cache-Control", value: "public, max-age=86400" }],
@@ -93,7 +101,9 @@ const nextConfig = {
     ];
   },
 
-  // ⚠️ redirects BLOĞU YOK – Vercel domain ayarları yönetsin
+  // ⚠️ Redirects burada yok.
+  // www → sahneva.com ve http → https yönlendirmelerini
+  // Vercel > Project > Settings > Domains üzerinden yönet.
 };
 
 export default nextConfig;

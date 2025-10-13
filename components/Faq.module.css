@@ -1,0 +1,30 @@
+.faqGlass{
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(99,102,241,.10), transparent),
+    radial-gradient(900px 500px at 110% 10%, rgba(16,185,129,.10), transparent),
+    rgba(255,255,255,.72);
+  backdrop-filter: saturate(120%) blur(4px);
+}
+
+.faqChip{
+  border:1px solid rgba(0,0,0,.06);
+  background:#fff;
+  transition:.2s ease;
+}
+.faqChip:hover{ background:#f8fafc; transform:translateY(-1px); }
+
+.faqCard{
+  border:1px solid rgba(0,0,0,.06);
+  transition: border-color .2s ease, box-shadow .2s ease, transform .15s ease;
+}
+.faqCard[open]{
+  border-color:#6366f1;
+  box-shadow:0 10px 30px rgba(2,6,23,.08);
+  transform:translateY(-1px);
+}
+
+.faqAnim{ animation:faqFade .25s ease; }
+@keyframes faqFade{
+  from{ opacity:0; transform:translateY(-4px); }
+  to  { opacity:1; transform:translateY(0); }
+}

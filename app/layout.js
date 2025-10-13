@@ -7,9 +7,16 @@ import Script from "next/script";
 
 const inter = Inter({
   subsets: ["latin"],
-  preload: true,                 // Next/font otomatik <link rel="preload" as="font"> ekler
-  display: "swap",               // FOIT yok, Lighthouse dostu
-  fallback: ["system-ui", "-apple-system", "Segoe UI", "Roboto", "Arial", "sans-serif"],
+  preload: false,
+  display: "optional",
+  fallback: [
+    "system-ui",
+    "-apple-system",
+    "Segoe UI",
+    "Roboto",
+    "Arial",
+    "sans-serif",
+  ],
   adjustFontFallback: true,
 });
 
@@ -45,12 +52,12 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  const GA_ID = "G-J5YK10YLLC";
+  const GA_ID = "G-J5YK10YLLC"; // GA4 ölçüm kimliği
 
   return (
     <html lang="tr" suppressHydrationWarning>
       <head>
-        {/* Küçük kritik CSS (hero/spacing) */}
+        {/* Minik kritik CSS (render-blocking yok) */}
         <style id="critical-css">{`
           .pt-16{padding-top:4rem}
           @media (min-width:768px){.md\\:pt-20{padding-top:5rem}}
@@ -63,59 +70,17 @@ export default function RootLayout({ children }) {
           .font-extrabold{font-weight:800}
         `}</style>
 
-        {/* GA için gerekli bağlantılar */}
+        {/* GA4 için preconnect (yalnızca gerekli ikisi) */}
         <link
           rel="preconnect"
           href="https://www.googletagmanager.com"
           crossOrigin="anonymous"
         />
-        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
-
-        {/* GA4: kritik yol dışında */}
-        <Script
-          id="ga4-src"
-          strategy="lazyOnload"
-          src={https://www.googletagmanager.com/gtag/js?id=${GA_ID}}
+        <link
+          rel="preconnect"
+          href="https://www.google-analytics.com"
+          crossOrigin="anonymous"
         />
-        <Script
-          id="ga4-init"
-          strategy="lazyOnload"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', '${GA_ID}', { page_path: location.pathname + location.search });
-
-              (function(history){
-                const send = () => { if (!window.gtag) return; gtag('config','${GA_ID}',{page_path:location.pathname+location.search}); };
-                const wrap = t => { const o=history[t]; return function(){ const r=o.apply(this,arguments); try{send()}catch(_){} return r; } };
-                history.pushState = wrap('pushState');
-                history.replaceState = wrap('replaceState');
-                addEventListener('popstate', send);
-              })(window.history);
-            `,
-          }}
-        />
-
-        {/* Trusted Types: Next + default policy */}
-        <Script id="tt-policy" strategy="beforeInteractive">{`
-          (function () {
-            if (!window.trustedTypes) return;
-            try {
-              if (!trustedTypes.getPolicy('nextjs#bundler')) {
-                trustedTypes.createPolicy('nextjs#bundler', {
-                  createHTML: s => s, createScript: s => s, createScriptURL: s => s
-                });
-              }
-              if (!trustedTypes.getPolicy('default')) {
-                trustedTypes.createPolicy('default', {
-                  createHTML: s => s, createScript: s => s, createScriptURL: s => s
-                });
-              }
-            } catch (e) {}
-          })();
-        `}</Script>
       </head>
 
       <body className={${inter.className} scroll-smooth}>
@@ -124,6 +89,39 @@ export default function RootLayout({ children }) {
           {children}
         </main>
         <Footer />
+
+        {/* ===== GA4 (Tag Manager YOK) ===== */}
+        {/* dış script */}
+        <Script
+          id="ga4-src"
+          strategy="afterInteractive"
+          src={https://www.googletagmanager.com/gtag/js?id=${GA_ID}}
+        />
+        {/* init */}
+        <Script
+          id="ga4-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${GA_ID}', {
+                page_path: location.pathname + location.search
+              });
+              // SPA navigation takibi
+              (function (history) {
+                const send = () => { if (window.gtag) gtag('config','${GA_ID}',{page_path:location.pathname+location.search}); };
+                ['pushState','replaceState'].forEach(fn => {
+                  const orig = history[fn];
+                  history[fn] = function(){ const ret = orig.apply(this, arguments); try{send()}catch(e){} return ret; };
+                });
+                addEventListener('popstate', send);
+              })(window.history);
+            `,
+          }}
+        />
+        {/* ===== /GA4 ===== */}
 
         {/* JSON-LD: Organization */}
         <Script
@@ -194,7 +192,7 @@ export default function RootLayout({ children }) {
                   acceptedAnswer: {
                     "@type": "Answer",
                     text:
-                      "Podyum kurulumu, ölçülere ve zemin koşullarına göre değişmekle birlikte genellikle 1–3 saat arasında tamamlanır. Teknik ekibimiz güvenli ve hızlı montaj yapar.",
+                      "Podyum kurulumu, ölçülere ve zemin koşullarına göre genellikle 1–3 saat sürer.",
                   },
                 },
                 {
@@ -203,25 +201,26 @@ export default function RootLayout({ children }) {
                   acceptedAnswer: {
                     "@type": "Answer",
                     text:
-                      "Evet, IP65 korumalı LED ekranlarımız yağmur ve güneş ışığına karşı dayanıklıdır. Açık hava konserleri, mitingler ve festivaller için güvenle kullanılabilir.",
+                      "Evet, IP65 korumalı LED ekranlarımız açık havada güvenle kullanılabilir.",
                   },
                 },
                 {
                   "@type": "Question",
-                  name: "Ses ve ışık sistemlerinde teknik ekip sağlıyor musunuz?",
+                  name:
+                    "Ses ve ışık sistemlerinde teknik ekip sağlıyor musunuz?",
                   acceptedAnswer: {
                     "@type": "Answer",
                     text:
-                      "Evet, profesyonel ses ve ışık sistemleri kiralama hizmetimizde her zaman teknik ekip desteği sunuyoruz. Kurulum, canlı yönetim ve etkinlik boyunca anlık destek dahildir.",
+                      "Evet, kurulum ve etkinlik boyunca teknik ekip desteği veriyoruz.",
                   },
                 },
                 {
                   "@type": "Question",
-                  name: "Çadır kiralamada kurulum ve söküm hizmeti dahil mi?",
+                  name: "Çadır kiralamada kurulum ve söküm dahil mi?",
                   acceptedAnswer: {
                     "@type": "Answer",
                     text:
-                      "Evet, çadır kiralama hizmetimizde kurulum ve söküm hizmeti fiyata dahildir. Ayrıca zemin kaplama, güvenlik önlemleri ve yan aksesuarlar da talebe göre eklenebilir.",
+                      "Evet, kurulum ve söküm dahil; zemin kaplama ve aksesuarlar opsiyoneldir.",
                   },
                 },
               ],

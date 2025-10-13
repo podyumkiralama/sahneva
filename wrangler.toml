@@ -1,0 +1,3 @@
+name = "sahneva"
+pages_build_output_dir = ".vercel/output/static"
+compatibility_date = "2025-01-01"

@@ -52,7 +52,7 @@ const nextConfig = {
               "frame-src https://www.google.com https://maps.google.com https://www.google.com.tr",
               "img-src 'self' data: blob: https:",
               "font-src 'self' data:",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://static.cloudflareinsights.com",
               "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://stats.g.doubleclick.net https://www.googletagmanager.com",
               "style-src 'self' 'unsafe-inline'",
               "worker-src 'self' blob:",

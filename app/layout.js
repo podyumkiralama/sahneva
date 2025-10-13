@@ -83,7 +83,7 @@ export default function RootLayout({ children }) {
         />
       </head>
 
-      <body className={${inter.className} scroll-smooth}>
+      <body className={`${inter.className} scroll-smooth`}>
         <Navbar />
         <main id="main" role="main" className="pt-16 md:pt-20">
           {children}
@@ -95,7 +95,7 @@ export default function RootLayout({ children }) {
         <Script
           id="ga4-src"
           strategy="afterInteractive"
-          src={https://www.googletagmanager.com/gtag/js?id=${GA_ID}}
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
         />
         {/* init */}
         <Script

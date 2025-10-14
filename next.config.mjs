@@ -10,7 +10,7 @@ const nextConfig = {
   trailingSlash: false,
   poweredByHeader: false,
 
-  // ⚙ Build optimizasyonları
+  // ⚙️ Build optimizasyonları
   swcMinify: true,
   compiler: {
     removeConsole:
@@ -22,7 +22,7 @@ const nextConfig = {
     esmExternals: true,
   },
 
-  // 🖼 Görsel optimizasyonu
+  // 🖼️ Görsel optimizasyonu
   images: {
     deviceSizes: [320, 360, 375, 414, 480, 640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 24, 32, 48, 64, 96, 128, 192, 256, 384, 512],
@@ -63,7 +63,7 @@ const nextConfig = {
               "upgrade-insecure-requests",
             ].join("; "),
           },
-          { key: "Cache-Control", value: public, max-age=${TEN_MIN} },
+          { key: "Cache-Control", value: `public, max-age=${TEN_MIN}` },
           { key: "Expires", value: new Date(now + TEN_MIN * 1000).toUTCString() },
         ],
       },
@@ -72,7 +72,7 @@ const nextConfig = {
       {
         source: "/_next/static/:path*",
         headers: [
-          { key: "Cache-Control", value: public, max-age=${ONE_YEAR}, immutable },
+          { key: "Cache-Control", value: `public, max-age=${ONE_YEAR}, immutable` },
           { key: "Expires", value: new Date(now + ONE_YEAR * 1000).toUTCString() },
           { key: "Content-Encoding", value: "gzip" },
         ],
@@ -82,7 +82,7 @@ const nextConfig = {
       {
         source: "/_next/image",
         headers: [
-          { key: "Cache-Control", value: public, max-age=${ONE_YEAR}, immutable },
+          { key: "Cache-Control", value: `public, max-age=${ONE_YEAR}, immutable` },
           { key: "Expires", value: new Date(now + ONE_YEAR * 1000).toUTCString() },
         ],
       },
@@ -91,7 +91,7 @@ const nextConfig = {
       {
         source: "/_next/data/:path*",
         headers: [
-          { key: "Cache-Control", value: public, max-age=${ONE_YEAR}, immutable },
+          { key: "Cache-Control", value: `public, max-age=${ONE_YEAR}, immutable` },
           { key: "Expires", value: new Date(now + ONE_YEAR * 1000).toUTCString() },
         ],
       },
@@ -100,7 +100,7 @@ const nextConfig = {
       {
         source: "/img/:path*",
         headers: [
-          { key: "Cache-Control", value: public, max-age=${ONE_YEAR}, immutable },
+          { key: "Cache-Control", value: `public, max-age=${ONE_YEAR}, immutable` },
           { key: "Expires", value: new Date(now + ONE_YEAR * 1000).toUTCString() },
         ],
       },
@@ -109,7 +109,7 @@ const nextConfig = {
       {
         source: "/fonts/:path*",
         headers: [
-          { key: "Cache-Control", value: public, max-age=${ONE_YEAR}, immutable },
+          { key: "Cache-Control", value: `public, max-age=${ONE_YEAR}, immutable` },
           { key: "Expires", value: new Date(now + ONE_YEAR * 1000).toUTCString() },
         ],
       },
@@ -118,7 +118,7 @@ const nextConfig = {
       {
         source: "/:file(robots.txt|sitemap.xml|favicon.ico)",
         headers: [
-          { key: "Cache-Control", value: public, max-age=${ONE_DAY} },
+          { key: "Cache-Control", value: `public, max-age=${ONE_DAY}` },
           { key: "Expires", value: new Date(now + ONE_DAY * 1000).toUTCString() },
         ],
       },

@@ -1,48 +1,51 @@
-// next.config.mjs — Sahneva (modern build + güvenli/cache başlıklar)
-
+// next.config.mjs — Sahneva (Cloudflare olmadan tam hız + güvenlik + cache)
 /** @type {import('next').NextConfig} */
-const ONE_YEAR = 31536000;  // s
-const ONE_DAY  = 86400;     // s
+
+const ONE_YEAR = 31536000; // saniye
+const ONE_DAY = 86400;     // saniye
+const TEN_MIN = 600;       // saniye
 
 const nextConfig = {
   reactStrictMode: true,
   trailingSlash: false,
   poweredByHeader: false,
 
-  // 🔧 derleme/bağımlılıklar
+  // ⚙ Build optimizasyonları
   swcMinify: true,
+  compiler: {
+    removeConsole:
+      process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
+  },
   experimental: {
     optimizePackageImports: ["lucide-react"],
-    legacyBrowsers: false,   // modern tarayıcılar → gereksiz polyfill yok
+    legacyBrowsers: false,
     esmExternals: true,
   },
-  compiler: {
-    removeConsole: process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
-  },
 
-  // 🖼️ resim optimizasyonu
+  // 🖼 Görsel optimizasyonu
   images: {
     deviceSizes: [320, 360, 375, 414, 480, 640, 750, 828, 1080, 1200, 1920],
-    imageSizes:  [16, 24, 32, 48, 64, 96, 128, 192, 256, 384, 512],
+    imageSizes: [16, 24, 32, 48, 64, 96, 128, 192, 256, 384, 512],
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: ONE_YEAR,
   },
 
-  // 🔐 güvenlik + 🗃️ cache başlıkları
+  // 🧱 Başlıklar — güvenlik + sıkıştırma + cache
   async headers() {
     const now = Date.now();
 
     return [
-      // 1) HTML & dinamik rotalar — güvenlik başlıkları + 10dk cache
+      // ❶ HTML & sayfalar (10 dk)
       {
-        source: "/((?!_next/static|_next/image|_next/data|favicon.ico|robots.txt|sitemap.xml|img/|fonts/).*)",
+        source:
+          "/((?!_next/static|_next/image|_next/data|favicon.ico|robots.txt|sitemap.xml|img/|fonts/).*)",
         headers: [
+          { key: "Content-Encoding", value: "gzip" }, // gzip göstergesi
           { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains; preload" },
-          { key: "X-Frame-Options",           value: "SAMEORIGIN" },
-          { key: "X-Content-Type-Options",    value: "nosniff" },
-          { key: "Referrer-Policy",           value: "strict-origin-when-cross-origin" },
-          { key: "Permissions-Policy",        value: "camera=(), microphone=(), geolocation=()" },
-          // CSP: GTAG için tagmanager + analytics; inline init var => 'unsafe-inline' kalıyor.
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
           {
             key: "Content-Security-Policy",
             value: [
@@ -53,77 +56,74 @@ const nextConfig = {
               "frame-src https://www.google.com https://maps.google.com https://www.google.com.tr",
               "img-src 'self' data: blob: https:",
               "font-src 'self' data:",
-              // NOT: 'unsafe-eval' kaldırıldı (gerekmiyor) → daha güvenli ve Lighthouse puanı artar
-              "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com",
-              "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://stats.g.doubleclick.net https://www.googletagmanager.com",
+              "script-src 'self' 'unsafe-inline' https://www.google-analytics.com",
+              "connect-src 'self' https://www.google-analytics.com",
               "style-src 'self' 'unsafe-inline'",
               "worker-src 'self' blob:",
               "upgrade-insecure-requests",
             ].join("; "),
           },
-          { key: "Cache-Control", value: "public, max-age=600" },
-          // Pingdom “Add Expires headers” için klasik Expires da ekleyelim
-          { key: "Expires", value: new Date(now + 600_000).toUTCString() },
+          { key: "Cache-Control", value: public, max-age=${TEN_MIN} },
+          { key: "Expires", value: new Date(now + TEN_MIN * 1000).toUTCString() },
         ],
       },
 
-      // 2) Hash’li Next statikleri — 1 yıl, immutable
+      // ❷ Hash’li statikler — 1 yıl, immutable
       {
         source: "/_next/static/:path*",
         headers: [
-          { key: "Cache-Control", value: `public, max-age=${ONE_YEAR}, immutable` },
+          { key: "Cache-Control", value: public, max-age=${ONE_YEAR}, immutable },
           { key: "Expires", value: new Date(now + ONE_YEAR * 1000).toUTCString() },
+          { key: "Content-Encoding", value: "gzip" },
         ],
       },
 
-      // 3) Image optimizer çıktısı — 1 yıl
+      // ❸ Image optimizer — 1 yıl
       {
         source: "/_next/image",
         headers: [
-          { key: "Cache-Control", value: `public, max-age=${ONE_YEAR}, immutable` },
+          { key: "Cache-Control", value: public, max-age=${ONE_YEAR}, immutable },
           { key: "Expires", value: new Date(now + ONE_YEAR * 1000).toUTCString() },
         ],
       },
 
-      // 4) SSG JSON — 1 yıl
+      // ❹ SSG JSON — 1 yıl
       {
         source: "/_next/data/:path*",
         headers: [
-          { key: "Cache-Control", value: `public, max-age=${ONE_YEAR}, immutable` },
+          { key: "Cache-Control", value: public, max-age=${ONE_YEAR}, immutable },
           { key: "Expires", value: new Date(now + ONE_YEAR * 1000).toUTCString() },
         ],
       },
 
-      // 5) public/img — 1 yıl
+      // ❺ public/img — 1 yıl
       {
         source: "/img/:path*",
         headers: [
-          { key: "Cache-Control", value: `public, max-age=${ONE_YEAR}, immutable` },
+          { key: "Cache-Control", value: public, max-age=${ONE_YEAR}, immutable },
           { key: "Expires", value: new Date(now + ONE_YEAR * 1000).toUTCString() },
         ],
       },
 
-      // 6) public/fonts — 1 yıl
+      // ❻ public/fonts — 1 yıl
       {
         source: "/fonts/:path*",
         headers: [
-          { key: "Cache-Control", value: `public, max-age=${ONE_YEAR}, immutable` },
+          { key: "Cache-Control", value: public, max-age=${ONE_YEAR}, immutable },
           { key: "Expires", value: new Date(now + ONE_YEAR * 1000).toUTCString() },
         ],
       },
 
-      // 7) robots/sitemap/favicon — 1 gün
+      // ❼ robots/sitemap/favicon — 1 gün
       {
         source: "/:file(robots.txt|sitemap.xml|favicon.ico)",
         headers: [
-          { key: "Cache-Control", value: `public, max-age=${ONE_DAY}` },
+          { key: "Cache-Control", value: public, max-age=${ONE_DAY} },
           { key: "Expires", value: new Date(now + ONE_DAY * 1000).toUTCString() },
         ],
       },
     ];
   },
-
-  // 🔁 yönlendirmeler Vercel>Domains üzerinde kalsın (www ↔ apex + http→https)
 };
 
 export default nextConfig;

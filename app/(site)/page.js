@@ -9,84 +9,45 @@ export default function HomePage() {
   return (
     <main>
       {/* HERO */}
-      <section className="full-bleed relative">
+      <section className="full-bleed relative will-change-transform">
         <Image
-          src="/img/hero-bg.webp" // mümkünse aynı görseli .avif olarak da ekleyin
+          src="/img/hero-bg.webp"
           alt="Sahneva etkinlik prodüksiyon sahnesi: ses ve ışık ekipmanlarıyla kurulu sahne"
           fill
           priority
           fetchPriority="high"
           decoding="sync"
           sizes="100vw"
-          quality={62}
-          className="object-cover will-change-transform"
+          className="object-cover"
         />
-
-        {/* Blur yok; hafif, ucuz bir gradient */}
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.45)_35%,rgba(0,0,0,.6))]" />
-
         <div className="relative z-10 container py-20 md:py-32 text-center">
           <h1 className="text-white text-4xl md:text-6xl font-extrabold mb-4 tracking-tight">
             Etkinlik Prodüksiyon &amp; Ekipman Kiralama
           </h1>
-
           <p className="text-white/95 text-lg md:text-xl mb-8">
             Türkiye genelinde sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri.
             Hızlı teslim, uygun fiyat.
           </p>
-
-          {/* Kontrastı yüksek butonlar */}
           <div className="flex justify-center gap-4">
             <a
               href="tel:+905453048671"
-              className="px-6 py-3 rounded-lg bg-[#6d28d9] text-white font-semibold shadow-md
-                         hover:bg-[#5b21b6] hover:shadow-lg transition"
+              className="px-6 py-3 rounded-lg bg-[#6d28d9] text-white font-semibold shadow-md hover:bg-[#5b21b6] hover:shadow-lg transition-colors"
             >
               Hemen Ara
             </a>
-
             <a
               href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum."
               rel="noopener"
-              aria-label="WhatsApp teklif al"
-              className="px-6 py-3 rounded-lg bg-[#15803D] text-white font-semibold shadow-md
-                         ring-1 ring-white/20 hover:bg-[#166534] hover:shadow-lg transition"
+              className="px-6 py-3 rounded-lg bg-[#15803d] text-white font-semibold shadow-md ring-1 ring-white/20 hover:bg-[#166534] hover:shadow-lg transition-colors"
             >
               WhatsApp Teklif
             </a>
           </div>
-
-          {/* Chip’ler: backdrop-blur kaldırıldı */}
-          <ul className="mt-6 grid max-w-3xl mx-auto grid-cols-1 sm:grid-cols-3 gap-3">
-            {[
-              ["⭐", "4.9 Müşteri Memnuniyeti"],
-              ["🔧", "Aynı Gün Kurulum"],
-              ["👷", "Profesyonel Teknik Ekip"],
-            ].map(([icon, label], i) => (
-              <li
-                key={i}
-                className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/12 text-white border border-white/20"
-              >
-                <span>{icon}</span>
-                <span>{label}</span>
-              </li>
-            ))}
-          </ul>
-
-          <div className="mt-10 text-center">
-            <div className="text-5xl mb-3">🎧</div>
-            <h2 className="text-white text-2xl md:text-3xl font-semibold mb-2">
-              Organizasyonunuz için Ücretsiz Danışmanlık
-            </h2>
-            <p className="text-white/90 max-w-3xl mx-auto">
-              Etkinliğiniz için en doğru sahne, podyum, ses-ışık ve ekran çözümlerini ücretsiz
-              danışmanlık hizmetimizle öğrenin.
-            </p>
-          </div>
         </div>
       </section>
 
-      {/* İçerik bölümleri */}
+      {/* İçerikler */}
       <ServicesTabs />
       <ProjectsGallery />
 
@@ -94,41 +55,19 @@ export default function HomePage() {
         <h2 className="text-2xl md:text-3xl font-bold text-center mb-10">
           Bizi Neden Tercih Etmelisiniz?
         </h2>
-
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {[
-            [
-              "⭐",
-              "Yüksek Müşteri Memnuniyeti",
-              "Her organizasyonda ortalama %100’e yakın müşteri memnuniyeti sağlıyoruz.",
-            ],
-            [
-              "⚡",
-              "Hızlı ve Profesyonel Kurulum",
-              "Aynı gün içinde sahne, podyum ve ekipmanlarınızı anahtar teslim kuruyoruz.",
-            ],
-            [
-              "🎤",
-              "Güncel ve Güçlü Ekipmanlar",
-              "LED ekran, ses-ışık sistemleri, çadır ve podyum çözümlerinde en yeni teknolojiler.",
-            ],
-            [
-              "👷",
-              "Deneyimli Teknik Ekip",
-              "Güvenli, planlı ve sorunsuz kurulum için profesyonel ekibimiz her zaman yanınızda.",
-            ],
-            [
-              "💰",
-              "Uygun Fiyat Garantisi",
-              "Türkiye genelinde en rekabetçi fiyatlarla kaliteli hizmet sunuyoruz.",
-            ],
-            [
-              "🚚",
-              "Türkiye Geneli Hizmet",
-              "İstanbul’dan Adana’ya, Türkiye’nin her yerinde etkinlik kurulumu yapıyoruz.",
-            ],
+            ["⭐", "Yüksek Müşteri Memnuniyeti", "Her organizasyonda ortalama %100’e yakın müşteri memnuniyeti sağlıyoruz."],
+            ["⚡", "Hızlı ve Profesyonel Kurulum", "Aynı gün içinde sahne, podyum ve ekipmanlarınızı anahtar teslim kuruyoruz."],
+            ["🎤", "Güncel ve Güçlü Ekipmanlar", "LED ekran, ses-ışık sistemleri, çadır ve podyum çözümlerinde en yeni teknolojiler."],
+            ["👷", "Deneyimli Teknik Ekip", "Güvenli, planlı ve sorunsuz kurulum için profesyonel ekibimiz her zaman yanınızda."],
+            ["💰", "Uygun Fiyat Garantisi", "Türkiye genelinde en rekabetçi fiyatlarla kaliteli hizmet sunuyoruz."],
+            ["🚚", "Türkiye Geneli Hizmet", "İstanbul’dan Adana’ya, Türkiye’nin her yerinde etkinlik kurulumu yapıyoruz."],
           ].map(([icon, title, desc], i) => (
-            <div key={i} className="p-6 bg-white rounded-2xl shadow hover:shadow-md transition">
+            <div
+              key={i}
+              className="p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-transform will-change-transform"
+            >
               <span className="text-3xl">{icon}</span>
               <h3 className="font-semibold text-lg mt-2 mb-1">{title}</h3>
               <p className="text-sm text-neutral-600">{desc}</p>

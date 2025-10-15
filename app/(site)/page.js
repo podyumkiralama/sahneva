@@ -49,8 +49,8 @@ export default function HomePage() {
               href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum."
               rel="noopener"
               aria-label="WhatsApp teklif al"
-              className="px-6 py-3 rounded-lg bg-[#128C7E] text-white font-semibold shadow-md
-                         ring-1 ring-white/20 hover:bg-[#0f7a6e] hover:shadow-lg transition"
+              className="px-6 py-3 rounded-lg bg-[#15803D] text-white font-semibold shadow-md
+                         ring-1 ring-white/20 hover:bg-[#166534] hover:shadow-lg transition"
             >
               WhatsApp Teklif
             </a>

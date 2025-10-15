@@ -9,31 +9,19 @@ const inter = Inter({
   subsets: ["latin"],
   preload: false,
   display: "optional",
-  fallback: [
-    "system-ui",
-    "-apple-system",
-    "Segoe UI",
-    "Roboto",
-    "Arial",
-    "sans-serif",
-  ],
+  fallback: ["system-ui", "-apple-system", "Segoe UI", "Roboto", "Arial", "sans-serif"],
   adjustFontFallback: true,
 });
 
 export const metadata = {
   metadataBase: new URL("https://sahneva.com"),
-  title: {
-    default: "Sahneva – Etkinlik Prodüksiyon & Organizasyon",
-    template: "%s | Sahneva",
-  },
-  description:
-    "Sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri. Türkiye geneli.",
+  title: { default: "Sahneva – Etkinlik Prodüksiyon & Organizasyon", template: "%s | Sahneva" },
+  description: "Sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri. Türkiye geneli.",
   manifest: "/site.webmanifest",
   alternates: { canonical: "https://sahneva.com" },
   openGraph: {
     title: "Sahneva – Etkinlik Prodüksiyon & Organizasyon",
-    description:
-      "Sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri. Türkiye geneli.",
+    description: "Sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri. Türkiye geneli.",
     url: "https://sahneva.com",
     siteName: "Sahneva",
     images: ["/img/og.jpg"],
@@ -43,8 +31,7 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Sahneva – Etkinlik Prodüksiyon & Organizasyon",
-    description:
-      "Sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri. Türkiye geneli.",
+    description: "Sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri. Türkiye geneli.",
     images: ["/img/og.jpg"],
     creator: "@sahneva",
   },
@@ -52,8 +39,6 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  const GA_ID = "G-J5YK10YLLC"; // GA4 ölçüm kimliği
-
   return (
     <html lang="tr" suppressHydrationWarning>
       <head>
@@ -69,18 +54,6 @@ export default function RootLayout({ children }) {
           .text-center{text-align:center}
           .font-extrabold{font-weight:800}
         `}</style>
-
-        {/* GA4 için preconnect (yalnızca gerekli ikisi) */}
-        <link
-          rel="preconnect"
-          href="https://www.googletagmanager.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preconnect"
-          href="https://www.google-analytics.com"
-          crossOrigin="anonymous"
-        />
       </head>
 
       <body className={`${inter.className} scroll-smooth`}>
@@ -89,39 +62,6 @@ export default function RootLayout({ children }) {
           {children}
         </main>
         <Footer />
-
-        {/* ===== GA4 (Tag Manager YOK) ===== */}
-        {/* dış script */}
-        <Script
-          id="ga4-src"
-          strategy="afterInteractive"
-          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-        />
-        {/* init */}
-        <Script
-          id="ga4-init"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', '${GA_ID}', {
-                page_path: location.pathname + location.search
-              });
-              // SPA navigation takibi
-              (function (history) {
-                const send = () => { if (window.gtag) gtag('config','${GA_ID}',{page_path:location.pathname+location.search}); };
-                ['pushState','replaceState'].forEach(fn => {
-                  const orig = history[fn];
-                  history[fn] = function(){ const ret = orig.apply(this, arguments); try{send()}catch(e){} return ret; };
-                });
-                addEventListener('popstate', send);
-              })(window.history);
-            `,
-          }}
-        />
-        {/* ===== /GA4 ===== */}
 
         {/* JSON-LD: Organization */}
         <Script
@@ -206,8 +146,7 @@ export default function RootLayout({ children }) {
                 },
                 {
                   "@type": "Question",
-                  name:
-                    "Ses ve ışık sistemlerinde teknik ekip sağlıyor musunuz?",
+                  name: "Ses ve ışık sistemlerinde teknik ekip sağlıyor musunuz?",
                   acceptedAnswer: {
                     "@type": "Answer",
                     text:

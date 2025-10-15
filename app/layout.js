@@ -7,9 +7,9 @@ import Script from "next/script";
 
 const inter = Inter({
   subsets: ["latin"],
-  preload: false,
-  display: "optional",
-  fallback: ["system-ui", "-apple-system", "Segoe UI", "Roboto", "Arial", "sans-serif"],
+  preload: false,         // kritik yolu kısalt
+  display: "optional",    // FOIT yok, sistem fontu ile başla
+  fallback: ["system-ui","-apple-system","Segoe UI","Roboto","Arial","sans-serif"],
   adjustFontFallback: true,
 });
 
@@ -42,7 +42,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="tr" suppressHydrationWarning>
       <head>
-        {/* Minik kritik CSS (render-blocking yok) */}
+        {/* Minik kritik CSS */}
         <style id="critical-css">{`
           .pt-16{padding-top:4rem}
           @media (min-width:768px){.md\\:pt-20{padding-top:5rem}}
@@ -58,114 +58,39 @@ export default function RootLayout({ children }) {
 
       <body className={`${inter.className} scroll-smooth`}>
         <Navbar />
-        <main id="main" role="main" className="pt-16 md:pt-20">
-          {children}
-        </main>
+        <main id="main" role="main" className="pt-16 md:pt-20">{children}</main>
         <Footer />
 
         {/* JSON-LD: Organization */}
-        <Script
-          id="ld-org"
-          type="application/ld+json"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              name: "Sahneva",
-              url: "https://sahneva.com",
-              logo: "https://sahneva.com/img/logo.png",
-              contactPoint: [
-                {
-                  "@type": "ContactPoint",
-                  telephone: "+90 545 304 8671",
-                  contactType: "customer service",
-                  areaServed: "TR",
-                  availableLanguage: ["Turkish"],
-                },
-              ],
-              sameAs: [
-                "https://www.instagram.com/sahneva",
-                "https://www.youtube.com/@sahneva",
-              ],
-            }),
-          }}
-        />
+        <Script id="ld-org" type="application/ld+json" strategy="afterInteractive"
+          dangerouslySetInnerHTML={{__html: JSON.stringify({
+            "@context":"https://schema.org","@type":"Organization",
+            name:"Sahneva", url:"https://sahneva.com", logo:"https://sahneva.com/img/logo.png",
+            contactPoint:[{"@type":"ContactPoint",telephone:"+90 545 304 8671",contactType:"customer service",areaServed:"TR",availableLanguage:["Turkish"]}],
+            sameAs:["https://www.instagram.com/sahneva","https://www.youtube.com/@sahneva"]
+          })}} />
 
         {/* JSON-LD: LocalBusiness */}
-        <Script
-          id="ld-local"
-          type="application/ld+json"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "LocalBusiness",
-              name: "Sahneva",
-              image: "https://sahneva.com/img/logo.png",
-              url: "https://sahneva.com",
-              telephone: "+90 545 304 8671",
-              address: {
-                "@type": "PostalAddress",
-                addressLocality: "İstanbul",
-                addressCountry: "TR",
-              },
-              priceRange: "$$",
-              openingHours: "Mo-Fr 09:00-19:00",
-            }),
-          }}
-        />
+        <Script id="ld-local" type="application/ld+json" strategy="afterInteractive"
+          dangerouslySetInnerHTML={{__html: JSON.stringify({
+            "@context":"https://schema.org","@type":"LocalBusiness",
+            name:"Sahneva", image:"https://sahneva.com/img/logo.png", url:"https://sahneva.com",
+            telephone:"+90 545 304 8671",
+            address:{"@type":"PostalAddress",addressLocality:"İstanbul",addressCountry:"TR"},
+            priceRange:"$$", openingHours:"Mo-Fr 09:00-19:00"
+          })}} />
 
         {/* JSON-LD: FAQPage */}
-        <Script
-          id="ld-faq"
-          type="application/ld+json"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              mainEntity: [
-                {
-                  "@type": "Question",
-                  name: "Podyum kurulumu ne kadar sürer?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text:
-                      "Podyum kurulumu, ölçülere ve zemin koşullarına göre genellikle 1–3 saat sürer.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "LED ekranlar dış mekanda kullanılabilir mi?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text:
-                      "Evet, IP65 korumalı LED ekranlarımız açık havada güvenle kullanılabilir.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "Ses ve ışık sistemlerinde teknik ekip sağlıyor musunuz?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text:
-                      "Evet, kurulum ve etkinlik boyunca teknik ekip desteği veriyoruz.",
-                  },
-                },
-                {
-                  "@type": "Question",
-                  name: "Çadır kiralamada kurulum ve söküm dahil mi?",
-                  acceptedAnswer: {
-                    "@type": "Answer",
-                    text:
-                      "Evet, kurulum ve söküm dahil; zemin kaplama ve aksesuarlar opsiyoneldir.",
-                  },
-                },
-              ],
-            }),
-          }}
-        />
+        <Script id="ld-faq" type="application/ld+json" strategy="afterInteractive"
+          dangerouslySetInnerHTML={{__html: JSON.stringify({
+            "@context":"https://schema.org","@type":"FAQPage",
+            mainEntity:[
+              {"@type":"Question","name":"Podyum kurulumu ne kadar sürer?","acceptedAnswer":{"@type":"Answer","text":"Podyum kurulumu, ölçülere ve zemin koşullarına göre genellikle 1–3 saat sürer."}},
+              {"@type":"Question","name":"LED ekranlar dış mekanda kullanılabilir mi?","acceptedAnswer":{"@type":"Answer","text":"Evet, IP65 korumalı LED ekranlarımız açık havada güvenle kullanılabilir."}},
+              {"@type":"Question","name":"Ses ve ışık sistemlerinde teknik ekip sağlıyor musunuz?","acceptedAnswer":{"@type":"Answer","text":"Evet, kurulum ve etkinlik boyunca teknik ekip desteği veriyoruz."}},
+              {"@type":"Question","name":"Çadır kiralamada kurulum ve söküm dahil mi?","acceptedAnswer":{"@type":"Answer","text":"Evet, kurulum ve söküm dahil; aksesuarlar opsiyoneldir."}}
+            ]
+          })}} />
       </body>
     </html>
   );

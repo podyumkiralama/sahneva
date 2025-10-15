@@ -5,67 +5,58 @@ import ProjectsGallery from "../../components/ProjectsGallery";
 import CorporateEvents from "../../components/CorporateEvents";
 import Faq from "../../components/Faq";
 
-// 1x1 çok küçük blur (inline) – hero için
-const BLUR =
-  "data:image/webp;base64,UklGRiIAAABXRUJQVlA4ICAAAACQAgCdASoQAAkAAUAmJQBOgB3AA==";
-
 export default function HomePage() {
   return (
     <main>
       {/* HERO */}
-      <section
-        className="full-bleed relative isolate"
-        // CLS ve render-delay’i azaltmak için makul bir yükseklik
-        style={{ minHeight: "64svh" }}
-      >
+      <section className="full-bleed relative">
         <Image
-          src="/img/hero-bg.webp"
+          src="/img/hero-bg.webp" // mümkünse aynı görseli .avif olarak da ekleyin
           alt="Sahneva etkinlik prodüksiyon sahnesi: ses ve ışık ekipmanlarıyla kurulu sahne"
           fill
           priority
           fetchPriority="high"
-          placeholder="blur"
-          blurDataURL={BLUR}
-          sizes="(max-width:768px) 100vw, 100vw"
-          className="object-cover object-center"
+          decoding="sync"
+          sizes="100vw"
+          quality={62}
+          className="object-cover will-change-transform"
         />
-        {/* Daha hafif overlay (kontrast sabit, parlaklık korunur) */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,.55),rgba(0,0,0,.35),rgba(0,0,0,.55))]" />
 
-        <div className="relative z-10 container py-20 md:py-28 text-center">
+        {/* Blur yok; hafif, ucuz bir gradient */}
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.45)_35%,rgba(0,0,0,.6))]" />
+
+        <div className="relative z-10 container py-20 md:py-32 text-center">
           <h1 className="text-white text-4xl md:text-6xl font-extrabold mb-4 tracking-tight">
             Etkinlik Prodüksiyon &amp; Ekipman Kiralama
           </h1>
+
           <p className="text-white/95 text-lg md:text-xl mb-8">
-            Türkiye genelinde sahne, podyum, LED ekran, ses-ışık ve kurulum
-            hizmetleri. Hızlı teslim, uygun fiyat.
+            Türkiye genelinde sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri.
+            Hızlı teslim, uygun fiyat.
           </p>
 
-          {/* CTA’lar – kontrast ve canlılık arttı */}
+          {/* Kontrastı yüksek butonlar */}
           <div className="flex justify-center gap-4">
             <a
               href="tel:+905453048671"
-              aria-label="Hemen ara"
-              className="px-6 py-3 rounded-lg bg-violet-600 text-white font-semibold
-                         shadow-md ring-1 ring-white/20
-                         hover:bg-violet-700 hover:shadow-lg
-                         transition will-change-transform hover:-translate-y-[1px]
-                         motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+              className="px-6 py-3 rounded-lg bg-[#6d28d9] text-white font-semibold shadow-md
+                         hover:bg-[#5b21b6] hover:shadow-lg transition"
             >
               Hemen Ara
             </a>
 
             <a
-                href="https://wa.me/905453048671"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="ml-2 inline-flex items-center rounded-lg px-3 py-2 text-white text-sm font-semibold 
-                           bg-[#15803d] hover:bg-[#166534] transition"
-              >
-                WhatsApp Teklif
-              </a>
+              href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum."
+              rel="noopener"
+              aria-label="WhatsApp teklif al"
+              className="px-6 py-3 rounded-lg bg-[#128C7E] text-white font-semibold shadow-md
+                         ring-1 ring-white/20 hover:bg-[#0f7a6e] hover:shadow-lg transition"
+            >
+              WhatsApp Teklif
+            </a>
           </div>
 
+          {/* Chip’ler: backdrop-blur kaldırıldı */}
           <ul className="mt-6 grid max-w-3xl mx-auto grid-cols-1 sm:grid-cols-3 gap-3">
             {[
               ["⭐", "4.9 Müşteri Memnuniyeti"],
@@ -74,11 +65,9 @@ export default function HomePage() {
             ].map(([icon, label], i) => (
               <li
                 key={i}
-                className="flex items-center gap-2 px-4 py-2 rounded-full
-                           bg-white/12 text-white border border-white/20 backdrop-blur
-                           shadow-[0_1px_6px_rgba(0,0,0,.25)]"
+                className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/12 text-white border border-white/20"
               >
-                <span aria-hidden>{icon}</span>
+                <span>{icon}</span>
                 <span>{label}</span>
               </li>
             ))}
@@ -90,14 +79,14 @@ export default function HomePage() {
               Organizasyonunuz için Ücretsiz Danışmanlık
             </h2>
             <p className="text-white/90 max-w-3xl mx-auto">
-              Etkinliğiniz için en doğru sahne, podyum, ses-ışık ve ekran
-              çözümlerini ücretsiz danışmanlık hizmetimizle öğrenin.
+              Etkinliğiniz için en doğru sahne, podyum, ses-ışık ve ekran çözümlerini ücretsiz
+              danışmanlık hizmetimizle öğrenin.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Bölümler */}
+      {/* İçerik bölümleri */}
       <ServicesTabs />
       <ProjectsGallery />
 
@@ -105,6 +94,7 @@ export default function HomePage() {
         <h2 className="text-2xl md:text-3xl font-bold text-center mb-10">
           Bizi Neden Tercih Etmelisiniz?
         </h2>
+
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {[
             [
@@ -138,10 +128,7 @@ export default function HomePage() {
               "İstanbul’dan Adana’ya, Türkiye’nin her yerinde etkinlik kurulumu yapıyoruz.",
             ],
           ].map(([icon, title, desc], i) => (
-            <div
-              key={i}
-              className="p-6 bg-white rounded-2xl shadow hover:shadow-md transition"
-            >
+            <div key={i} className="p-6 bg-white rounded-2xl shadow hover:shadow-md transition">
               <span className="text-3xl">{icon}</span>
               <h3 className="font-semibold text-lg mt-2 mb-1">{title}</h3>
               <p className="text-sm text-neutral-600">{desc}</p>

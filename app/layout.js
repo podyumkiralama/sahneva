@@ -2,13 +2,14 @@
 import "../styles/globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import UtilityBar from "../components/UtilityBar"; // ✅ eklendi
 import { Inter } from "next/font/google";
 import Script from "next/script";
 
 const inter = Inter({
   subsets: ["latin"],
-  preload: false,         // kritik yolu kısalt
-  display: "optional",    // FOIT yok, sistem fontu ile başla
+  preload: false,
+  display: "optional",
   fallback: ["system-ui","-apple-system","Segoe UI","Roboto","Arial","sans-serif"],
   adjustFontFallback: true,
 });
@@ -58,7 +59,13 @@ export default function RootLayout({ children }) {
 
       <body className={`${inter.className} scroll-smooth`}>
         <Navbar />
-        <main id="main" role="main" className="pt-16 md:pt-20">{children}</main>
+
+        {/* mobil alt bar üstünü kapatmasın diye biraz boşluk */}
+        <main id="main" role="main" className="pt-16 md:pt-20 mb-24 lg:mb-0">
+          {children}
+        </main>
+
+        <UtilityBar /> {/* ✅ site genelinde aktif */}
         <Footer />
 
         {/* JSON-LD: Organization */}

@@ -9,7 +9,6 @@ export default {
   ],
 
   theme: {
-    // Container’ı merkezle ve XL’ı 1200px yap
     container: {
       center: true,
       padding: "1rem",
@@ -19,18 +18,30 @@ export default {
     },
 
     extend: {
-      // XL breakpoint’i 1200px’e çeker (max-w-screen-xl da buna uyum sağlar)
       screens: {
         xl: "1200px"
       },
 
       colors: {
-        primary: "#6d28d9",
-        accent:  "#15803d",
+        primary: "#6d28d9",   // Mor: arama butonu
+        accent:  "#128C7E",   // WhatsApp yeşili (kontrastı artırdık)
         neutral: "#0f172a"
-      }
+      },
+
+      // ✅ Daha yumuşak ve performanslı animasyonlar (GPU friendly)
+      transitionTimingFunction: {
+        "smooth": "cubic-bezier(0.25, 0.1, 0.25, 1)"
+      },
     }
   },
 
-  plugins: []
+  corePlugins: {
+    preflight: true, // Normalize.css benzeri reset (kritik stiller)
+  },
+
+  future: {
+    hoverOnlyWhenSupported: true, // mobilde gereksiz hover yükünü kaldırır
+  },
+
+  plugins: [],
 };

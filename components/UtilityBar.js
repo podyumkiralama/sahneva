@@ -1,3 +1,4 @@
+// components/UtilityBar.js
 "use client";
 
 import { useEffect, useState } from "react";
@@ -60,7 +61,7 @@ export default function UtilityBar() {
         )}
       </nav>
 
-      {/* Mobil alt hızlı eylemler */}
+      {/* Mobil: alt hızlı eylemler (Ara / WhatsApp / Konum) */}
       <div className="lg:hidden fixed inset-x-0 bottom-0 z-[60]">
         <div className="mx-auto mb-[env(safe-area-inset-bottom)] w-full max-w-xl">
           <div className="mx-3 mb-3 rounded-2xl bg-white/95 shadow-[0_8px_30px_rgba(0,0,0,.12)] backdrop-blur">
@@ -71,6 +72,14 @@ export default function UtilityBar() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Mobil: sağ-altta mini erişilebilir butonlar (A-/A+/Kontrast/Arama) */}
+      <div className="lg:hidden fixed right-4 bottom-24 z-[60] flex flex-col gap-2">
+        <Btn title="Yazı küçült (A-)" onClick={() => incFs(-5)}>A-</Btn>
+        <Btn title="Yazı büyüt (A+)"  onClick={() => incFs(+5)}>A+</Btn>
+        <Btn title="Kontrastı artır" ariaPressed={hc} onClick={toggleHc}>⬤◯</Btn>
+        <Btn title="Sitede ara" onClick={() => setOpen(true)}>🔍</Btn>
       </div>
 
       {/* Arama modalı */}
@@ -105,8 +114,13 @@ export default function UtilityBar() {
 
 function Btn({ children, title, onClick, ariaPressed }) {
   return (
-    <button type="button" title={title} aria-pressed={ariaPressed} onClick={onClick}
-      className="grid h-10 w-10 place-items-center rounded-xl bg-white text-neutral-900 shadow-md transition hover:bg-neutral-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6d28d9]/40">
+    <button
+      type="button"
+      title={title}
+      aria-pressed={ariaPressed}
+      onClick={onClick}
+      className="grid h-11 w-11 place-items-center rounded-xl bg-white text-neutral-900 shadow-md transition hover:bg-neutral-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6d28d9]/40"
+    >
       <span className="text-sm font-bold leading-none">{children}</span>
     </button>
   );

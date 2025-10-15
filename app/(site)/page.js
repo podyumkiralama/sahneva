@@ -56,17 +56,14 @@ export default function HomePage() {
             </a>
 
             <a
-  href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum."
-  rel="noopener"
-  aria-label="WhatsApp teklif al"
-  className="px-6 py-3 rounded-lg bg-[#128C7E] text-white font-semibold
-             shadow-md ring-1 ring-white/20
-             hover:bg-[#0f7a6e] hover:shadow-lg
-             transition will-change-transform hover:-translate-y-[1px]
-             motion-reduce:transition-none motion-reduce:hover:translate-y-0"
->
-  WhatsApp Teklif
-</a>
+                href="https://wa.me/905453048671"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-2 inline-flex items-center rounded-lg px-3 py-2 text-white text-sm font-semibold 
+                           bg-[#15803d] hover:bg-[#166534] transition"
+              >
+                WhatsApp Teklif
+              </a>
           </div>
 
           <ul className="mt-6 grid max-w-3xl mx-auto grid-cols-1 sm:grid-cols-3 gap-3">

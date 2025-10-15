@@ -10,19 +10,15 @@ const MAP_URL = "https://maps.google.com/?q=Sahneva";
 export default function UtilityBar() {
   const [fs, setFs] = useState(100);     // font-size %
   const [hc, setHc] = useState(false);   // high-contrast
-  const [showTop, setShowTop] = useState(false);
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState("");
 
+  // tercihleri yükle
   useEffect(() => {
     const f = Number(localStorage.getItem("ux.fs") || "100");
     const h = localStorage.getItem("ux.hc") === "1";
     applyFs(f); setFs(f);
     applyHc(h); setHc(h);
-    const onScroll = () => setShowTop(window.scrollY > 600);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   function applyFs(val) {
@@ -49,37 +45,49 @@ export default function UtilityBar() {
 
   return (
     <>
-      {/* Desktop dikey araç çubuğu */}
-      <nav aria-label="Yardımcı araçlar"
-        className="hidden lg:flex fixed right-4 top-1/3 z-[60] flex-col gap-2">
-        <Btn title="Yazı küçült (A-)" onClick={() => incFs(-5)}>A-</Btn>
-        <Btn title="Yazı büyüt (A+)"  onClick={() => incFs(+5)}>A+</Btn>
-        <Btn title="Kontrastı artır" ariaPressed={hc} onClick={toggleHc}>⬤◯</Btn>
-        <Btn title="Sitede ara" onClick={() => setOpen(true)}>🔍</Btn>
-        {showTop && (
-          <Btn title="Yukarı çık" onClick={() => window.scrollTo({top:0,behavior:"smooth"})}>↑</Btn>
-        )}
-      </nav>
-
-      {/* Mobil: alt hızlı eylemler (Ara / WhatsApp / Konum) */}
-      <div className="lg:hidden fixed inset-x-0 bottom-0 z-[60]">
-        <div className="mx-auto mb-[env(safe-area-inset-bottom)] w-full max-w-xl">
-          <div className="mx-3 mb-3 rounded-2xl bg-white/95 shadow-[0_8px_30px_rgba(0,0,0,.12)] backdrop-blur">
+      {/* Desktop: hiçbir şey göstermiyoruz; alt bar sadece mobilde */}
+      <div className="lg:hidden fixed inset-x-0 bottom-0 z-[60] select-none">
+        <div className="mx-auto w-full max-w-xl">
+          <div className="mx-3 mb-[calc(env(safe-area-inset-bottom)+12px)] rounded-2xl bg-white/95 shadow-[0_8px_30px_rgba(0,0,0,.12)] backdrop-blur">
+            {/* Satır 1 — hızlı eylemler */}
             <div className="grid grid-cols-3 divide-x divide-neutral-200">
-              <a href={`tel:${PHONE.replace(/\s/g,"")}`} className="py-3 text-center text-sm font-semibold text-neutral-800 hover:bg-neutral-50" aria-label="Telefon et">📞<div className="text-xs font-medium">Ara</div></a>
-              <a href={`https://wa.me/${WHATSAPP}`} className="py-3 text-center text-sm font-semibold text-neutral-800 hover:bg-neutral-50" aria-label="WhatsApp" rel="noopener">💬<div className="text-xs font-medium">WhatsApp</div></a>
-              <a href={MAP_URL} target="_blank" rel="noopener" className="py-3 text-center text-sm font-semibold text-neutral-800 hover:bg-neutral-50" aria-label="Konum">📍<div className="text-xs font-medium">Konum</div></a>
+              <BarLink
+                href={`tel:${PHONE.replace(/\s/g,"")}`}
+                label="Ara"
+                icon="📞"
+                ariaLabel="Telefon et"
+              />
+              <BarLink
+                href={`https://wa.me/${WHATSAPP}`}
+                label="WhatsApp"
+                icon="💬"
+                ariaLabel="WhatsApp"
+                rel="noopener"
+              />
+              <BarLink
+                href={MAP_URL}
+                target="_blank"
+                rel="noopener"
+                label="Konum"
+                icon="📍"
+                ariaLabel="Konumu aç"
+              />
+            </div>
+
+            {/* Satır 2 — erişilebilirlik & arama */}
+            <div className="grid grid-cols-4 border-t border-neutral-200">
+              <BarBtn title="Yazı küçült (A-)" onClick={() => incFs(-5)} icon="A-" />
+              <BarBtn title="Yazı büyüt (A+)"  onClick={() => incFs(+5)} icon="A+" />
+              <BarBtn
+                title="Kontrastı artır/azalt"
+                onClick={toggleHc}
+                icon="⬤◯"
+                ariaPressed={hc}
+              />
+              <BarBtn title="Sitede ara" onClick={() => setOpen(true)} icon="🔍" />
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Mobil: sağ-altta mini erişilebilir butonlar (A-/A+/Kontrast/Arama) */}
-      <div className="lg:hidden fixed right-4 bottom-24 z-[60] flex flex-col gap-2">
-        <Btn title="Yazı küçült (A-)" onClick={() => incFs(-5)}>A-</Btn>
-        <Btn title="Yazı büyüt (A+)"  onClick={() => incFs(+5)}>A+</Btn>
-        <Btn title="Kontrastı artır" ariaPressed={hc} onClick={toggleHc}>⬤◯</Btn>
-        <Btn title="Sitede ara" onClick={() => setOpen(true)}>🔍</Btn>
       </div>
 
       {/* Arama modalı */}
@@ -94,15 +102,21 @@ export default function UtilityBar() {
               Sitede ara
             </label>
             <div className="mt-2 flex gap-2">
-              <input id="q" autoFocus value={q} onChange={e=>setQ(e.target.value)}
-                     placeholder="Örn: LED ekran"
-                     className="flex-1 rounded-lg border border-neutral-300 px-3 py-2 outline-none focus:ring-2 focus:ring-primary/40"/>
-              <button type="submit"
-                      className="rounded-lg bg-[#6d28d9] px-4 py-2 font-semibold text-white hover:bg-[#5b21b6]">
+              <input
+                id="q" autoFocus value={q}
+                onChange={e=>setQ(e.target.value)}
+                placeholder="Örn: LED ekran"
+                className="flex-1 rounded-lg border border-neutral-300 px-3 py-2 outline-none focus:ring-2 focus:ring-primary/40"
+              />
+              <button
+                type="submit"
+                className="rounded-lg bg-[#6d28d9] px-4 py-2 font-semibold text-white hover:bg-[#5b21b6]"
+              >
                 Ara
               </button>
             </div>
-            <button type="button" onClick={()=>setOpen(false)} className="mt-3 text-sm text-neutral-600 hover:underline">
+            <button type="button" onClick={()=>setOpen(false)}
+              className="mt-3 text-sm text-neutral-600 hover:underline">
               Kapat
             </button>
           </form>
@@ -112,16 +126,30 @@ export default function UtilityBar() {
   );
 }
 
-function Btn({ children, title, onClick, ariaPressed }) {
+function BarLink({ href, label, icon, ariaLabel, ...rest }) {
+  return (
+    <a
+      href={href}
+      aria-label={ariaLabel || label}
+      className="grid h-14 place-items-center px-3 text-center text-sm font-semibold text-neutral-800 hover:bg-neutral-50"
+      {...rest}
+    >
+      <div className="leading-none">{icon}</div>
+      <div className="text-[12px] font-medium">{label}</div>
+    </a>
+  );
+}
+
+function BarBtn({ title, onClick, icon, ariaPressed }) {
   return (
     <button
       type="button"
       title={title}
       aria-pressed={ariaPressed}
       onClick={onClick}
-      className="grid h-11 w-11 place-items-center rounded-xl bg-white text-neutral-900 shadow-md transition hover:bg-neutral-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6d28d9]/40"
+      className="grid h-12 w-full place-items-center text-sm font-semibold text-neutral-800 hover:bg-neutral-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6d28d9]/40"
     >
-      <span className="text-sm font-bold leading-none">{children}</span>
+      <span className="leading-none">{icon}</span>
     </button>
   );
 }

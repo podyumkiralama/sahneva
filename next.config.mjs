@@ -78,7 +78,7 @@ const nextConfig = {
               "img-src 'self' data: blob: https:",
               "font-src 'self' data:",
               // GA4 ‘gtag.js’ (googletagmanager.com) + ölçüm endpointleri
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://static.cloudflareinsights.com/ https://www.google-analytics.com",
               "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://stats.g.doubleclick.net https://www.googletagmanager.com",
               "style-src 'self' 'unsafe-inline'",
               "worker-src 'self' blob:",

@@ -64,3 +64,18 @@ body { @apply bg-white text-slate-800 antialiased; }
 
 /* ---- Focus görünürlüğü ---- */
 :focus-visible { outline: 2px solid color-mix(in oklab, var(--brand) 70%, black); outline-offset: 2px; }
+/* === UtilityBar destekleri === */
+:root { --fs: 100%; }
+html { font-size: var(--fs); }
+
+/* Kontrast modu: biraz daha belirginlik + link altı çizgi */
+html.hc body { filter: contrast(1.08) saturate(1.06); }
+html.hc a { text-decoration: underline; }
+
+/* iOS güvenli alan alt barı taşmasın */
+@supports (padding: max(0px)) {
+  .pb-safe { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
+}
+
+/* Mobilde alt bar sayfanın CTA'larını örtmesin diye spacing istersen: 
+   <main> alanınıza 'mb-24 lg:mb-0' benzeri bir sınıf ekleyebilirsiniz. */

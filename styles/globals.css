@@ -3,107 +3,114 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ---- Temel reset + vars ---- */
-:root {
-  --brand: #6d28d9;         /* mor */
-  --brand-700: #5b21b6;
-  --accent: #15803d;        /* yeşil */
-  --accent-700: #166534;
+/* === Tema değişkenleri === */
+:root{
+  --brand:#6d28d9;          /* mor */
+  --brand-700:#5b21b6;
+  --accent:#15803d;         /* yeşil */
+  --accent-700:#166534;
+
+  /* erişilebilirlik çubuğu için font ölçeği */
+  --fs:100%;
 }
-html { scroll-behavior: smooth; }
-html, body { height: 100%; }
-body { @apply bg-white text-slate-800 antialiased; }
 
-/* ---- Yardımcılar ---- */
-.container { max-width: 1280px; margin-inline: auto; padding-inline: 1rem; }
-.full-bleed { position: relative; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); inline-size: 100svw; width: 100vw; }
-.object-cover { object-fit: cover; } /* LCP görseli için */
-.will-change-transform { will-change: transform; } /* GPU ipucu */
+/* Global */
+html{ scroll-behavior:smooth; font-size:var(--fs); }
+html,body{ height:100%; }
+body{ @apply bg-white text-slate-800 antialiased; }
 
-/* ---- Nav (cam efekti) ---- */
-.nav-glass {
+/* Yardımcılar */
+.container{ max-width:1280px; margin-inline:auto; padding-inline:1rem; }
+.full-bleed{ position:relative; margin-left:calc(50% - 50vw); margin-right:calc(50% - 50vw); inline-size:100svw; width:100vw; }
+.object-cover{ object-fit:cover; }
+.will-change-transform{ will-change:transform; }
+
+/* Cam efektli nav */
+.nav-glass{
   @apply sticky top-0 z-40;
-  backdrop-filter: blur(8px);
+  backdrop-filter:blur(8px);
   background: color-mix(in oklab, white 70%, transparent);
-  border-bottom: 1px solid rgba(255,255,255,.15);
+  border-bottom:1px solid rgba(255,255,255,.15);
 }
 
-/* ---- Butonlar (kontrast yüksek) ---- */
-.btn {
+/* Butonlar (yüksek kontrast) */
+.btn{
   @apply inline-flex items-center justify-center rounded-lg px-6 py-3 font-semibold text-white shadow-md transition;
-  text-shadow: 0 1px 0 rgba(0,0,0,.25);
+  text-shadow:0 1px 0 rgba(0,0,0,.25);
 }
-.btn-primary  { background: var(--brand);  }
-.btn-primary:hover { background: var(--brand-700); }
-.btn-accent   { background: var(--accent); }
-.btn-accent:hover { background: var(--accent-700); }
+.btn-primary{ background:var(--brand); }
+.btn-primary:hover{ background:var(--brand-700); }
+.btn-accent{ background:var(--accent); }
+.btn-accent:hover{ background:var(--accent-700); }
 
-/* ---- Hero rozetleri ---- */
-.badge {
+/* Hero rozetleri */
+.badge{
   @apply flex items-center gap-2 px-4 py-2 rounded-full border backdrop-blur;
-  background: rgba(255,255,255,.10);
-  color: #fff;
-  border-color: rgba(255,255,255,.20);
+  background:rgba(255,255,255,.10);
+  color:#fff;
+  border-color:rgba(255,255,255,.20);
 }
 
-/* ---- Kart & FAQ ---- */
-.card {
-  @apply p-6 bg-white rounded-2xl shadow transition;
-}
-.card:hover { @apply shadow-md; }
+/* Kart & FAQ */
+.card{ @apply p-6 bg-white rounded-2xl shadow transition; }
+.card:hover{ @apply shadow-md; }
 
-.faq-card {
-  @apply rounded-xl border bg-white/95;
-  border-color: rgba(0,0,0,.08);
-}
-
-/* ---- Karanlık hero gradient (hafif) ---- */
-.hero-overlay {
-  background: linear-gradient(180deg, rgba(0,0,0,.6), rgba(0,0,0,.45) 35%, rgba(0,0,0,.6));
+.faq-card{
+  @apply rounded-xl border;
+  background:rgba(255,255,255,.95); /* bg-white/95 yerine saf CSS */
+  border-color:rgba(0,0,0,.08);
 }
 
-/* ---- Focus görünürlüğü ---- */
-:focus-visible { outline: 2px solid color-mix(in oklab, var(--brand) 70%, black); outline-offset: 2px; }
-/* === UtilityBar destekleri === */
-:root { --fs: 100%; }
-html { font-size: var(--fs); }
-
-/* Kontrast modu: biraz daha belirginlik + link altı çizgi */
-html.hc body { filter: contrast(1.08) saturate(1.06); }
-html.hc a { text-decoration: underline; }
-
-/* iOS güvenli alan alt barı taşmasın */
-@supports (padding: max(0px)) {
-  .pb-safe { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
+/* Karanlık hero örtüsü */
+.hero-overlay{
+  background:linear-gradient(180deg, rgba(0,0,0,.6), rgba(0,0,0,.45) 35%, rgba(0,0,0,.6));
 }
 
-/* Mobilde alt bar sayfanın CTA'larını örtmesin diye spacing istersen: 
-   <main> alanınıza 'mb-24 lg:mb-0' benzeri bir sınıf ekleyebilirsiniz. */
-/* patlama efekti parçacıkları */
-.burst-particle {
-  position: absolute;
-  left: 0; top: 0;
-  background: radial-gradient(circle, var(--burst-c1, #6d28d9), var(--burst-c2, #22c55e));
-  border-radius: 9999px;
-  transform: translate(-50%, -50%);
-  animation: burst-move var(--life, 550ms) ease-out forwards, burst-fade var(--life, 550ms) ease-out forwards;
-  pointer-events: none;
-  will-change: transform, opacity;
-  box-shadow: 0 0 10px rgba(0,0,0,.12);
-}
-@keyframes burst-move {
-  from { transform: translate(-50%, -50%) rotate(0) scale(1); }
-  to   { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(var(--dr)) scale(0.6); }
-}
-@keyframes burst-fade {
-  0% { opacity: 1; }
-  80% { opacity: .7; }
-  100% { opacity: 0; }
+/* Focus görünürlüğü (genel) */
+:focus-visible{
+  outline:2px solid #6d28d966; /* ring-[#6d28d9]/40 eşdeğeri */
+  outline-offset:2px;
 }
 
-/* alt bar öğe stili */
-.bar-item {
-  @apply grid h-12 w-full place-items-center text-sm font-semibold text-neutral-800 hover:bg-neutral-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6d28d9]/40;
-  position: relative;
-  overflow: visible;
+/* Kontrast modu */
+html.hc body{ filter:contrast(1.08) saturate(1.06); }
+html.hc a{ text-decoration:underline; }
+
+/* iOS güvenli alan */
+@supports (padding:max(0px)){
+  .pb-safe{ padding-bottom:max(1rem, env(safe-area-inset-bottom)); }
+}
+
+/* ==== Patlama (burst) efekti ==== */
+.burst-particle{
+  position:absolute; left:0; top:0;
+  background:radial-gradient(circle, var(--burst-c1,#6d28d9), var(--burst-c2,#22c55e));
+  border-radius:9999px;
+  transform:translate(-50%,-50%);
+  animation:burst-move var(--life,550ms) ease-out forwards, burst-fade var(--life,550ms) ease-out forwards;
+  pointer-events:none;
+  will-change:transform,opacity;
+  box-shadow:0 0 10px rgba(0,0,0,.12);
+}
+@keyframes burst-move{
+  from{ transform:translate(-50%,-50%) rotate(0) scale(1); }
+  to{ transform:translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(var(--dr)) scale(.6); }
+}
+@keyframes burst-fade{
+  0%{ opacity:1; }
+  80%{ opacity:.7; }
+  100%{ opacity:0; }
+}
+
+/* Alt bar öğesi (Tailwind @apply içinde arbitrary value YOK!) */
+.bar-item{
+  /* @apply grid h-12 w-full place-items-center text-sm font-semibold text-neutral-800 hover:bg-neutral-50; */
+  display:grid; place-items:center; height:3rem; width:100%;
+  font-size:.875rem; font-weight:600; color:rgb(38 38 38);
+  border-radius:.5rem;
+}
+.bar-item:hover{ background:#f8fafc; }
+.bar-item:focus-visible{
+  outline:2px solid #6d28d966; /* odak halkası */
+  outline-offset:2px;
 }

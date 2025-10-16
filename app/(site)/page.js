@@ -1,5 +1,3 @@
-harika—anasayfayı JSON-LD paketiyle tek dosyada birleştirdim. Aşağıdaki dosyayı app/page.js (veya app/page.jsx) olarak kaydet:
-
 // app/page.jsx
 "use client";
 
@@ -336,4 +334,3 @@ export default function HomePage() {
     </main>
   );
 }
-

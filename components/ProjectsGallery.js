@@ -4,12 +4,11 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import Image from "next/image";
 
-// Kart kapakları için hedef genişlikler (750w yerine 640/828/1080 seçilsin)
+// Kart kapakları (resim liste grid)
 const COVER_SIZES =
   "(max-width: 640px) 320px, " +   // telefon -> DPR=2 ≈ 640w
   "(max-width: 1024px) 480px, " +  // tablet (2 sütun) -> DPR=2 ≈ 960w (~1080w seçilir)
   "414px";                         // ≥1024px, 3 sütun -> DPR=2 ≈ 828w
-
 
 // Lightbox büyük görsel
 const LIGHTBOX_SIZES = "(max-width: 1024px) 100vw, 1024px";
@@ -124,8 +123,11 @@ export default function ProjectsGallery() {
 
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
+  const lastFocus = useRef(null);
+  const closeBtnRef = useRef(null);
 
   const open = (groupTitle, images, startIndex = 0) => {
+    lastFocus.current = document.activeElement;
     setTitle(groupTitle);
     setItems(images);
     setIndex(startIndex);
@@ -135,7 +137,13 @@ export default function ProjectsGallery() {
 
   const close = useCallback(() => {
     setAnim(false);
-    setTimeout(() => setIsOpen(false), 180);
+    setTimeout(() => {
+      setIsOpen(false);
+      // odağı geri ver
+      if (lastFocus.current && typeof lastFocus.current.focus === "function") {
+        lastFocus.current.focus();
+      }
+    }, 180);
   }, []);
 
   const prev = useCallback(() => {
@@ -146,6 +154,7 @@ export default function ProjectsGallery() {
     setIndex((i) => (i + 1) % items.length);
   }, [items.length]);
 
+  // Lightbox açıkken: scroll kilidi + klavye + odak
   useEffect(() => {
     if (!isOpen) return;
     const prevOverflow = document.body.style.overflow;
@@ -154,14 +163,35 @@ export default function ProjectsGallery() {
       if (e.key === "Escape") close();
       if (e.key === "ArrowLeft") prev();
       if (e.key === "ArrowRight") next();
+      if (e.key === "Tab") {
+        // basit fokus tuzağı: tek odaklanabilir öğeler butonlar
+        const focusables = Array.from(
+          document.querySelectorAll('[data-lightbox-focus="1"]')
+        );
+        if (!focusables.length) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        const active = document.activeElement;
+        if (e.shiftKey && active === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && active === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     };
     window.addEventListener("keydown", onKey);
+    // close butonuna odak
+    setTimeout(() => closeBtnRef.current?.focus(), 0);
+
     return () => {
       document.body.style.overflow = prevOverflow;
       window.removeEventListener("keydown", onKey);
     };
   }, [isOpen, close, prev, next]);
 
+  // Swipe
   const onTouchStart = (e) => {
     touchStartX.current = e.changedTouches[0].clientX;
   };
@@ -173,9 +203,28 @@ export default function ProjectsGallery() {
     else next();
   };
 
+  // Komşu görselleri ön-yükle (daha akıcı gezinme)
+  useEffect(() => {
+    if (!isOpen || items.length < 2) return;
+    const nextIdx = (index + 1) % items.length;
+    const prevIdx = (index - 1 + items.length) % items.length;
+    const a = new window.Image();
+    const b = new window.Image();
+    a.src = items[nextIdx];
+    b.src = items[prevIdx];
+  }, [isOpen, index, items]);
+
+  // Reduce motion: animasyon sürelerini kıs
+  const prefersReducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   return (
     <section className="container py-14 md:py-16">
-      <h2 className="text-2xl md:text-3xl font-bold text-center mb-10">Yaptıklarımız</h2>
+      <h2 className="text-2xl md:text-3xl font-bold text-center mb-10">
+        Yaptıklarımız
+      </h2>
 
       {/* 1 / 2 / 3 sütun grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -187,7 +236,7 @@ export default function ProjectsGallery() {
 
               <button
                 type="button"
-                onClick={() => open(groupTitle, images, 0)}
+                onClick={(e) => open(groupTitle, images, 0)}
                 className="group relative w-full h-44 md:h-56 overflow-hidden rounded-2xl border bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/60"
                 aria-label={`${groupTitle} galeriyi aç`}
               >
@@ -195,14 +244,20 @@ export default function ProjectsGallery() {
                   src={cover}
                   alt={`${groupTitle} kapak görseli`}
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform"
+                  className={`object-cover ${
+                    prefersReducedMotion ? "" : "group-hover:scale-105 transition-transform"
+                  }`}
                   sizes={COVER_SIZES}
                   quality={60}
                   decoding="async"
                   fetchPriority="low"
                   loading="lazy"
                 />
-                <span className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+                <span
+                  className={`absolute inset-0 ${
+                    prefersReducedMotion ? "" : "transition-colors"
+                  } bg-black/0 group-hover:bg-black/10`}
+                />
                 <span className="absolute bottom-2 right-2 text-xs px-2 py-1 rounded bg-black/60 text-white">
                   {images.length} fotoğraf
                 </span>
@@ -215,9 +270,9 @@ export default function ProjectsGallery() {
       {/* LIGHTBOX */}
       {isOpen && (
         <div
-          className={`fixed inset-0 z-[9999] flex items-center justify-center p-3 bg-black/80 backdrop-blur-sm transition-opacity duration-200 ${
-            anim ? "opacity-100" : "opacity-0"
-          }`}
+          className={`fixed inset-0 z-[9999] flex items-center justify-center p-3 bg-black/80 backdrop-blur-sm ${
+            prefersReducedMotion ? "" : "transition-opacity duration-200"
+          } ${anim ? "opacity-100" : "opacity-0"}`}
           role="dialog"
           aria-modal="true"
           aria-label={`${title} lightbox`}
@@ -228,15 +283,19 @@ export default function ProjectsGallery() {
           onTouchEnd={onTouchEnd}
         >
           <button
-            className="absolute top-4 right-4 md:top-6 md:right-6 text-white/90 hover:text-white bg-white/10 hover:bg-white/20 rounded-full p-2"
+            ref={closeBtnRef}
+            data-lightbox-focus="1"
+            className="absolute top-4 right-4 md:top-6 md:right-6 text-white/90 hover:text-white bg-white/10 hover:bg-white/20 rounded-full p-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
             onClick={close}
             aria-label="Kapat"
+            autoFocus
           >
             ✕
           </button>
 
           <button
-            className="absolute top-1/2 left-4 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white rounded-full w-12 h-12 md:w-16 md:h-16 flex items-center justify-center text-3xl md:text-5xl shadow-lg transition"
+            data-lightbox-focus="1"
+            className="absolute top-1/2 left-4 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white rounded-full w-12 h-12 md:w-16 md:h-16 flex items-center justify-center text-3xl md:text-5xl shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
             onClick={prev}
             aria-label="Önceki"
           >
@@ -244,7 +303,8 @@ export default function ProjectsGallery() {
           </button>
 
           <button
-            className="absolute top-1/2 right-4 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white rounded-full w-12 h-12 md:w-16 md:h-16 flex items-center justify-center text-3xl md:text-5xl shadow-lg transition"
+            data-lightbox-focus="1"
+            className="absolute top-1/2 right-4 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white rounded-full w-12 h-12 md:w-16 md:h-16 flex items-center justify-center text-3xl md:text-5xl shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
             onClick={next}
             aria-label="Sonraki"
           >
@@ -252,9 +312,9 @@ export default function ProjectsGallery() {
           </button>
 
           <div
-            className={`relative w-full max-w-5xl aspect-[16/10] transform transition-transform duration-200 ${
-              anim ? "scale-100" : "scale-95"
-            }`}
+            className={`relative w-full max-w-5xl aspect-[16/10] ${
+              prefersReducedMotion ? "" : "transform transition-transform duration-200"
+            } ${anim ? "scale-100" : "scale-95"}`}
           >
             <Image
               key={items[index]}
@@ -277,5 +337,3 @@ export default function ProjectsGallery() {
     </section>
   );
 }
-
-

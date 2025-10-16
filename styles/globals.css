@@ -19,18 +19,24 @@ html{ scroll-behavior:smooth; font-size:var(--fs); }
 html,body{ height:100%; }
 body{ @apply bg-white text-slate-800 antialiased; }
 
+/* Medya elementleri — distorsiyon önleme */
+img, video, canvas, svg { max-width:100%; height:auto; }
+
 /* Yardımcılar */
 .container{ max-width:1280px; margin-inline:auto; padding-inline:1rem; }
 .full-bleed{ position:relative; margin-left:calc(50% - 50vw); margin-right:calc(50% - 50vw); inline-size:100svw; width:100vw; }
 .object-cover{ object-fit:cover; }
 .will-change-transform{ will-change:transform; }
 
-/* Cam efektli nav */
+/* Cam efektli nav (fallback + modern) */
 .nav-glass{
   @apply sticky top-0 z-40;
   backdrop-filter:blur(8px);
+  /* fallback */
+  background: rgba(255,255,255,.75);
+  /* modern: color-mix mevcutsa daha yumuşak */
   background: color-mix(in oklab, white 70%, transparent);
-  border-bottom:1px solid rgba(255,255,255,.15);
+  border-bottom:1px solid rgba(0,0,0,.06);
 }
 
 /* Butonlar (yüksek kontrast) */
@@ -102,12 +108,21 @@ html.hc a{ text-decoration:underline; }
   100%{ opacity:0; }
 }
 
-/* Alt bar öğesi (Tailwind @apply içinde arbitrary value YOK!) */
+/* Hareketi azalt tercihine saygı */
+@media (prefers-reduced-motion: reduce){
+  .burst-particle{
+    animation: burst-fade 400ms ease-out forwards;
+    transform: translate(-50%,-50%) scale(.8);
+  }
+}
+
+/* Alt bar öğesi */
 .bar-item{
   /* @apply grid h-12 w-full place-items-center text-sm font-semibold text-neutral-800 hover:bg-neutral-50; */
   display:grid; place-items:center; height:3rem; width:100%;
   font-size:.875rem; font-weight:600; color:rgb(38 38 38);
   border-radius:.5rem;
+  position: relative;
 }
 .bar-item:hover{ background:#f8fafc; }
 .bar-item:focus-visible{

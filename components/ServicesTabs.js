@@ -1,6 +1,7 @@
+// components/ServicesTabs.js
 "use client";
 
-import { useId, useState } from "react";
+import { useId, useState, useRef, useCallback, useEffect } from "react";
 import Image from "next/image";
 
 const HIZMET_SIZES =
@@ -70,24 +71,94 @@ const tabs = [
 ];
 
 export default function ServicesTabs() {
-  const [active, setActive] = useState(0);
   const rid = useId();
+  const [active, setActive] = useState(0);
+  const tabsRef = useRef([]);
+
+  // Ok tuşları ile sekmeler arası geçiş
+  const onKeyDown = useCallback(
+    (e) => {
+      const last = tabs.length - 1;
+      if (e.key === "ArrowRight") {
+        e.preventDefault();
+        const next = active === last ? 0 : active + 1;
+        setActive(next);
+        tabsRef.current[next]?.focus();
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        const prev = active === 0 ? last : active - 1;
+        setActive(prev);
+        tabsRef.current[prev]?.focus();
+      } else if (e.key === "Home") {
+        e.preventDefault();
+        setActive(0);
+        tabsRef.current[0]?.focus();
+      } else if (e.key === "End") {
+        e.preventDefault();
+        setActive(last);
+        tabsRef.current[last]?.focus();
+      }
+    },
+    [active]
+  );
+
+  // Burst efekti (globals.css’te .burst-particle var)
+  const burst = useCallback((e) => {
+    const btn = e.currentTarget;
+    const rect = btn.getBoundingClientRect();
+    const x = e.clientX - rect.left; // buton içi koordinat
+    const y = e.clientY - rect.top;
+
+    const particleCount = 12;
+    for (let i = 0; i < particleCount; i++) {
+      const s = document.createElement("span");
+      s.className = "burst-particle";
+      const size = Math.random() * 10 + 6;
+      const angle = (Math.PI * 2 * i) / particleCount + Math.random() * 0.6;
+      const distance = 28 + Math.random() * 14;
+      s.style.width = `${size}px`;
+      s.style.height = `${size}px`;
+      s.style.left = `${x}px`;
+      s.style.top = `${y}px`;
+      s.style.setProperty("--dx", `${Math.cos(angle) * distance}px`);
+      s.style.setProperty("--dy", `${Math.sin(angle) * distance}px`);
+      s.style.setProperty("--dr", `${(Math.random() - 0.5) * 90}deg`);
+      s.style.setProperty("--life", `${450 + Math.random() * 250}ms`);
+      // mor ↔ yeşil geçişli parçacıklar
+      s.style.setProperty("--burst-c1", "#6d28d9");
+      s.style.setProperty("--burst-c2", "#22c55e");
+      btn.appendChild(s);
+      setTimeout(() => s.remove(), 700);
+    }
+  }, []);
+
+  // SSR/CSR uyumu için güvenli odak
+  useEffect(() => {
+    if (tabsRef.current[0]) {
+      tabsRef.current[0].setAttribute("tabindex", "0");
+    }
+  }, []);
 
   return (
     <section className="container py-10 md:py-14">
-      <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">Hizmetlerimiz</h2>
+      <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
+        Hizmetlerimiz
+      </h2>
 
       {/* Sekme başlıkları */}
       <div
         role="tablist"
         aria-label="Hizmetler"
+        aria-orientation="horizontal"
         className="no-scrollbar mb-6 flex gap-2 overflow-x-auto rounded-xl bg-neutral-50 p-2"
+        onKeyDown={onKeyDown}
       >
         {tabs.map((t, i) => {
           const selected = i === active;
           return (
             <button
               key={t.key}
+              ref={(el) => (tabsRef.current[i] = el)}
               role="tab"
               id={`${rid}-tab-${i}`}
               aria-selected={selected}
@@ -99,7 +170,6 @@ export default function ServicesTabs() {
                 selected
                   ? "bg-[#6d28d9] text-white"
                   : "bg-white text-neutral-800 hover:bg-neutral-100",
-                // 🔧 görünür odak halkası
                 "focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6d28d9]/40",
               ].join(" ")}
             >
@@ -126,7 +196,6 @@ export default function ServicesTabs() {
                 alt={t.alt}
                 fill
                 sizes={HIZMET_SIZES}
-                // ilk panel hızlı render için öncelikli
                 priority={i === 0}
                 fetchPriority={i === 0 ? "high" : "low"}
                 decoding="async"
@@ -142,8 +211,10 @@ export default function ServicesTabs() {
 
               <div className="mt-5 flex gap-3">
                 <a
-                  className="rounded-lg px-4 py-2 font-semibold text-white bg-[#6d28d9] hover:bg-[#5b21b6] transition"
+                  className="relative inline-flex items-center justify-center rounded-lg px-4 py-2 font-semibold text-white bg-[#6d28d9] hover:bg-[#5b21b6] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6d28d9]/40"
                   href={t.href}
+                  onClick={burst}
+                  aria-label={`${t.title} – detaylı incele`}
                 >
                   Detaylı İncele
                 </a>

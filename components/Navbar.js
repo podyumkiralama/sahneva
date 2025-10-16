@@ -9,7 +9,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 const serviceLinks = [
   { href: "/podyum-kiralama", label: "Podyum Kiralama" },
   { href: "/led-ekran-kiralama", label: "LED Ekran Kiralama" },
-  { href: "/ses-isik-sistemleri", label: "Ses ışık sistemleri" },
+  { href: "/ses-isik-sistemleri", label: "Ses & Işık Sistemleri" },
   { href: "/cadir-kiralama", label: "Çadır Kiralama" },
   { href: "/masa-sandalye-kiralama", label: "Masa Sandalye Kiralama" },
   { href: "/sahne-kiralama", label: "Sahne Kiralama" },
@@ -28,6 +28,41 @@ export default function Navbar() {
   const servicesBtnId = "nav-services-button";
   const servicesMenuId = "nav-services-menu";
 
+  // 🟣 Burst efekt (globals.css'teki .burst-particle ile uyumlu)
+  const burst = useCallback((e) => {
+    try {
+      const x = e?.clientX ?? window.innerWidth / 2;
+      const y = e?.clientY ?? 80;
+      const n = 10;
+      const life = 600;
+
+      for (let i = 0; i < n; i++) {
+        const el = document.createElement("span");
+        el.className = "burst-particle";
+        const angle = (Math.PI * 2 * i) / n + Math.random() * 0.35;
+        const dist = 34 + Math.random() * 32;
+        el.style.setProperty("--dx", Math.cos(angle) * dist + "px");
+        el.style.setProperty("--dy", Math.sin(angle) * dist + "px");
+        el.style.setProperty("--dr", `${(Math.random() * 80 - 40).toFixed(1)}deg`);
+        el.style.setProperty("--life", `${life}ms`);
+        // renk dönüşümü
+        if (i % 2 === 0) {
+          el.style.setProperty("--burst-c1", "#6d28d9");
+          el.style.setProperty("--burst-c2", "#22c55e");
+        } else {
+          el.style.setProperty("--burst-c1", "#22c55e");
+          el.style.setProperty("--burst-c2", "#6d28d9");
+        }
+        const s = 6 + Math.random() * 6;
+        el.style.width = el.style.height = s + "px";
+        el.style.left = `${x}px`;
+        el.style.top = `${y}px`;
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), life + 80);
+      }
+    } catch {}
+  }, []);
+
   // Scroll durumu (throttle)
   useEffect(() => {
     let ticking = false;
@@ -44,7 +79,7 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // ESC ile kapatma + dropdown klavye davranışı
+  // ESC ile kapatma
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === "Escape") {
@@ -52,8 +87,6 @@ export default function Navbar() {
         setServicesOpen(false);
         setMobileServicesOpen(false);
       }
-      // Dropdown açıkken Shift+Tab ile dışarı çıkınca kapanması doğal akışla olur;
-      // ok tuşları ile liste içinde gezinme istersen ekleyebiliriz.
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -66,11 +99,10 @@ export default function Navbar() {
     setMobileServicesOpen(false);
   }, [pathname]);
 
-  // Mobil menü açıkken body scroll kilidi (güvenli restore)
+  // Mobil menü açıkken body scroll kilidi
   useEffect(() => {
     const prev = document.body.style.overflow;
-    if (mobileOpen) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = prev || "";
+    document.body.style.overflow = mobileOpen ? "hidden" : prev || "";
     return () => {
       document.body.style.overflow = prev || "";
     };
@@ -137,9 +169,7 @@ export default function Navbar() {
                 alt="Sahneva"
                 width={160}
                 height={40}
-                // Anasayfadaysak öncelik ver; diğer sayfalarda normal
                 priority={pathname === "/"}
-                // küçük logo için CLS önleme + doğru boyut ipucu
                 sizes="(max-width: 768px) 120px, 160px"
                 className="h-10 w-auto"
               />
@@ -177,12 +207,12 @@ export default function Navbar() {
                   aria-haspopup="true"
                   aria-expanded={servicesOpen}
                   aria-controls={servicesMenuId}
-                  onClick={() => setServicesOpen((s) => !s)} // tıklamayla da aç/kapat
+                  onClick={() => setServicesOpen((s) => !s)}
                 >
                   Hizmetler
                 </button>
 
-                {/* GAP KÖPRÜSÜ: buton ile panel arasındaki boşluğu köprüler */}
+                {/* buton-panel arası hover köprüsü */}
                 <span
                   aria-hidden="true"
                   className="absolute left-0 right-0 top-full h-2"
@@ -229,19 +259,21 @@ export default function Navbar() {
                 İletişim
               </Link>
 
-              {/* WhatsApp CTA (Desktop) */}
+              {/* WhatsApp CTA (Desktop) — yüksek kontrast + burst */}
               <a
-                href="https://wa.me/905453048671"
+                href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="ml-2 inline-flex items-center rounded-lg px-3 py-2 text-white text-sm font-semibold 
-                           bg-[#15803d] hover:bg-[#166534] transition"
+                           bg-[#15803d] hover:bg-[#166534] transition-colors focus:outline-none
+                           focus-visible:ring-2 focus-visible:ring-[#6d28d9]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                onClick={burst}
               >
                 WhatsApp Teklif
               </a>
             </nav>
 
-            {/* Hamburger Menü (SVG) */}
+            {/* Hamburger Menü */}
             <button
               onClick={() => setMobileOpen((s) => !s)}
               className="md:hidden inline-flex items-center justify-center p-2 rounded
@@ -277,7 +309,7 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Overlay – boş alana tıklayınca kapanır (pointer-events güvenli) */}
+      {/* Overlay */}
       {mobileOpen && (
         <button
           type="button"
@@ -294,7 +326,7 @@ export default function Navbar() {
         aria-modal="true"
         aria-label="Mobil menü"
         onClick={(e) => {
-          if (e.target === e.currentTarget) setMobileOpen(false); // panel boşluğu tıklayınca kapat
+          if (e.target === e.currentTarget) setMobileOpen(false);
         }}
         className={[
           "md:hidden fixed z-50 left-0 right-0 top-16",
@@ -371,14 +403,18 @@ export default function Navbar() {
             İletişim
           </Link>
 
-          {/* WhatsApp CTA (Mobil) */}
+          {/* WhatsApp CTA (Mobil) — burst + focus ring */}
           <a
-            href="https://wa.me/905453048671"
+            href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum."
             target="_blank"
             rel="noopener noreferrer"
             className="block text-center mt-3 rounded-lg px-3 py-2 text-white text-sm font-semibold 
-                       bg-[#15803d] hover:bg-[#166534] transition"
-            onClick={() => setMobileOpen(false)}
+                       bg-[#15803d] hover:bg-[#166534] transition-colors focus:outline-none
+                       focus-visible:ring-2 focus-visible:ring-[#6d28d9]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            onClick={(e) => {
+              burst(e);
+              setMobileOpen(false);
+            }}
           >
             WhatsApp Teklif
           </a>

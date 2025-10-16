@@ -1,12 +1,48 @@
-// app/page.jsx
+// app/(site)/page.js
 "use client";
 
+import Image from "next/image";
 import ServicesTabs from "../../components/ServicesTabs";
 import ProjectsGallery from "../../components/ProjectsGallery";
 import CorporateEvents from "../../components/CorporateEvents";
 import Faq from "../../components/Faq";
+import { useCallback } from "react";
 
 export default function HomePage() {
+  // CTA tıklamalarında görsel geri bildirim (globals.css → .burst-particle gerekir)
+  const burst = useCallback((e) => {
+    try {
+      const x = e?.clientX ?? window.innerWidth / 2;
+      const y = e?.clientY ?? 100;
+      const n = 10;
+      const life = 600;
+
+      for (let i = 0; i < n; i++) {
+        const el = document.createElement("span");
+        el.className = "burst-particle";
+        const angle = (Math.PI * 2 * i) / n + Math.random() * 0.35;
+        const dist = 36 + Math.random() * 34;
+        el.style.setProperty("--dx", Math.cos(angle) * dist + "px");
+        el.style.setProperty("--dy", Math.sin(angle) * dist + "px");
+        el.style.setProperty("--dr", `${(Math.random() * 80 - 40).toFixed(1)}deg`);
+        el.style.setProperty("--life", `${life}ms`);
+        if (i % 2 === 0) {
+          el.style.setProperty("--burst-c1", "#6d28d9");
+          el.style.setProperty("--burst-c2", "#22c55e");
+        } else {
+          el.style.setProperty("--burst-c1", "#22c55e");
+          el.style.setProperty("--burst-c2", "#6d28d9");
+        }
+        const s = 6 + Math.random() * 6;
+        el.style.width = el.style.height = s + "px";
+        el.style.left = `${x}px`;
+        el.style.top = `${y}px`;
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), life + 80);
+      }
+    } catch {}
+  }, []);
+
   return (
     <main>
       {/* HERO */}
@@ -29,19 +65,25 @@ export default function HomePage() {
             Etkinlik Prodüksiyon &amp; Ekipman Kiralama
           </h1>
           <p className="text-white/95 text-lg md:text-xl mb-8">
-            Türkiye genelinde sahne, podyum, LED ekran, ses-ışık ve kurulum
-            hizmetleri. Hızlı teslim, uygun fiyat.
+            Türkiye genelinde sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri. Hızlı teslim, uygun fiyat.
           </p>
 
+          {/* Yüksek kontrastlı CTA’lar + burst efekti */}
           <div className="flex justify-center gap-4">
-            <a href="tel:+905453048671" className="btn btn-primary">
+            <a
+              href="tel:+905453048671"
+              className="btn btn-primary"
+              onClick={burst}
+              aria-label="Telefonla hemen ara"
+            >
               Hemen Ara
             </a>
             <a
               href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum."
-              rel="noopener"
+              rel="noopener noreferrer"
               className="btn btn-accent"
               aria-label="WhatsApp üzerinden teklif iste"
+              onClick={burst}
             >
               WhatsApp Teklif
             </a>
@@ -62,7 +104,7 @@ export default function HomePage() {
           </ul>
 
           <div className="mt-10 text-center">
-            <div className="text-5xl mb-3">🎧</div>
+            <div className="text-5xl mb-3" aria-hidden>🎧</div>
             <h2 className="text-white text-2xl md:text-3xl font-semibold mb-2">
               Organizasyonunuz için Ücretsiz Danışmanlık
             </h2>
@@ -84,39 +126,15 @@ export default function HomePage() {
         </h2>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {[
-            [
-              "⭐",
-              "Yüksek Müşteri Memnuniyeti",
-              "Her organizasyonda ortalama %100’e yakın müşteri memnuniyeti sağlıyoruz.",
-            ],
-            [
-              "⚡",
-              "Hızlı ve Profesyonel Kurulum",
-              "Aynı gün içinde sahne, podyum ve ekipmanlarınızı anahtar teslim kuruyoruz.",
-            ],
-            [
-              "🎤",
-              "Güncel ve Güçlü Ekipmanlar",
-              "LED ekran, ses-ışık sistemleri, çadır ve podyum çözümlerinde en yeni teknolojiler.",
-            ],
-            [
-              "👷",
-              "Deneyimli Teknik Ekip",
-              "Güvenli, planlı ve sorunsuz kurulum için profesyonel ekibimiz her zaman yanınızda.",
-            ],
-            [
-              "💰",
-              "Uygun Fiyat Garantisi",
-              "Türkiye genelinde en rekabetçi fiyatlarla kaliteli hizmet sunuyoruz.",
-            ],
-            [
-              "🚚",
-              "Türkiye Geneli Hizmet",
-              "İstanbul’dan Adana’ya, Türkiye’nin her yerinde etkinlik kurulumu yapıyoruz.",
-            ],
+            ["⭐", "Yüksek Müşteri Memnuniyeti", "Her organizasyonda ortalama %100’e yakın müşteri memnuniyeti sağlıyoruz."],
+            ["⚡", "Hızlı ve Profesyonel Kurulum", "Aynı gün içinde sahne, podyum ve ekipmanlarınızı anahtar teslim kuruyoruz."],
+            ["🎤", "Güncel ve Güçlü Ekipmanlar", "LED ekran, ses-ışık sistemleri, çadır ve podyum çözümlerinde en yeni teknolojiler."],
+            ["👷", "Deneyimli Teknik Ekip", "Güvenli, planlı ve sorunsuz kurulum için profesyonel ekibimiz her zaman yanınızda."],
+            ["💰", "Uygun Fiyat Garantisi", "Türkiye genelinde en rekabetçi fiyatlarla kaliteli hizmet sunuyoruz."],
+            ["🚚", "Türkiye Geneli Hizmet", "İstanbul’dan Adana’ya, Türkiye’nin her yerinde etkinlik kurulumu yapıyoruz."],
           ].map(([icon, title, desc], i) => (
             <div key={i} className="card">
-              <span className="text-3xl">{icon}</span>
+              <span className="text-3xl" aria-hidden>{icon}</span>
               <h3 className="font-semibold text-lg mt-2 mb-1">{title}</h3>
               <p className="text-sm text-neutral-600">{desc}</p>
             </div>
@@ -126,209 +144,6 @@ export default function HomePage() {
 
       <CorporateEvents />
       <Faq />
-
-      {/* ===== JSON-LD: WebSite + Organization + LocalBusiness + OfferCatalog + FAQ + Breadcrumb ===== */}
-      <Script
-        id="ld-home-graph"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@graph": [
-              {
-                "@type": "WebSite",
-                "@id": "https://sahneva.com/#website",
-                url: "https://sahneva.com/",
-                name: "Sahneva",
-                inLanguage: "tr-TR",
-                publisher: { "@id": "https://sahneva.com/#organization" },
-              },
-              {
-                "@type": "Organization",
-                "@id": "https://sahneva.com/#organization",
-                name: "Sahneva",
-                url: "https://sahneva.com",
-                logo: {
-                  "@type": "ImageObject",
-                  url: "https://sahneva.com/img/logo.png",
-                },
-                sameAs: [
-                  "https://www.instagram.com/sahneva",
-                  "https://www.youtube.com/@sahneva",
-                ],
-                contactPoint: [
-                  {
-                    "@type": "ContactPoint",
-                    contactType: "customer service",
-                    telephone: "+90 545 304 8671",
-                    areaServed: "TR",
-                    availableLanguage: ["Turkish"],
-                  },
-                ],
-              },
-              {
-                "@type": "LocalBusiness",
-                "@id": "https://sahneva.com/#business",
-                name: "Sahneva",
-                image: "https://sahneva.com/img/logo.png",
-                url: "https://sahneva.com",
-                telephone: "+90 545 304 8671",
-                address: {
-                  "@type": "PostalAddress",
-                  addressLocality: "İstanbul",
-                  addressCountry: "TR",
-                },
-                priceRange: "$$",
-                openingHours: "Mo-Fr 09:00-19:00",
-                areaServed: "TR",
-                parentOrganization: { "@id": "https://sahneva.com/#organization" },
-              },
-              {
-                "@type": "OfferCatalog",
-                "@id": "https://sahneva.com/#catalog",
-                name: "Etkinlik Prodüksiyon ve Kiralama Hizmetleri",
-                url: "https://sahneva.com/hizmetler",
-                itemListElement: [
-                  {
-                    "@type": "Offer",
-                    url: "https://sahneva.com/podyum-kiralama",
-                    itemOffered: {
-                      "@type": "Service",
-                      name: "Podyum Kiralama",
-                      serviceType: "Podyum Kiralama",
-                      areaServed: "TR",
-                      provider: { "@id": "https://sahneva.com/#business" },
-                      description:
-                        "Modüler podyum; kaymaz kaplama, korkuluk ve rampa seçenekleriyle güvenli kurulum.",
-                    },
-                  },
-                  {
-                    "@type": "Offer",
-                    url: "https://sahneva.com/led-ekran-kiralama",
-                    itemOffered: {
-                      "@type": "Service",
-                      name: "LED Ekran Kiralama",
-                      serviceType: "LED Ekran Kiralama",
-                      areaServed: "TR",
-                      provider: { "@id": "https://sahneva.com/#business" },
-                      description:
-                        "P2–P6 iç/dış mekân LED ekran; yüksek parlaklık, yayın yönetimi ve teknik ekip.",
-                    },
-                  },
-                  {
-                    "@type": "Offer",
-                    url: "https://sahneva.com/ses-isik-sistemleri",
-                    itemOffered: {
-                      "@type": "Service",
-                      name: "Ses ve Işık Sistemleri",
-                      serviceType: "Ses & Işık Kiralama",
-                      areaServed: "TR",
-                      provider: { "@id": "https://sahneva.com/#business" },
-                      description:
-                        "Line array, robot ışık, DMX kontrol; kurulum ve canlı yönetim dahil.",
-                    },
-                  },
-                  {
-                    "@type": "Offer",
-                    url: "https://sahneva.com/sahne-kiralama",
-                    itemOffered: {
-                      "@type": "Service",
-                      name: "Sahne Kurulumu",
-                      serviceType: "Sahne Kiralama",
-                      areaServed: "TR",
-                      provider: { "@id": "https://sahneva.com/#business" },
-                      description:
-                        "Truss ve güvenli taşıyıcı sistemler ile özel ölçü sahne kurulumu.",
-                    },
-                  },
-                  {
-                    "@type": "Offer",
-                    url: "https://sahneva.com/cadir-kiralama",
-                    itemOffered: {
-                      "@type": "Service",
-                      name: "Çadır Kiralama",
-                      serviceType: "Etkinlik Çadırı Kiralama",
-                      areaServed: "TR",
-                      provider: { "@id": "https://sahneva.com/#business" },
-                      description:
-                        "Endüstriyel/etkinlik tipi çadır; zemin, aydınlatma ve iklimlendirme çözümleri.",
-                    },
-                  },
-                  {
-                    "@type": "Offer",
-                    url: "https://sahneva.com/masa-sandalye-kiralama",
-                    itemOffered: {
-                      "@type": "Service",
-                      name: "Masa & Sandalye Kiralama",
-                      serviceType: "Mobilya Kiralama",
-                      areaServed: "TR",
-                      provider: { "@id": "https://sahneva.com/#business" },
-                      description:
-                        "Banket, kokteyl ve konferans düzeni için kurulum ve yerleşim.",
-                    },
-                  },
-                ],
-              },
-              {
-                "@type": "FAQPage",
-                "@id": "https://sahneva.com/#faq",
-                mainEntity: [
-                  {
-                    "@type": "Question",
-                    name: "Podyum kurulumu ne kadar sürer?",
-                    acceptedAnswer: {
-                      "@type": "Answer",
-                      text:
-                        "Podyum kurulumu, ölçülere ve zemin koşullarına göre genellikle 1–3 saat sürer.",
-                    },
-                  },
-                  {
-                    "@type": "Question",
-                    name: "LED ekranlar dış mekanda kullanılabilir mi?",
-                    acceptedAnswer: {
-                      "@type": "Answer",
-                      text:
-                        "Evet, IP65 korumalı LED ekranlarımız açık havada güvenle kullanılabilir.",
-                    },
-                  },
-                  {
-                    "@type": "Question",
-                    name: "Ses ve ışık sistemlerinde teknik ekip sağlıyor musunuz?",
-                    acceptedAnswer: {
-                      "@type": "Answer",
-                      text:
-                        "Evet, kurulum ve etkinlik boyunca teknik ekip desteği veriyoruz.",
-                    },
-                  },
-                  {
-                    "@type": "Question",
-                    name: "Çadır kiralamada kurulum ve söküm dahil mi?",
-                    acceptedAnswer: {
-                      "@type": "Answer",
-                      text:
-                        "Evet, kurulum ve söküm dâhil; zemin kaplama ve aksesuarlar opsiyoneldir.",
-                    },
-                  },
-                ],
-              },
-              {
-                "@type": "BreadcrumbList",
-                "@id": "https://sahneva.com/#breadcrumb",
-                itemListElement: [
-                  {
-                    "@type": "ListItem",
-                    position: 1,
-                    name: "Anasayfa",
-                    item: "https://sahneva.com/",
-                  },
-                ],
-              },
-            ],
-          }),
-        }}
-      />
-      {/* ===== /JSON-LD ===== */}
     </main>
   );
 }

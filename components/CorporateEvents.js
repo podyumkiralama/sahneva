@@ -4,12 +4,18 @@
 import Image from "next/image";
 import Link from "next/link";
 
+const CARD_SIZES =
+  "(max-width: 640px) 100vw, " +       // tek sütun
+  "(max-width: 1024px) 50vw, " +       // iki sütun
+  "33vw";                              // üç sütun
+
 export default function CorporateEvents() {
   return (
-    <section className="container py-16">
-      <h2 className="text-2xl md:text-3xl font-bold text-center mb-4">
+    <section className="container py-16" aria-labelledby="kurumsal-heading">
+      <h2 id="kurumsal-heading" className="text-2xl md:text-3xl font-bold text-center mb-4">
         Kurumsal Organizasyonlar
       </h2>
+
       <p className="text-center text-neutral-600 max-w-3xl mx-auto mb-10">
         Lansman, konferans, bayi toplantısı ve kurumsal etkinlikleriniz için
         sahne, podyum, LED ekran, ses–ışık ve teknik operasyonu tek çatı altında sunuyoruz.
@@ -22,11 +28,14 @@ export default function CorporateEvents() {
           <div className="relative h-40">
             <Image
               src="/img/kurumsal/lansman.webp"
-              alt="Kurumsal lansman etkinliği"
+              alt="Kurumsal lansman etkinliği için sahne ve ekran kurulumu"
               fill
-              sizes="(max-width:768px) 100vw, (max-width:1200px) 33vw, 33vw"
+              sizes={CARD_SIZES}
               className="object-cover"
               loading="lazy"
+              decoding="async"
+              fetchPriority="low"
+              quality={70}
             />
           </div>
           <div className="p-6">
@@ -34,7 +43,13 @@ export default function CorporateEvents() {
             <p className="text-sm text-neutral-600 mb-4">
               LED ekran kurgu, sahne tasarımı, ışık şovları ve canlı yayın altyapısıyla etkileyici sunumlar.
             </p>
-            <Link href="#iletisim" className="text-primary font-semibold">Teklif Al</Link>
+            <Link
+              href="/iletisim"
+              prefetch={false}
+              className="text-primary font-semibold hover:underline"
+            >
+              Teklif Al
+            </Link>
           </div>
         </article>
 
@@ -43,11 +58,14 @@ export default function CorporateEvents() {
           <div className="relative h-40">
             <Image
               src="/img/kurumsal/konferans.webp"
-              alt="Konferans ve kongre sahne kurulumu"
+              alt="Konferans ve kongre için sahne ve ses-ışık sistemleri"
               fill
-              sizes="(max-width:768px) 100vw, (max-width:1200px) 33vw, 33vw"
+              sizes={CARD_SIZES}
               className="object-cover"
               loading="lazy"
+              decoding="async"
+              fetchPriority="low"
+              quality={70}
             />
           </div>
           <div className="p-6">
@@ -55,7 +73,13 @@ export default function CorporateEvents() {
             <p className="text-sm text-neutral-600 mb-4">
               Çoklu mikrofon, simultane çeviri, sunum yönetimi ve kayıt çözümleriyle kusursuz akış.
             </p>
-            <Link href="#iletisim" className="text-primary font-semibold">Teklif Al</Link>
+            <Link
+              href="/iletisim"
+              prefetch={false}
+              className="text-primary font-semibold hover:underline"
+            >
+              Teklif Al
+            </Link>
           </div>
         </article>
 
@@ -64,11 +88,14 @@ export default function CorporateEvents() {
           <div className="relative h-40">
             <Image
               src="/img/kurumsal/bayi-toplantisi.webp"
-              alt="Bayi toplantısı sahne ve görsel sistemler"
+              alt="Bayi toplantısı için sahne, ekran ve ışık kurulumu"
               fill
-              sizes="(max-width:768px) 100vw, (max-width:1200px) 33vw, 33vw"
+              sizes={CARD_SIZES}
               className="object-cover"
               loading="lazy"
+              decoding="async"
+              fetchPriority="low"
+              quality={70}
             />
           </div>
           <div className="p-6">
@@ -76,27 +103,33 @@ export default function CorporateEvents() {
             <p className="text-sm text-neutral-600 mb-4">
               Kurumsal kimliğe uygun sahne–dekor, çoklu ekran, video–ses yönetimi ve teknik ekip.
             </p>
-            <Link href="#iletisim" className="text-primary font-semibold">Teklif Al</Link>
+            <Link
+              href="/iletisim"
+              prefetch={false}
+              className="text-primary font-semibold hover:underline"
+            >
+              Teklif Al
+            </Link>
           </div>
         </article>
       </div>
 
       {/* Avantajlar şeridi */}
-      <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4" aria-label="Avantajlar">
         <div className="flex items-center gap-2 rounded-xl border bg-white p-4">
-          <span className="text-2xl">⚡</span>
+          <span className="text-2xl" aria-hidden="true">⚡</span>
           <span className="text-sm font-medium">Aynı Gün Kurulum</span>
         </div>
         <div className="flex items-center gap-2 rounded-xl border bg-white p-4">
-          <span className="text-2xl">🎛</span>
+          <span className="text-2xl" aria-hidden="true">🎛</span>
           <span className="text-sm font-medium">Güncel Ekipman Parkı</span>
         </div>
         <div className="flex items-center gap-2 rounded-xl border bg-white p-4">
-          <span className="text-2xl">👷</span>
+          <span className="text-2xl" aria-hidden="true">👷</span>
           <span className="text-sm font-medium">Deneyimli Teknik Ekip</span>
         </div>
         <div className="flex items-center gap-2 rounded-xl border bg-white p-4">
-          <span className="text-2xl">🛡</span>
+          <span className="text-2xl" aria-hidden="true">🛡</span>
           <span className="text-sm font-medium">Güvenlik & Yedek Plan</span>
         </div>
       </div>
@@ -110,16 +143,14 @@ export default function CorporateEvents() {
           Sahne, podyum, LED ekran, ses–ışık ve yayın çözümleri için hemen iletişime geçin.
         </p>
         <div className="flex justify-center gap-3">
-          <a
-            href="tel:+905453048671"
-            className="px-5 py-3 rounded-lg text-white font-semibold bg-[#6d28d9] hover:bg-[#5b21b6] transition"
-          >
+          <a href="tel:+905453048671" className="btn btn-primary" aria-label="Telefonla görüş">
             Telefonla Görüş
           </a>
           <a
             href="https://wa.me/905453048671?text=Merhaba%2C+kurumsal+etkinlik+i%C3%A7in+teklif+almak+istiyorum."
             rel="noopener"
-            className="px-5 py-3 rounded-lg text-white font-semibold bg-[#15803d] hover:bg-[#166534] transition"
+            className="btn btn-accent"
+            aria-label="WhatsApp üzerinden teklif iste"
           >
             WhatsApp
           </a>

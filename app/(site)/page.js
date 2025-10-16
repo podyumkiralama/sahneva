@@ -1,12 +1,10 @@
 // app/page.jsx
 "use client";
 
-import Script from "next/script";
-import Image from "next/image";
-import ServicesTabs from "../components/ServicesTabs";
-import ProjectsGallery from "../components/ProjectsGallery";
-import CorporateEvents from "../components/CorporateEvents";
-import Faq from "../components/Faq";
+import ServicesTabs from "../../components/ServicesTabs";
+import ProjectsGallery from "../../components/ProjectsGallery";
+import CorporateEvents from "../../components/CorporateEvents";
+import Faq from "../../components/Faq";
 
 export default function HomePage() {
   return (

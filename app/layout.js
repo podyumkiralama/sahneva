@@ -24,11 +24,11 @@ const inter = Inter({
 export const metadata = {
   metadataBase: new URL("https://www.sahneva.com"),
   title: {
-    default: "Sahneva – Etkinlik Prodüksiyon & Organizasyon",
+    default: "Sahne, Podyum, LED Ekran & Ses-Işık Kiralama | Sahneva",
     template: "%s | Sahneva",
   },
   description:
-    "Sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri. Türkiye geneli.",
+    "Türkiye genelinde sahne, podyum, LED ekran, ses-ışık sistemleri ve çadır kiralama. Hızlı kurulum, profesyonel teknik ekip, uygun fiyat. Hemen teklif alın!",
   manifest: "/site.webmanifest",
   alternates: { canonical: "https://www.sahneva.com" },
   openGraph: {

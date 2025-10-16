@@ -1,7 +1,7 @@
 // app/sitemap.js
 import { services } from "@/lib/data";
 
-const site = "https://sahneva.com";
+const site = "https://www.sahneva.com";
 
 export default function sitemap() {
   const now = new Date().toISOString();

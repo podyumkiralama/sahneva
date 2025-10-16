@@ -53,7 +53,7 @@ export default function HomePage() {
           fill
           priority
           fetchPriority="high"
-          decoding="sync"
+          decoding="async"
           sizes="100vw"
           className="object-cover will-change-transform"
           quality={62}

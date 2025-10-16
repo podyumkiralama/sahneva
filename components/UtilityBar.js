@@ -2,185 +2,249 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
+import Link from "next/link";
+
+const ROUTES = [
+  { href: "/", label: "Anasayfa" },
+  { href: "/hakkimizda", label: "Hakkımızda" },
+  { href: "/iletisim", label: "İletişim" },
+  { href: "/podyum-kiralama", label: "Podyum Kiralama" },
+  { href: "/led-ekran-kiralama", label: "LED Ekran Kiralama" },
+  { href: "/ses-isik-sistemleri", label: "Ses Işık Sistemleri" },
+  { href: "/cadir-kiralama", label: "Çadır Kiralama" },
+  { href: "/masa-sandalye-kiralama", label: "Masa Sandalye Kiralama" },
+  { href: "/sahne-kiralama", label: "Sahne Kiralama" },
+];
 
 export default function UtilityBar() {
-  const [fs, setFs] = useState(100);      // font-size %
-  const [hc, setHc] = useState(false);    // high-contrast
-  const [searchOpen, setSearchOpen] = useState(false);
-  const searchRef = useRef(null);
-  const pathname = usePathname();
+  const [openSearch, setOpenSearch] = useState(false);
+  const [query, setQuery] = useState("");
+  const dialogRef = useRef(null);
 
-  // ---- load preferences
+  // ESC ile arama modalını kapat
   useEffect(() => {
-    const s = Number(localStorage.getItem("ux:fs") || "100");
-    const c = localStorage.getItem("ux:hc") === "1";
-    setFs(Math.min(130, Math.max(85, s)));
-    setHc(c);
-  }, []);
+    const onEsc = (e) => {
+      if (e.key === "Escape") setOpenSearch(false);
+    };
+    if (openSearch) window.addEventListener("keydown", onEsc);
+    return () => window.removeEventListener("keydown", onEsc);
+  }, [openSearch]);
 
-  // ---- apply prefs to <html>
-  useEffect(() => {
-    const html = document.documentElement;
-    html.style.setProperty("--fs", fs + "%");
-    localStorage.setItem("ux:fs", String(fs));
-  }, [fs]);
+  // Arama sonuçları
+  const filtered =
+    query.trim().length === 0
+      ? ROUTES
+      : ROUTES.filter((r) =>
+          r.label.toLowerCase().includes(query.toLowerCase().trim())
+        );
 
-  useEffect(() => {
-    const html = document.documentElement;
-    html.classList.toggle("hc", hc);
-    localStorage.setItem("ux:hc", hc ? "1" : "0");
-  }, [hc]);
+  // Yazı boyutu kontrolü (html --fs değişkeni)
+  const bumpFont = (delta) => {
+    const root = document.documentElement;
+    const current = parseFloat(
+      getComputedStyle(root).getPropertyValue("--fs") || "100%"
+    );
+    // % değerini okuyup hesapla
+    const pct = Number.isNaN(current) ? 100 : current;
+    const next = Math.min(130, Math.max(85, Math.round(pct + delta)));
+    root.style.setProperty("--fs", `${next}%`);
+    burst(); // görsel geri bildirim
+  };
 
-  // ---- reset search input when route changes
-  useEffect(() => {
-    setSearchOpen(false);
-    if (searchRef.current) searchRef.current.value = "";
-  }, [pathname]);
+  // Yüksek kontrast modu
+  const toggleContrast = () => {
+    document.documentElement.classList.toggle("hc");
+    burst();
+  };
 
-  // ---- burst (patlama) efekti
+  // En üste dön
+  const scrollTopSmooth = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    burst();
+  };
+
+  // ==== Burst efekt ====
   const burst = (e) => {
-    const host = e.currentTarget;
-    const rect = host.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    // e varsa tıklama konumunu kullan; yoksa orta-alt kısım
+    const x = e?.clientX ?? window.innerWidth / 2;
+    const y = e?.clientY ?? window.innerHeight - 80;
 
-    const N = 14; // parçacık sayısı
-    for (let i = 0; i < N; i++) {
+    const n = 12; // parçacık sayısı
+    const life = 600;
+    for (let i = 0; i < n; i++) {
       const el = document.createElement("span");
       el.className = "burst-particle";
-      const r = 28 + Math.random() * 28; // yarıçap
-      const t = Math.random() * Math.PI * 2;
-      el.style.setProperty("--dx", `${Math.cos(t) * r}px`);
-      el.style.setProperty("--dy", `${Math.sin(t) * r}px`);
-      el.style.setProperty("--dr", `${(Math.random() * 40 - 20)}deg`);
-      el.style.left = `${x}px`;
-      el.style.top  = `${y}px`;
-      el.style.width = el.style.height = `${6 + Math.random() * 6}px`;
-      if (Math.random() > 0.5) {
+      const angle = (Math.PI * 2 * i) / n + Math.random() * 0.3;
+      const dist = 40 + Math.random() * 40;
+      const dx = Math.cos(angle) * dist + "px";
+      const dy = Math.sin(angle) * dist + "px";
+      el.style.setProperty("--dx", dx);
+      el.style.setProperty("--dy", dy);
+      el.style.setProperty("--dr", `${(Math.random() * 60 - 30).toFixed(1)}deg`);
+      el.style.setProperty("--life", `${life}ms`);
+      // renkler
+      if (i % 2 === 0) {
         el.style.setProperty("--burst-c1", "#6d28d9");
         el.style.setProperty("--burst-c2", "#22c55e");
       } else {
-        el.style.setProperty("--burst-c1", "#15803d");
-        el.style.setProperty("--burst-c2", "#a78bfa");
+        el.style.setProperty("--burst-c1", "#22c55e");
+        el.style.setProperty("--burst-c2", "#6d28d9");
       }
-      host.appendChild(el);
-      setTimeout(() => el.remove(), 600);
+      el.style.width = el.style.height = 6 + Math.random() * 6 + "px";
+      el.style.left = `${x}px`;
+      el.style.top = `${y}px`;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), life + 50);
     }
   };
 
-  // ---- in-page search (temel)
-  const doFind = (q) => {
-    if (!q) return;
-    // window.find ile ilk eşleşmeye atla (basit çözüm, SSR sayfalarında da çalışır)
-    const ok = window.find(q, false, false, true, false, false, false);
-    if (!ok) {
-      // bulunamazsa yukarı kaydırıp tekrar dene
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      setTimeout(() => window.find(q), 250);
-    }
+  // Tüm butonlarda aynı onClick pattern'i
+  const withBurst = (fn) => (e) => {
+    burst(e);
+    fn?.();
   };
 
   return (
     <>
-      {/* Alt yardımcı çubuk (mobile-first) */}
+      {/* Bottom utility bar (sadece mobil & tablet) */}
       <div
-        className="fixed bottom-0 inset-x-0 z-40 border-t bg-white/95 backdrop-blur pb-safe shadow-sm lg:hidden"
-        role="navigation"
-        aria-label="Hızlı araçlar"
+        className="fixed bottom-0 inset-x-0 z-40 lg:hidden bg-white border-t border-neutral-200 shadow-sm pb-safe"
+        role="region"
+        aria-label="Kullanıcı araç çubuğu"
       >
-        <div className="grid grid-cols-4">
-          <button
-            className="bar-item"
-            onClick={(e) => { setFs((v) => Math.max(85, v - 5)); burst(e); }}
-            aria-label="Yazı boyutunu küçült"
-            title="Yazı -"
-          >
-            A-
-          </button>
-
-          <button
-            className="bar-item"
-            onClick={(e) => { setFs(100); burst(e); }}
-            aria-label="Yazı boyutunu sıfırla"
-            title="Sıfırla"
-          >
-            A•A
-          </button>
-
-          <button
-            className="bar-item"
-            onClick={(e) => { setFs((v) => Math.min(130, v + 5)); burst(e); }}
-            aria-label="Yazı boyutunu büyüt"
-            title="Yazı +"
-          >
-            A+
-          </button>
-
-          <button
-            className="bar-item"
-            onClick={(e) => { setHc((v) => !v); burst(e); }}
-            aria-pressed={hc}
-            aria-label="Kontrast modunu değiştir"
-            title="Kontrast"
-          >
-            ⛶
-          </button>
-        </div>
-
-        {/* Arama satırı aç/kapa */}
-        <div className="px-3 pb-3">
-          <button
-            onClick={() => setSearchOpen((v) => !v)}
-            className="mt-2 w-full h-10 rounded-lg border grid place-items-center text-sm font-medium hover:bg-neutral-50"
-            aria-expanded={searchOpen}
-            aria-controls="utilitybar-search"
-            title="Site içinde ara"
-          >
-            🔍 Site içinde ara
-          </button>
-          <div id="utilitybar-search" hidden={!searchOpen} className="mt-2">
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                const q = searchRef.current?.value?.trim();
-                if (q) doFind(q);
-              }}
-              className="flex gap-2"
+        <div className="mx-auto max-w-screen-md px-3">
+          <div className="grid grid-cols-5 gap-2 py-2">
+            {/* Yazı küçült */}
+            <button
+              className="bar-item"
+              onClick={withBurst(() => bumpFont(-5))}
+              aria-label="Yazı boyutunu küçült"
+              title="Yazı küçült"
             >
-              <input
-                ref={searchRef}
-                type="search"
-                inputMode="search"
-                placeholder="Aramak için yazın…"
-                className="flex-1 h-10 rounded-lg border px-3 text-sm"
-                aria-label="Sayfada ara"
-              />
-              <button
-                type="submit"
-                className="h-10 px-4 rounded-lg bg-[#6d28d9] text-white font-semibold hover:bg-[#5b21b6] transition"
-                onClick={burst}
-                title="Ara"
-              >
-                Ara
-              </button>
-            </form>
+              A-
+            </button>
+
+            {/* Yazı büyüt */}
+            <button
+              className="bar-item"
+              onClick={withBurst(() => bumpFont(+5))}
+              aria-label="Yazı boyutunu büyüt"
+              title="Yazı büyüt"
+            >
+              A+
+            </button>
+
+            {/* Arama */}
+            <button
+              className="bar-item"
+              onClick={(e) => {
+                burst(e);
+                setOpenSearch(true);
+                setTimeout(() => dialogRef.current?.querySelector("input")?.focus(), 60);
+              }}
+              aria-haspopup="dialog"
+              aria-expanded={openSearch}
+              aria-controls="site-search-dialog"
+              title="Sitede ara"
+            >
+              Ara
+            </button>
+
+            {/* En üste dön */}
+            <button
+              className="bar-item"
+              onClick={withBurst(scrollTopSmooth)}
+              aria-label="En üste dön"
+              title="En üste dön"
+            >
+              ↑
+            </button>
+
+            {/* Hızlı ara / WhatsApp menüsü */}
+            <div className="relative">
+              <details className="group">
+                <summary
+                  className="bar-item list-none cursor-pointer"
+                  onClick={burst}
+                  aria-label="Hızlı iletişim"
+                  title="Hızlı iletişim"
+                >
+                  İletişim
+                </summary>
+                <div className="absolute right-0 bottom-12 mb-2 min-w-44 rounded-xl border border-neutral-200 bg-white p-2 shadow-lg">
+                  <a
+                    href="tel:+905453048671"
+                    className="block rounded-md px-3 py-2 text-sm font-semibold text-white bg-[#6d28d9] hover:bg-[#5b21b6]"
+                    onClick={burst}
+                  >
+                    Hemen Ara
+                  </a>
+                  <a
+                    href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 block rounded-md px-3 py-2 text-sm font-semibold text-white bg-[#15803d] hover:bg-[#166534]"
+                    onClick={burst}
+                  >
+                    WhatsApp Teklif
+                  </a>
+                </div>
+              </details>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Aynı çubuğun masaüstü sürümü (üst sabit) */}
-      <div
-        className="hidden lg:block fixed top-[72px] right-4 z-30"
-        aria-hidden="true"
-      >
-        <div className="rounded-2xl border bg-white/95 backdrop-blur shadow p-2 grid gap-2">
-          <button className="bar-item rounded-lg w-12" onClick={(e)=>{setFs((v)=>Math.max(85,v-5)); burst(e);}}>A-</button>
-          <button className="bar-item rounded-lg w-12" onClick={(e)=>{setFs(100); burst(e);}}>A•A</button>
-          <button className="bar-item rounded-lg w-12" onClick={(e)=>{setFs((v)=>Math.min(130,v+5)); burst(e);}}>A+</button>
-          <button className="bar-item rounded-lg w-12" onClick={(e)=>{setHc((v)=>!v); burst(e);}}>{hc ? "HC" : "⛶"}</button>
+      {/* Basit arama modalı */}
+      {openSearch && (
+        <div
+          id="site-search-dialog"
+          ref={dialogRef}
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40 p-0 sm:p-6"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Site içi arama"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setOpenSearch(false);
+          }}
+        >
+          <div className="w-full sm:max-w-lg rounded-t-2xl sm:rounded-2xl bg-white shadow-lg">
+            <div className="flex items-center gap-2 px-4 py-3 border-b">
+              <input
+                type="search"
+                className="w-full rounded-md border border-neutral-200 px-3 py-2 outline-none focus:ring-2 focus:ring-[#6d28d9]/30"
+                placeholder="Ne aramıştınız? (örn. LED ekran)"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
+              <button
+                className="ml-1 rounded-md px-3 py-2 text-sm font-semibold bg-neutral-100 hover:bg-neutral-200"
+                onClick={() => setOpenSearch(false)}
+              >
+                Kapat
+              </button>
+            </div>
+            <ul className="max-h-[50vh] overflow-y-auto p-2">
+              {filtered.length === 0 && (
+                <li className="px-3 py-3 text-sm text-neutral-600">
+                  Sonuç bulunamadı.
+                </li>
+              )}
+              {filtered.map((r) => (
+                <li key={r.href}>
+                  <Link
+                    href={r.href}
+                    className="block rounded-md px-3 py-2 text-sm hover:bg-[#f3f0ff] hover:text-[#815be0]"
+                    onClick={() => setOpenSearch(false)}
+                  >
+                    {r.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

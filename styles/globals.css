@@ -24,9 +24,31 @@ img, video, canvas, svg { max-width:100%; height:auto; }
 
 /* Yardımcılar */
 .container{ max-width:1280px; margin-inline:auto; padding-inline:1rem; }
-.full-bleed{ position:relative; margin-left:calc(50% - 50vw); margin-right:calc(50% - 50vw); inline-size:100svw; width:100vw; }
+
+/* HERO alanı için yükseklik rezervasyonu (CLS koruması) */
+.full-bleed{
+  position:relative;
+  margin-left:calc(50% - 50vw);
+  margin-right:calc(50% - 50vw);
+  inline-size:100svw; width:100vw;
+  min-height:60vh; /* LCP görseli için alan ayır */
+}
+@media (min-width:768px){
+  .full-bleed{ min-height:70vh; }
+}
+
 .object-cover{ object-fit:cover; }
 .will-change-transform{ will-change:transform; }
+
+/* Kat altı içerik: render ve boyama optimizasyonu */
+.section-lazy{
+  /* tarayıcı destekliyorsa: */
+  content-visibility:auto;
+  contain-intrinsic-size: 1px 800px; /* ilk boyama için tahmini yükseklik */
+}
+@supports not (content-visibility:auto){
+  .section-lazy{ /* destek yoksa dokunma */}
+}
 
 /* Cam efektli nav (fallback + modern) */
 .nav-glass{
@@ -128,4 +150,14 @@ html.hc a{ text-decoration:underline; }
 .bar-item:focus-visible{
   outline:2px solid #6d28d966; /* odak halkası */
   outline-offset:2px;
+}
+
+/* ---- Görsel/Nesne yardımcıları (CLS için) ---- */
+
+/* Fill kullanılan <Image> ebeveyni için hızlı iskelet (isteğe bağlı) */
+.img-skeleton{ background: #f3f4f6; }
+
+/* Metin boyaması stabil olsun diye (fonts yüklenmeden) */
+@supports (font-synthesis-weight: auto){
+  html{ font-synthesis-weight: auto; font-synthesis-style: auto; }
 }

@@ -22,7 +22,7 @@ const inter = Inter({
 });
 
 export const metadata = {
-  metadataBase: new URL("https://sahneva.com"),
+  metadataBase: new URL("https://www.sahneva.com"),
   title: {
     default: "Sahneva – Etkinlik Prodüksiyon & Organizasyon",
     template: "%s | Sahneva",
@@ -30,12 +30,12 @@ export const metadata = {
   description:
     "Sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri. Türkiye geneli.",
   manifest: "/site.webmanifest",
-  alternates: { canonical: "https://sahneva.com" },
+  alternates: { canonical: "https://www.sahneva.com" },
   openGraph: {
     title: "Sahneva – Etkinlik Prodüksiyon & Organizasyon",
     description:
       "Sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri. Türkiye geneli.",
-    url: "https://sahneva.com",
+    url: "https://www.sahneva.com",
     siteName: "Sahneva",
     images: ["/img/og.jpg"],
     type: "website",
@@ -100,8 +100,8 @@ export default function RootLayout({ children }) {
               "@context": "https://schema.org",
               "@type": "Organization",
               name: "Sahneva",
-              url: "https://sahneva.com",
-              logo: "https://sahneva.com/img/logo.png",
+              url: "https://www.sahneva.com",
+              logo: "https://www.sahneva.com/img/logo.png",
               contactPoint: [
                 {
                   "@type": "ContactPoint",
@@ -129,8 +129,8 @@ export default function RootLayout({ children }) {
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
               name: "Sahneva",
-              image: "https://sahneva.com/img/logo.png",
-              url: "https://sahneva.com",
+              image: "https://www.sahneva.com/img/logo.png",
+              url: "https://www.sahneva.com",
               telephone: "+90 545 304 8671",
               address: {
                 "@type": "PostalAddress",

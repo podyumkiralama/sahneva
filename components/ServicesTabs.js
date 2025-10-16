@@ -61,7 +61,7 @@ const tabs = [
   {
     key: "masa-sandalye",
     title: "Masa & Sandalye Kiralama",
-    img: "/img/kurumsal/konferans.webp",
+    img: "/img/hizmet-masa.webp",
     alt: "Masa ve Sandalye Kiralama – hizmet görseli",
     href: "/masa-sandalye-kiralama",
     desc:

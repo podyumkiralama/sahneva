@@ -41,7 +41,7 @@ const tabs = [
   {
     key: "sahne",
     title: "Sahne Kurulumu",
-    img: "/img/kurumsal/lansman.webp",
+    img: "/img/hizmet-sahne.webp",
     alt: "Sahne Kurulumu – hizmet görseli",
     href: "/sahne-kiralama",
     desc:

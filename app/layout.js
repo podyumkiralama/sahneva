@@ -1,4 +1,4 @@
-// app/layout.jsx
+// app/layout.js
 import "../styles/globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -65,10 +65,7 @@ export default function RootLayout({ children }) {
           .object-cover{object-fit:cover}
           .container{max-width:1280px;margin-inline:auto;padding-inline:1rem}
         `}</style>
-
-        {/* Küçük UX + perf iyileştirmeleri */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Burada bilinçli olarak ek preconnect yok; font local yüklendiği için gerekmez */}
       </head>
 
       <body className={`${inter.className} scroll-smooth`}>

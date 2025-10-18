@@ -58,7 +58,7 @@ export default function Footer() {
           {/* Sosyal */}
           <div className="flex gap-3 mt-4">
             <a
-              href="https://www.instagram.com/sahneva"
+              href="https://www.instagram.com/sahnevaorganizasyon"
               target="_blank"
               rel="noopener noreferrer me"
               aria-label="Instagram"

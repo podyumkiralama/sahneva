@@ -5,15 +5,16 @@ import ProjectsGallery from "../../components/ProjectsGallery";
 import CorporateEvents from "../../components/CorporateEvents";
 import Faq from "../../components/Faq";
 import HeroCtasClient from "../../components/HeroCtasClient";
-import Revibanner from "../../components/Revibanner"; // <-- EKLENDİ
+import Revibanner from "../../components/Revibanner";
 
 export const revalidate = 3600;
 
 export default function HomePage() {
   return (
-    <main>
+    // YATAY TAŞMAYI KİLİTLE
+    <main className="overflow-x-hidden">
       {/* HERO */}
-      <div className="full-bleed relative img-skeleton">
+      <div className="full-bleed relative img-skeleton overflow-hidden">
         <Image
           src="/img/hero-bg.webp"
           alt="Sahne, podyum, LED ekran ve ses-ışık ekipmanlarıyla kurulu etkinlik sahnesi"
@@ -64,8 +65,12 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* REVİBANNER — HERO SONRASI */}
-      <Revibanner />
+      {/* Revibanner'ı güvenli sarmalayıcı ile ekle */}
+      <section className="w-full overflow-x-hidden">
+        <div className="container">
+          <Revibanner />
+        </div>
+      </section>
 
       {/* Kat altı içerik */}
       <section className="section-lazy">
@@ -80,7 +85,7 @@ export default function HomePage() {
         <CorporateEvents />
       </section>
 
-      {/* === SEO METİN BLOĞU (Kurumsal organizasyon altına) === */}
+      {/* === SEO METİN BLOĞU === */}
       <section className="section-lazy">
         <div className="container py-14 md:py-16">
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
@@ -120,8 +125,12 @@ export default function HomePage() {
               </p>
               <p className="text-neutral-700 mt-3">
                 Teklif almak için hemen arayın ya da{" "}
-                <a href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum."
-                   className="underline hover:no-underline font-medium" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum."
+                  className="underline hover:no-underline font-medium"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   WhatsApp’tan yazın
                 </a>
                 ; birkaç soru ile mekân, kişi sayısı ve içerik tipine göre doğru

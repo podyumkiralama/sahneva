@@ -19,16 +19,16 @@ export default function Navbar() {
   const pathname = usePathname();
 
   const [scrolled, setScrolled] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);             // desktop dropdown
-  const [mobileOpen, setMobileOpen] = useState(false);                 // mobile menu
-  const [mobileServicesOpen, setMobileServicesOpen] = useState(false); // mobile accordion
+  const [servicesOpen, setServicesOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
 
   const dropdownRef = useRef(null);
   const hoverTimer = useRef(null);
   const servicesBtnId = "nav-services-button";
   const servicesMenuId = "nav-services-menu";
 
-  // 🟣 Burst efekt (globals.css'teki .burst-particle ile uyumlu)
+  // Burst efekt (ufak görsel geri bildirim)
   const burst = useCallback((e) => {
     try {
       const x = e?.clientX ?? window.innerWidth / 2;
@@ -45,14 +45,8 @@ export default function Navbar() {
         el.style.setProperty("--dy", Math.sin(angle) * dist + "px");
         el.style.setProperty("--dr", `${(Math.random() * 80 - 40).toFixed(1)}deg`);
         el.style.setProperty("--life", `${life}ms`);
-        // renk dönüşümü
-        if (i % 2 === 0) {
-          el.style.setProperty("--burst-c1", "#6d28d9");
-          el.style.setProperty("--burst-c2", "#22c55e");
-        } else {
-          el.style.setProperty("--burst-c1", "#22c55e");
-          el.style.setProperty("--burst-c2", "#6d28d9");
-        }
+        el.style.setProperty("--burst-c1", "#22c55e");
+        el.style.setProperty("--burst-c2", "#6d28d9");
         const s = 6 + Math.random() * 6;
         el.style.width = el.style.height = s + "px";
         el.style.left = `${x}px`;
@@ -63,7 +57,7 @@ export default function Navbar() {
     } catch {}
   }, []);
 
-  // Scroll durumu (throttle)
+  // Scroll durumu
   useEffect(() => {
     let ticking = false;
     const onScroll = () => {
@@ -131,7 +125,7 @@ export default function Navbar() {
     [pathname]
   );
 
-  // Hover intent helpers (flicker önler)
+  // Hover intent helpers
   const openNow = () => {
     if (hoverTimer.current) clearTimeout(hoverTimer.current);
     setServicesOpen(true);
@@ -143,7 +137,7 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Skip link – klavye ile hızlı erişim */}
+      {/* Skip link */}
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-neutral-900 focus:px-3 focus:py-2 focus:text-white"
@@ -160,8 +154,8 @@ export default function Navbar() {
         ].join(" ")}
         role="banner"
       >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 overflow-visible">
-          <div className="flex items-center justify-between h-16 overflow-visible">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2" aria-label="Sahneva Anasayfa">
               <Image
@@ -176,13 +170,13 @@ export default function Navbar() {
             </Link>
 
             {/* Masaüstü Menü */}
-            <nav className="hidden md:flex items-center gap-6 overflow-visible" aria-label="Ana menü">
+            <nav className="hidden md:flex items-center gap-6" aria-label="Ana menü">
               <Link
                 href="/hakkimizda"
                 className={[
                   "text-sm font-medium transition",
-                  active("/hakkimizda") ? "text-[#815be0]" : "text-neutral-800",
-                  "hover:text-[#815be0]",
+                  active("/hakkimizda") ? "text-[#6d28d9]" : "text-neutral-800",
+                  "hover:text-[#6d28d9]",
                 ].join(" ")}
                 aria-current={active("/hakkimizda") ? "page" : undefined}
               >
@@ -191,7 +185,7 @@ export default function Navbar() {
 
               {/* Hizmetler Dropdown (Desktop) */}
               <div
-                className="relative overflow-visible"
+                className="relative"
                 ref={dropdownRef}
                 onMouseEnter={openNow}
                 onMouseLeave={closeWithDelay}
@@ -200,9 +194,9 @@ export default function Navbar() {
                   id={servicesBtnId}
                   type="button"
                   className={[
-                    "text-sm font-medium px-1 py-2 transition rounded",
-                    active("/hizmetler") ? "text-[#815be0]" : "text-neutral-800",
-                    "hover:text-[#815be0] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#815be0]/30",
+                    "text-sm font-medium px-1 py-2 rounded transition",
+                    active("/hizmetler") ? "text-[#6d28d9]" : "text-neutral-800",
+                    "hover:text-[#6d28d9] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6d28d9]/30",
                   ].join(" ")}
                   aria-haspopup="true"
                   aria-expanded={servicesOpen}
@@ -234,7 +228,7 @@ export default function Navbar() {
                           <Link
                             role="menuitem"
                             href={href}
-                            className="block px-4 py-2 text-sm text-neutral-800 hover:bg-[#f3f0ff] hover:text-[#815be0]"
+                            className="block px-4 py-2 text-sm text-neutral-800 hover:bg-[#f3f0ff] hover:text-[#6d28d9]"
                             onClick={() => setServicesOpen(false)}
                             aria-current={active(href) ? "page" : undefined}
                           >
@@ -251,20 +245,21 @@ export default function Navbar() {
                 href="/iletisim"
                 className={[
                   "text-sm font-medium transition",
-                  active("/iletisim") ? "text-[#815be0]" : "text-neutral-800",
-                  "hover:text-[#815be0]",
+                  active("/iletisim") ? "text-[#6d28d9]" : "text-neutral-800",
+                  "hover:text-[#6d28d9]",
                 ].join(" ")}
                 aria-current={active("/iletisim") ? "page" : undefined}
               >
                 İletişim
               </Link>
 
-              {/* WhatsApp CTA (Desktop) — yüksek kontrast + burst */}
+              {/* WhatsApp CTA (Desktop) — yüksek kontrast */}
               <a
                 href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="ml-2 inline-flex items-center rounded-lg px-3 py-2 text-white text-sm font-semibold 
+                aria-label="WhatsApp üzerinden teklif iste"
+                className="ml-2 inline-flex items-center gap-2 rounded-lg px-3 py-2 text-white text-sm font-semibold
                            bg-[#15803d] hover:bg-[#166534] transition-colors focus:outline-none
                            focus-visible:ring-2 focus-visible:ring-[#6d28d9]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 onClick={burst}
@@ -277,7 +272,7 @@ export default function Navbar() {
             <button
               onClick={() => setMobileOpen((s) => !s)}
               className="md:hidden inline-flex items-center justify-center p-2 rounded
-                         focus:outline-none focus-visible:ring-2 focus-visible:ring-[#815be0]/40"
+                         focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6d28d9]/40"
               aria-label="Menüyü aç/kapat"
               aria-expanded={mobileOpen}
               aria-controls="mobile-menu"
@@ -383,7 +378,7 @@ export default function Navbar() {
                     <Link
                       href={href}
                       onClick={() => setMobileOpen(false)}
-                      className="block px-3 py-2 text-sm text-neutral-800 hover:bg-[#f3f0ff] hover:text-[#815be0]"
+                      className="block px-3 py-2 text-sm text-neutral-800 hover:bg-[#f3f0ff] hover:text-[#6d28d9]"
                       aria-current={active(href) ? "page" : undefined}
                     >
                       {label}
@@ -403,11 +398,12 @@ export default function Navbar() {
             İletişim
           </Link>
 
-          {/* WhatsApp CTA (Mobil) — burst + focus ring */}
+          {/* WhatsApp CTA (Mobil) — yüksek kontrast */}
           <a
             href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum."
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="WhatsApp üzerinden teklif iste"
             className="block text-center mt-3 rounded-lg px-3 py-2 text-white text-sm font-semibold 
                        bg-[#15803d] hover:bg-[#166534] transition-colors focus:outline-none
                        focus-visible:ring-2 focus-visible:ring-[#6d28d9]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white"

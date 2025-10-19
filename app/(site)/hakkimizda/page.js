@@ -21,7 +21,7 @@ export const metadata = {
   robots: { index: true, follow: true },
 };
 
-// ISR – içerik değişiklikleri hızlı gelsin
+// ISR
 export const revalidate = 60;
 
 export default function HakkimizdaPage() {
@@ -47,18 +47,9 @@ export default function HakkimizdaPage() {
     "Kesintisiz teknik destek ve danışmanlık",
   ];
 
-  const LOGOS = [
-    "/img/logos/1.webp",
-    "/img/logos/2.webp",
-    "/img/logos/3.webp",
-    "/img/logos/4.webp",
-    "/img/logos/5.webp",
-    "/img/logos/6.webp",
-  ];
-
   return (
     <div className="pb-12 md:pb-16 bg-white text-neutral-900">
-      {/* HERO – diğer sayfalarla aynı stil */}
+      {/* HERO */}
       <section className="relative h-[44vh] md:h-[56vh] w-full overflow-hidden rounded-b-3xl">
         <Image
           src="/img/hakkimizda.webp"
@@ -108,7 +99,7 @@ export default function HakkimizdaPage() {
         </p>
       </section>
 
-      {/* Neden Sahneva? / USP kutuları */}
+      {/* Neden Sahneva? */}
       <section className="container mx-auto px-4 mt-10 max-w-5xl">
         <h2 className="text-2xl md:text-3xl font-bold">Neden Sahneva?</h2>
         <div className="mt-4 grid gap-4 md:grid-cols-2">
@@ -152,27 +143,7 @@ export default function HakkimizdaPage() {
         </ul>
       </section>
 
-      {/* Referans/Logolar (opsiyonel görsel şerit) */}
-      <section className="container mx-auto px-4 mt-12 max-w-5xl">
-        <h2 className="text-2xl md:text-3xl font-bold mb-4">Birlikte Çalıştığımız Markalar</h2>
-        <div className="grid grid-cols-3 md:grid-cols-6 gap-4 items-center">
-          {LOGOS.map((src, i) => (
-            <div key={i} className="relative h-12 md:h-14 grayscale opacity-80 hover:opacity-100 transition">
-              <Image
-                src={src}
-                alt={`Referans logo ${i + 1}`}
-                fill
-                sizes="(max-width:768px) 33vw, 16vw"
-                className="object-contain"
-                loading="lazy"
-              />
-            </div>
-          ))}
-        </div>
-        <p className="sr-only">Logo görselleri temsilidir.</p>
-      </section>
-
-      {/* SSS kısa blok (SEO + içerik zenginliği) */}
+      {/* SSS kısa blok */}
       <section className="container mx-auto px-4 mt-12 max-w-5xl">
         <h2 className="text-2xl md:text-3xl font-bold mb-4">Sıkça Sorulanlar</h2>
         <div className="grid md:grid-cols-2 gap-4">
@@ -210,7 +181,7 @@ export default function HakkimizdaPage() {
         </div>
       </section>
 
-      {/* JSON-LD: AboutPage + Breadcrumb (layout'taki Organization ile uyumlu) */}
+      {/* JSON-LD */}
       <Script
         id="ld-about"
         type="application/ld+json"

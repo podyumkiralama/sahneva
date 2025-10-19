@@ -5,7 +5,7 @@ import Script from "next/script";
 
 export const metadata = {
   title:
-    "Ses ve Işık Sistemleri Kiralama | Profesyonel Sahne Çözümleri - Sahneva",
+    "Ses ve Işık Sistemleri Kiralama | Profesyonel Sahne Çözümleri",
   description:
     "Konser, düğün, festival ve kurumsal etkinlikler için profesyonel ses ve ışık sistemleri kiralama. Line array, robot ışık ve teknik kurulum desteği.",
   alternates: {

@@ -5,13 +5,8 @@ export default function robots() {
     rules: {
       userAgent: "*",
       allow: "/",
-      // Disallow örnekleri (gerekirse):
-      // disallow: ["/api/", "/_next/", "/private/"],
     },
-    sitemap: [
-      `${host}/sitemap.xml`,
-      `${host}/sitemap-images.xml`,
-    ],
+    sitemap: [`${host}/sitemap.xml`],
     host,
   };
 }

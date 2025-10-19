@@ -1,12 +1,12 @@
 // app/podyum-kiralama/page.js
 import Image from "next/image";
 import Link from "next/link";
+import Script from "next/script";
 import { getService } from "@/lib/data";
 
 const svc = getService("podyum");
 
 const CONTENT = {
-  heroOverlay: true,
   gallery: ["/img/podyum/1.webp", "/img/podyum/2.webp", "/img/podyum/3.webp"],
   packages: [
     {
@@ -42,19 +42,31 @@ const CONTENT = {
   ],
 };
 
-// ⚠️ Title artık sadece hizmet adını veriyor.
-// Root layout'taki template (örn. "%s | Sahneva") otomatik ekler.
+/**
+ * NOT:
+ * Eğer root layout'ta title template kullanıyorsan (`%s | Sahneva`),
+ * aşağıdaki başlık markasız kalmalı: "Podyum Kiralama".
+ * Template yoksa `" | Sahneva"` ekleyebilirsin.
+ */
 export const metadata = {
   title: svc?.title ?? "Podyum Kiralama",
   description:
     svc?.excerpt ||
     "Podyum sahne kiralama: 1×1 ve 2×1 panellerle modüler kurulum, kaymaz kaplama, rampa/korkuluk ve profesyonel montaj.",
   alternates: { canonical: "https://sahneva.com/podyum-kiralama" },
+  keywords: [
+    "podyum kiralama",
+    "podyum sahne kiralama",
+    "modüler podyum",
+    "sahne podyum platform",
+    "podyum kurulumu",
+    "İstanbul podyum kiralama",
+  ],
   openGraph: {
-    title: `${svc?.title ?? "Podyum Kiralama"} | Sahneva`,
+    title: svc?.title ?? "Podyum Kiralama",
     description:
       svc?.desc ||
-      "Konser, lansman, düğün ve çadır içi etkinlikler için podyum sahne kiralama. Modüler 1×1 & 2×1 paneller, tekerlekli rizer.",
+      "Konser, lansman ve düğünler için podyum sahne kiralama. Modüler 1×1 & 2×1 paneller, kaymaz kaplama.",
     url: "https://sahneva.com/podyum-kiralama",
     type: "article",
     images: [{ url: svc?.img ?? "/img/podyum/1.webp" }],
@@ -78,9 +90,9 @@ export default function Page() {
             src={heroSrc}
             alt={title}
             fill
+            priority
             sizes="100vw"
             className="object-cover object-center"
-            priority
           />
         )}
         <div className="absolute inset-0 bg-black/45" aria-hidden="true" />
@@ -130,9 +142,10 @@ export default function Page() {
               <div key={i} className="relative aspect-[4/3] overflow-hidden rounded-xl group">
                 <Image
                   src={src}
-                  alt={`${title} görsel ${i + 1}`}
+                  alt={`${title} kurulum görseli ${i + 1}`}
                   fill
-                  sizes="(max-width: 1024px) 50vw, 33vw"
+                  loading="lazy"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
@@ -140,6 +153,45 @@ export default function Page() {
           </div>
         </section>
       )}
+
+      {/* İLGİLİ HİZMETLER (internal linking) */}
+      <section className="container py-8">
+        <h2 className="text-2xl font-bold mb-4">İlgili Hizmetler</h2>
+        <ul className="flex flex-wrap gap-3 text-sm">
+          <li>
+            <Link
+              href="/sahne-kiralama"
+              className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50"
+            >
+              Sahne Kiralama
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/led-ekran-kiralama"
+              className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50"
+            >
+              LED Ekran Kiralama
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/ses-isik-sistemleri"
+              className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50"
+            >
+              Ses &amp; Işık Sistemleri
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/cadir-kiralama"
+              className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50"
+            >
+              Çadır Kiralama
+            </Link>
+          </li>
+        </ul>
+      </section>
 
       {/* CTA */}
       <section className="container pb-14">
@@ -167,6 +219,99 @@ export default function Page() {
           </div>
         </div>
       </section>
+
+      {/* JSON-LD: Service + Breadcrumb */}
+      <Script
+        id="ld-service"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Service",
+            serviceType: "Podyum Kiralama",
+            name: "Podyum Kiralama",
+            description:
+              "Modüler 1×1 ve 2×1 panellerle podyum kiralama; kaymaz kaplama, rampa/korkuluk ve profesyonel kurulum.",
+            areaServed: { "@type": "Country", name: "TR" },
+            provider: {
+              "@type": "LocalBusiness",
+              name: "Sahneva",
+              url: "https://www.sahneva.com",
+              telephone: "+90 545 304 8671",
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "İstanbul",
+                addressCountry: "TR",
+              },
+            },
+            hasOfferCatalog: {
+              "@type": "OfferCatalog",
+              name: "Podyum Paketleri",
+              itemListElement: [
+                {
+                  "@type": "Offer",
+                  name: "Mini Podyum — 12 m²",
+                  description:
+                    "6× (1×2 m) panel, 40 cm yükseklik, kaymaz kaplama, kurulum+söküm.",
+                  priceSpecification: {
+                    "@type": "PriceSpecification",
+                    priceCurrency: "TRY",
+                  },
+                  availability: "https://schema.org/InStock",
+                },
+                {
+                  "@type": "Offer",
+                  name: "Orta Podyum — 24 m²",
+                  description:
+                    "12× (1×2 m) panel, 60 cm yükseklik, merdiven, dengeleme, kurulum+söküm.",
+                  priceSpecification: {
+                    "@type": "PriceSpecification",
+                    priceCurrency: "TRY",
+                  },
+                  availability: "https://schema.org/InStock",
+                },
+                {
+                  "@type": "Offer",
+                  name: "Pro Podyum — 48 m²",
+                  description:
+                    "24× (1×2 m) panel, 80–100 cm yükseklik, rampa/korkuluk, etek/brandalama.",
+                  priceSpecification: {
+                    "@type": "PriceSpecification",
+                    priceCurrency: "TRY",
+                  },
+                  availability: "https://schema.org/InStock",
+                },
+              ],
+            },
+          }),
+        }}
+      />
+      <Script
+        id="ld-breadcrumb"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Anasayfa",
+                item: "https://www.sahneva.com",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Podyum Kiralama",
+                item: "https://www.sahneva.com/podyum-kiralama",
+              },
+            ],
+          }),
+        }}
+      />
     </>
   );
 }
@@ -245,7 +390,7 @@ function LongArticlePodyum() {
             <li>• AVM etkinlikleri, roadshow ve tanıtım sahneleri</li>
           </ul>
           <ul className="space-y-1">
-            <li>• Düğün & özel davet sahneleri</li>
+            <li>• Düğün &amp; özel davet sahneleri</li>
             <li>• Mezuniyet törenleri, okul etkinlikleri</li>
             <li>• Spor organizasyonları ve seremoni alanları</li>
             <li>• Çadır içi zemin düzleştirme ve geçici yürüyüş yolları</li>
@@ -256,7 +401,7 @@ function LongArticlePodyum() {
       {/* Düğün & Kurumsal Kurulum İpuçları */}
       <article className="rounded-2xl border bg-white p-6">
         <h2 className="text-2xl md:text-3xl font-extrabold">
-          Düğün & Kurumsal Etkinliklerde Podyum Nasıl Kurulmalı?
+          Düğün &amp; Kurumsal Etkinliklerde Podyum Nasıl Kurulmalı?
         </h2>
 
         <div className="mt-4 grid gap-6 md:grid-cols-2">

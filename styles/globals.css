@@ -161,3 +161,37 @@ html.hc a{ text-decoration:underline; }
 @supports (font-synthesis-weight: auto){
   html{ font-synthesis-weight: auto; font-synthesis-style: auto; }
 }
+/* ---- ACCESSIBILITY / CONTRAST ---- */
+.btn {
+  @apply inline-flex items-center justify-center font-semibold rounded-lg px-4 py-2 transition;
+}
+
+.btn-whatsapp {         /* WhatsApp yeşili – yüksek kontrast */
+  background: #25D366;  /* resmi ton */
+  color: #ffffff;
+}
+.btn-whatsapp:hover { filter: brightness(0.95); }
+
+.btn-primary-light {    /* beyaz zeminli birincil */
+  @apply bg-white text-[#815be0];
+}
+.btn-primary-light:hover { @apply opacity-90; }
+
+.btn-outline-light {    /* koyu zemin üzerinde okunur outline */
+  @apply bg-white/20 border border-white/60 text-white;
+}
+.btn-outline-light:hover { @apply bg-white/30; }
+
+/* CTA arka planı metin kontrastını yükselt */
+.section-cta {
+  background: linear-gradient(90deg, #815be0 0%, #6e4cd4 100%);
+  color: #fff;
+}
+
+/* img skeleton hafif ama kontrastlı */
+.img-skeleton {
+  background: #0b0f1a;
+}
+
+/* küçük not metinleri */
+.muted { @apply text-neutral-500 text-sm; }

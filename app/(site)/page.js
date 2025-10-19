@@ -5,9 +5,9 @@ import ProjectsGallery from "../../components/ProjectsGallery";
 import CorporateEvents from "../../components/CorporateEvents";
 import Faq from "../../components/Faq";
 import HeroCtasClient from "../../components/HeroCtasClient";
+import Revibanner from "../../components/Revibanner"; // <-- EKLENDİ
 
-// Statik üretim: CDN’den hızlı LCP
-export const revalidate = 3600; // 1 saat; istersen 0 (tam statik)
+export const revalidate = 3600;
 
 export default function HomePage() {
   return (
@@ -36,7 +36,6 @@ export default function HomePage() {
             sistemleri ve çadır kiralama. Hızlı teslim, profesyonel teknik ekip.
           </p>
 
-          {/* CTA'lar — client tarafı yalnızca burada */}
           <HeroCtasClient />
 
           <ul className="mt-6 grid max-w-3xl mx-auto grid-cols-1 sm:grid-cols-3 gap-3">
@@ -65,7 +64,10 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Kat altı içerik: boyamayı geciktir (content-visibility) */}
+      {/* REVİBANNER — HERO SONRASI */}
+      <Revibanner />
+
+      {/* Kat altı içerik */}
       <section className="section-lazy">
         <ServicesTabs />
       </section>
@@ -78,7 +80,7 @@ export default function HomePage() {
         <CorporateEvents />
       </section>
 
-      {/* === SEO ODAKLI METİN BLOĞU (Kurumsal organizasyon altına eklendi) === */}
+      {/* === SEO METİN BLOĞU (Kurumsal organizasyon altına) === */}
       <section className="section-lazy">
         <div className="container py-14 md:py-16">
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
@@ -89,10 +91,11 @@ export default function HomePage() {
             <article className="card">
               <h3 className="font-semibold text-lg mb-2">Uçtan Uca Teknik Hizmet</h3>
               <p className="text-neutral-700">
-                Sahneva; <strong>sahne sistemleri kiralama</strong>,{" "}
-                <strong>podyum kurulumu</strong>, <strong>LED ekran kiralama</strong> ve{" "}
-                <strong>ses ışık sistemi kurulumu</strong> alanlarında
-                uçtan uca çözümler sunar. Proje keşfi, çizim, kurulum ve canlı
+                Sahneva; <a href="/sahne-kiralama" className="underline hover:no-underline font-medium">sahne sistemleri kiralama</a>,{" "}
+                <a href="/podyum-kiralama" className="underline hover:no-underline font-medium">podyum kurulumu</a>,{" "}
+                <a href="/led-ekran-kiralama" className="underline hover:no-underline font-medium">LED ekran kiralama</a> ve{" "}
+                <a href="/ses-isik-sistemleri" className="underline hover:no-underline font-medium">ses ışık sistemi kurulumu</a>{" "}
+                alanlarında uçtan uca çözümler sunar. Proje keşfi, çizim, kurulum ve canlı
                 yönetim aşamalarının tamamını profesyonel ekibimiz yürütür. Kurumsal lansman,
                 bayi toplantısı, konser, festival ve <em>kurumsal organizasyon</em> türlerinin
                 tümünde güvenli ve ölçeklenebilir altyapı kurarız.
@@ -112,12 +115,16 @@ export default function HomePage() {
                 Aynı gün <strong>hızlı kurulum</strong>, yedekli ekipman ve 7/24
                 teknik destek ile riskleri minimize ederiz. İhtiyacınıza göre
                 en uygun çözümü önerip gereksiz maliyetleri önler, talep halinde
-                <strong> LED ekran fiyatları</strong> ve alternatif paketleri
+                <a href="/led-ekran-kiralama" className="underline hover:no-underline font-medium"> LED ekran fiyatları</a> ve alternatif paketleri
                 karşılaştırmalı olarak paylaşırız. Tüm işlerimiz sözleşmeli ve e-faturalıdır.
               </p>
               <p className="text-neutral-700 mt-3">
-                Teklif almak için hemen arayın ya da WhatsApp’tan yazın;
-                birkaç soru ile mekân, kişi sayısı ve içerik tipine göre doğru
+                Teklif almak için hemen arayın ya da{" "}
+                <a href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum."
+                   className="underline hover:no-underline font-medium" target="_blank" rel="noopener noreferrer">
+                  WhatsApp’tan yazın
+                </a>
+                ; birkaç soru ile mekân, kişi sayısı ve içerik tipine göre doğru
                 <strong> etkinlik prodüksiyon</strong> planını birlikte oluşturalım.
               </p>
             </article>

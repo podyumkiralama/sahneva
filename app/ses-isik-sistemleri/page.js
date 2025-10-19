@@ -3,221 +3,315 @@ import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
 
+// ---------- META ----------
 export const metadata = {
-  title:
-    "Ses ve Işık Sistemleri Kiralama | Profesyonel Sahne Çözümleri",
+  title: "Ses ve Işık Sistemleri Kiralama | Profesyonel Sahne Çözümleri",
   description:
     "Konser, düğün, festival ve kurumsal etkinlikler için profesyonel ses ve ışık sistemleri kiralama. Line array, robot ışık ve teknik kurulum desteği.",
-  alternates: {
-    canonical: "https://sahneva.com/ses-isik-sistemleri",
-  },
-  keywords: [
-    "ses sistemleri kiralama",
-    "ışık sistemleri kiralama",
-    "line array kiralama",
-    "robot ışık kiralama",
-    "profesyonel ses ışık",
-    "konser ses sistemi",
-    "düğün ışık sistemi",
-    "sahne sistemleri kiralama",
-  ],
+  alternates: { canonical: "https://sahneva.com/ses-isik-sistemleri" },
   openGraph: {
-    title:
-      "Ses ve Işık Sistemleri Kiralama | Profesyonel Sahne Çözümleri - Sahneva",
+    title: "Ses ve Işık Sistemleri Kiralama | Profesyonel Sahne Çözümleri",
     description:
       "Konser, düğün ve kurumsal etkinliklerde profesyonel ses ve ışık sistemleri. Line array, robot ışık ve teknik kurulum desteği.",
     url: "https://sahneva.com/ses-isik-sistemleri",
     type: "article",
-    images: [
-      { url: "/img/ses-isik/hero.webp" },
-    ],
+    images: [{ url: "/img/ses-isik/hero.webp" }],
   },
 };
 
-// İçerik değişiklikleri hızlı yansısın
+// (Opsiyonel) ISR
 export const revalidate = 60;
 
-export default function SesIsikSistemleriPage() {
+// ---------- İÇERİK ----------
+const CONTENT = {
+  heroOverlay: true,
+  gallery: ["/img/ses-isik/ses-sistemi.webp", "/img/ses-isik/isik-sistemi.webp"],
+  packages: [
+    {
+      name: "Salon Paketi — Konferans",
+      includes: [
+        "2× top kolon + 1× sub (aktif)",
+        "2× sahne monitörü",
+        "Dijital mikser (16–24ch)",
+        "2× kablosuz el/ yaka mikrofon",
+        "2× LED spot + 2× wash",
+        "Kurulum, test ve teknik ekip",
+      ],
+      note: "Toplantı, seminer ve salon etkinlikleri.",
+    },
+    {
+      name: "Açık Alan Paketi — Orta",
+      includes: [
+        "2× line array cluster + subs",
+        "Sahne monitörleme",
+        "Dijital mikser (32ch) + stagebox",
+        "4× kablosuz mikrofon",
+        "4× hareketli başlık + 6× wash + duman",
+        "Truss ön kiriş (8–10 m) + ground support",
+        "Kurulum, canlı miksaj ve show control",
+      ],
+      note: "Açık hava lansman, festival ve mitingler.",
+    },
+    {
+      name: "Konser Paketi — Pro",
+      includes: [
+        "4–6 kabin line array + subs (L/R)",
+        "Side fill + drum fill",
+        "48ch dijital mikser, monitör mikseri",
+        "Kablosuz sistemler, DI kutuları",
+        "12+ hareketli başlık (beam/spot/wash)",
+        "Blinder, strobe, haze/duman",
+        "Truss U set (ön/yan/arka) + rigging",
+        "Kurulum, soundcheck ve canlı yönetim",
+      ],
+      note: "Konser ve yüksek katılımlı etkinlikler.",
+    },
+  ],
+};
+
+// ---------- UZUN MAKALE ----------
+function LongArticleAudioLight() {
   return (
-    <main className="bg-white text-neutral-900">
-      {/* HERO */}
-      <section className="relative h-[320px] sm:h-[420px] md:h-[500px] flex items-center justify-center bg-neutral-900 text-white overflow-hidden rounded-b-3xl">
+    <section className="container max-w-4xl mx-auto py-10 md:py-14 space-y-10">
+      {/* Nedir? */}
+      <article className="space-y-4 text-neutral-800 leading-relaxed">
+        <h2 className="text-2xl md:text-3xl font-extrabold">
+          Ses & Işık Sistemleri Nedir?
+        </h2>
+        <p>
+          Profesyonel ses &amp; ışık; her noktada anlaşılır ses ve sahneye uygun
+          ışık atmosferi üretmeyi hedefler. <strong>Sahneva</strong> ekipleri;
+          keşif, projelendirme, kurulum ve canlı operasyonu uçtan uca yönetir.
+          Line array, dijital mikser, kablosuz mikrofon; RGBW spot, hareketli
+          başlık ve truss sistemleri standart envanterimizdir.
+        </p>
+      </article>
+
+      {/* Fiyatlar */}
+      <article className="rounded-2xl border bg-white p-6">
+        <h2 className="text-2xl md:text-3xl font-extrabold">
+          Kiralama Fiyatları Nasıl Belirlenir?
+        </h2>
+        <p className="mt-3 text-neutral-700">
+          Bütçe, alan ve ihtiyaçlara göre şekillenir. Temel parametreler:
+        </p>
+        <ul className="mt-4 grid gap-2 md:grid-cols-2 text-neutral-800">
+          <li className="flex gap-2">
+            <span className="mt-2 h-2 w-2 rounded-full bg-primary" />
+            Alan büyüklüğü (iç/dış), seyirci kapasitesi
+          </li>
+          <li className="flex gap-2">
+            <span className="mt-2 h-2 w-2 rounded-full bg-primary" />
+            Sistem gücü (line array/top+sub) & kanal ihtiyacı
+          </li>
+          <li className="flex gap-2">
+            <span className="mt-2 h-2 w-2 rounded-full bg-primary" />
+            Işık armatür sayısı ve truss/rigging metreleri
+          </li>
+          <li className="flex gap-2">
+            <span className="mt-2 h-2 w-2 rounded-full bg-primary" />
+            Teknik ekip, çalışma saatleri ve lojistik
+          </li>
+        </ul>
+        <div className="mt-5 rounded-xl bg-neutral-50 p-4 text-neutral-700">
+          <p>
+            Hızlı teklif için <strong>tarih/konum</strong>,{" "}
+            <strong>katılımcı sayısı</strong>, <strong>etkinlik türü</strong>{" "}
+            ve <strong>program akışını</strong> paylaşmanız yeterli.
+          </p>
+        </div>
+      </article>
+
+      {/* Kullanım alanları */}
+      <article className="rounded-2xl border bg-white p-6">
+        <h2 className="text-2xl md:text-3xl font-extrabold">
+          Nerelerde Kullanılır?
+        </h2>
+        <div className="grid md:grid-cols-2 gap-2 mt-3 text-neutral-800">
+          <ul className="space-y-1">
+            <li>• Konser ve festival sahneleri</li>
+            <li>• Lansman, panel ve konferanslar</li>
+            <li>• Düğün ve davet organizasyonları</li>
+            <li>• Miting ve belediye etkinlikleri</li>
+          </ul>
+          <ul className="space-y-1">
+            <li>• Okul etkinlikleri ve mezuniyet</li>
+            <li>• Fuar & AVM etkinlikleri</li>
+            <li>• Roadshow ve açık hava gösterileri</li>
+            <li>• Tören ve ödül geceleri</li>
+          </ul>
+        </div>
+      </article>
+
+      {/* Teknik/İpucu bloğu */}
+      <article className="rounded-2xl border bg-white p-6">
+        <h2 className="text-2xl md:text-3xl font-extrabold">
+          Doğru Sistem Seçimi İçin İpuçları
+        </h2>
+        <div className="mt-4 grid gap-6 md:grid-cols-2">
+          <div>
+            <h3 className="text-xl font-bold">Ses</h3>
+            <ul className="mt-2 space-y-1 text-neutral-800">
+              <li>• Line array uzak mesafe, top+sub orta/ küçük alanlar için.</li>
+              <li>• Dijital mikser + stagebox kablo ve routing’i sadeleştirir.</li>
+              <li>• Monitörleme (wedges/iem) sahne hakimiyetini artırır.</li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="text-xl font-bold">Işık</h3>
+            <ul className="mt-2 space-y-1 text-neutral-800">
+              <li>• RGBW spot + wash temel aydınlatma; beam/spot efekt içindir.</li>
+              <li>• DMX sahne programları akışa göre sahnelenmelidir.</li>
+              <li>• Truss yük/askı ve güvenlik (safety) standart olmalıdır.</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      {/* Teknik Tablo */}
+      <article className="rounded-2xl border bg-white p-6">
+        <h3 className="text-xl font-bold mb-3">Teknik Özellikler (Özet)</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="text-left text-neutral-500">
+                <th className="p-2">Bileşen</th>
+                <th className="p-2">Detay</th>
+              </tr>
+            </thead>
+            <tbody className="[&>tr>*]:p-2 [&>tr]:border-b">
+              <tr>
+                <td>PA</td>
+                <td>Line array / top+sub konfigürasyonları</td>
+              </tr>
+              <tr>
+                <td>Mikser</td>
+                <td>Dijital (32–48ch), sahne stagebox</td>
+              </tr>
+              <tr>
+                <td>Mikrofon</td>
+                <td>Kablosuz el/yaka, enstrüman mikrofonları</td>
+              </tr>
+              <tr>
+                <td>Işık</td>
+                <td>RGBW spot, wash, beam/spot, blinder, strobe</td>
+              </tr>
+              <tr>
+                <td>Truss</td>
+                <td>Ön kiriş, yan kule, back truss / ground support</td>
+              </tr>
+              <tr>
+                <td>Kontrol</td>
+                <td>DMX controller, show playback</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+  );
+}
+
+// ---------- SAYFA ----------
+export default function Page() {
+  const title = "Ses ve Işık Sistemleri Kiralama";
+  const desc =
+    "Line array, dijital mikser ve robot ışıklarla profesyonel ses & ışık çözümleri. Keşif, kurulum, canlı operasyon ve söküm dahil.";
+
+  return (
+    <>
+      {/* HERO (LED sayfasıyla aynı yükseklik/stil) */}
+      <section className="relative h-[300px] md:h-[400px] w-full overflow-hidden rounded-b-3xl">
         <Image
           src="/img/ses-isik/hero.webp"
           alt="Profesyonel sahne ses ve ışık sistemleri kurulumu"
           fill
-          priority
           sizes="100vw"
-          className="object-cover object-center opacity-65"
+          className="object-cover object-center"
+          priority
         />
-        {/* okunabilirlik için degrade */}
-        <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/30 to-transparent" />
-        <div className="relative z-10 text-center px-4">
-          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight mb-3">
-            Ses ve Işık Sistemleri Kiralama
+        {CONTENT.heroOverlay && (
+          <div className="absolute inset-0 bg-black/45" aria-hidden="true" />
+        )}
+        <div className="absolute inset-0 flex items-center justify-center text-center text-white px-4">
+          <h1 className="relative z-10 text-3xl md:text-5xl font-extrabold drop-shadow-lg">
+            {title}
           </h1>
-          <p className="max-w-2xl mx-auto text-base sm:text-lg text-neutral-100">
-            Konserden düğüne, festivalden kurumsal lansmana kadar her ölçekte
-            etkinlik için uçtan uca ses ve ışık çözümleri.
-          </p>
         </div>
       </section>
 
-      {/* GİRİŞ */}
-      <section className="container max-w-5xl mx-auto px-4 py-12">
-        <p className="text-neutral-800 leading-relaxed text-lg mb-6">
-          Etkili bir etkinlik deneyiminin arkasında iyi planlanmış bir sahne
-          altyapısı yatar. Sahneva olarak, konser, festival, düğün, miting,
-          mezuniyet töreni veya lansman fark etmeksizin her organizasyonda
-          kesintisiz <strong>ses dağılımı</strong> ve <strong>göz alıcı ışık efektleri</strong> ile
-          sahne atmosferinizi güçlendiriyoruz. Profesyonel ekipman parkurumuz ve
-          deneyimli teknik ekibimiz sayesinde keşiften kurulum ve canlı performansa kadar
-          her aşamada yanınızdayız.
-        </p>
-
-        <p className="text-neutral-800 leading-relaxed text-lg mb-0">
-          Hizmet kapsamımız;{" "}
-          <strong>line array hoparlör sistemleri</strong>, dijital/analog mikserler,
-          kablosuz mikrofonlar, <strong>RGBW LED spotlar</strong>, hareketli başlıklı
-          <strong> robot ışıklar</strong>, <strong>truss taşıyıcı sistemleri</strong> ve
-          <strong> sis makineleri</strong> dâhil sahne ışıklandırma çözümlerini içerir.
-          Kurulum; etkinliğin türü, mekânın iç/dış oluşu, seyirci alanı ve akış planına göre projelendirilir.
-        </p>
+      {/* Kısa açıklama */}
+      <section className="container max-w-4xl mx-auto py-8">
+        <p className="text-neutral-700 leading-relaxed text-lg">{desc}</p>
       </section>
 
-      {/* SES SİSTEMLERİ */}
-      <section className="container max-w-5xl mx-auto px-4 pb-12">
-        <h2 className="text-2xl md:text-3xl font-bold mb-4">🎤 Profesyonel Ses Sistemleri</h2>
+      {/* Uzun makale */}
+      <LongArticleAudioLight />
 
-        <figure className="mb-6">
-          <Image
-            src="/img/ses-isik/ses-sistemi.webp"
-            alt="Festival sahnesinde line array ses sistemi kurulumu"
-            width={1200}
-            height={675}
-            loading="lazy"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1200px"
-            className="rounded-xl shadow-md object-cover w-full"
-          />
-          <figcaption className="mt-2 text-sm text-neutral-600 text-center">
-            Festival sahnesinde line array ses sistemi kurulumu
-          </figcaption>
-        </figure>
+      {/* Paketler (LED ile aynı grid/kart yapısı) */}
+      {!!CONTENT.packages.length && (
+        <section className="container py-8">
+          <h2 className="text-2xl font-bold mb-6">Paket Örnekleri</h2>
+          <div className="grid gap-6 md:grid-cols-3">
+            {CONTENT.packages.map((p, i) => (
+              <article key={`pkg-${i}`} className="rounded-2xl border bg-white p-5">
+                <h3 className="text-lg font-semibold">{p.name}</h3>
+                <ul className="mt-3 space-y-1 text-neutral-700">
+                  {p.includes.map((inc, ii) => (
+                    <li key={`pkgi-${i}-${ii}`} className="flex gap-2">
+                      <span aria-hidden>•</span> <span>{inc}</span>
+                    </li>
+                  ))}
+                </ul>
+                {p.note && <p className="mt-3 text-sm text-neutral-500">{p.note}</p>}
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
 
-        <p className="mb-6 leading-relaxed text-neutral-800">
-          Profesyonel ses kurulumlarında hedef; her noktada anlaşılır ve dengeli ses elde etmektir.
-          Büyük açık alanlarda <strong>line array</strong> sistemler uzak mesafelere bozulmadan
-          ulaşım sağlar; düğün ve salon etkinliklerinde kompakt sistemler tercih edilir.
-        </p>
+      {/* Galeri */}
+      {!!CONTENT.gallery.length && (
+        <section className="container py-8">
+          <h2 className="text-2xl font-bold mb-6">Kurulumdan Görseller</h2>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {CONTENT.gallery.map((src, i) => (
+              <div key={src} className="relative aspect-[4/3] overflow-hidden rounded-xl group">
+                <Image
+                  src={src}
+                  alt={`${title} görsel ${i + 1}`}
+                  fill
+                  loading="lazy"
+                  sizes="(max-width: 1024px) 50vw, 33vw"
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
-        <ul className="list-disc list-inside space-y-2 mb-6 text-neutral-800">
-          <li>Line Array hoparlör sistemleri (uzun mesafe ses dağılımı)</li>
-          <li>Dijital ve analog mikserler, sahne monitörleme</li>
-          <li>Kablosuz, yaka ve el mikrofon sistemleri</li>
-          <li>DJ setup ve çok kanallı kayıt imkânları</li>
-          <li>Kurulum, ses testi ve canlı miksaj için teknik ekip</li>
-        </ul>
-
-        <p className="leading-relaxed text-neutral-800">
-          Hoparlör yerleşimleri; yankı, rüzgâr ve seyirci yoğunluğu dikkate alınarak planlanır.
-          Böylece alanın tamamında eşit ses dağılımı hedeflenir.
-        </p>
-      </section>
-
-      {/* IŞIK SİSTEMLERİ */}
-      <section className="container max-w-5xl mx-auto px-4 pb-12">
-        <h2 className="text-2xl md:text-3xl font-bold mb-4">💡 Işık Sistemleri ve Sahne Atmosferi</h2>
-
-        <figure className="mb-6">
-          <Image
-            src="/img/ses-isik/isik-sistemi.webp"
-            alt="RGBW LED spotlar ve robot ışıklarla sahne aydınlatması"
-            width={1200}
-            height={675}
-            loading="lazy"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1200px"
-            className="rounded-xl shadow-md object-cover w-full"
-          />
-          <figcaption className="mt-2 text-sm text-neutral-600 text-center">
-            RGBW spotlar ve robot ışıklarla sahne aydınlatması
-          </figcaption>
-        </figure>
-
-        <p className="mb-6 leading-relaxed text-neutral-800">
-          Işıklandırma bir etkinliğin enerjisini doğrudan etkiler.{" "}
-          <strong>RGBW LED spotlar</strong>, hareketli başlıklı <strong>robot ışıklar</strong>, beam efektleri
-          ve özel sis makineleriyle sahnenizi bambaşka bir boyuta taşıyoruz. Truss üzerinde kurulan
-          armatürler <strong>DMX kontrol</strong> ile ritim ve akışa uygun sahneler oluşturur.
-        </p>
-
-        <ul className="list-disc list-inside space-y-2 mb-6 text-neutral-800">
-          <li>RGBW LED spot sistemleri, wash & spot kombinasyonları</li>
-          <li>Hareketli başlıklı robot ışık ve beam efektleri</li>
-          <li>Truss taşıyıcı sistem kurulumu ve güvenlik ekipmanları</li>
-          <li>Sis/şaft makineleri ile atmosfer güçlendirme</li>
-          <li>DMX ile senkronize ışık show programlaması</li>
-        </ul>
-
-        <p className="leading-relaxed text-neutral-800">
-          Düğünlerde dans pisti ve sahne çevresinde dekoratif ışıklar; kurumsal lansmanlarda
-          logo aydınlatmaları ve vurgu spotları, konserlerde ise yoğun beam-robot kombinasyonları tercih edilir.
-        </p>
-      </section>
-
-      {/* KULLANIM ALANLARI */}
-      <section className="bg-neutral-50 py-12">
-        <div className="container max-w-5xl mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6">
-            📍 Ses &amp; Işık Sistemlerinin Kullanım Alanları
-          </h2>
-          <ul className="grid sm:grid-cols-2 gap-3 text-neutral-800">
-            <li>🎶 Konser ve festival organizasyonları</li>
-            <li>💼 Kurumsal lansman ve toplantılar</li>
-            <li>💍 Düğün ve özel davet sahneleri</li>
-            <li>🏛 Belediye etkinlikleri, miting ve açılışlar</li>
-            <li>🏫 Mezuniyet törenleri ve okul etkinlikleri</li>
-            <li>🏢 AVM etkinlikleri, fuar ve roadshow sahneleri</li>
-          </ul>
-        </div>
-      </section>
-
-      {/* İLGİLİ HİZMETLER — İç link (SEO) */}
-      <section className="container max-w-5xl mx-auto px-4 py-10">
+      {/* İlgili Hizmetler (LED sayfasıyla aynı konum/stil) */}
+      <section className="container py-8">
         <h2 className="text-2xl font-bold mb-4">İlgili Hizmetler</h2>
         <ul className="flex flex-wrap gap-3 text-sm">
-          <li>
-            <Link href="/sahne-kiralama" className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50">
-              Sahne Kiralama
-            </Link>
-          </li>
-          <li>
-            <Link href="/podyum-kiralama" className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50">
-              Podyum Kiralama
-            </Link>
-          </li>
-          <li>
-            <Link href="/led-ekran-kiralama" className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50">
-              LED Ekran Kiralama
-            </Link>
-          </li>
-          <li>
-            <Link href="/cadir-kiralama" className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50">
-              Çadır Kiralama
-            </Link>
-          </li>
+          <li><Link href="/sahne-kiralama" className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50">Sahne Kiralama</Link></li>
+          <li><Link href="/podyum-kiralama" className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50">Podyum Kiralama</Link></li>
+          <li><Link href="/led-ekran-kiralama" className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50">LED Ekran Kiralama</Link></li>
+          <li><Link href="/cadir-kiralama" className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50">Çadır Kiralama</Link></li>
         </ul>
       </section>
 
       {/* CTA */}
-      <section className="container max-w-5xl mx-auto px-4 pb-14">
-        <div className="flex flex-col items-center justify-between gap-4 rounded-2xl bg-gradient-to-r from-[#815be0] to-[#6d28d9] p-6 text-center text-white md:flex-row md:p-8 md:text-left">
-          <h3 className="text-xl md:text-2xl font-bold">
-            Etkinliğiniz İçin Profesyonel Ses & Işık Sistemleri
-          </h3>
+      <section className="container pb-14">
+        <div className="flex flex-col items-center justify-between gap-4 rounded-2xl bg-gradient-to-r from-primary to-primary/80 p-6 text-center text-white md:flex-row md:p-8 md:text-left">
+          <h2 className="text-xl font-bold md:text-2xl">
+            {title} hakkında teklif almak ister misiniz?
+          </h2>
           <div className="flex justify-center gap-3 md:justify-end">
             <Link
               href="/iletisim"
-              className="rounded-lg bg-white px-4 py-2 font-semibold text-[#6d28d9] hover:opacity-90"
+              className="rounded-lg bg-white px-4 py-2 font-semibold text-primary hover:opacity-90"
             >
               İletişime Geç
             </Link>
@@ -258,28 +352,6 @@ export default function SesIsikSistemleriPage() {
                 addressCountry: "TR",
               },
             },
-            hasOfferCatalog: {
-              "@type": "OfferCatalog",
-              name: "Ses & Işık Paketleri",
-              itemListElement: [
-                {
-                  "@type": "Offer",
-                  name: "Line Array + Dijital Mikser Paketi",
-                  description:
-                    "Line array topluluk seslendirme, sahne monitörleri ve dijital miksaj.",
-                  availability: "https://schema.org/InStock",
-                  priceSpecification: { "@type": "PriceSpecification", priceCurrency: "TRY" },
-                },
-                {
-                  "@type": "Offer",
-                  name: "Robot Işık + Truss Paket",
-                  description:
-                    "Hareketli başlıklı robot ışıklar, beam efektleri ve truss montaj.",
-                  availability: "https://schema.org/InStock",
-                  priceSpecification: { "@type": "PriceSpecification", priceCurrency: "TRY" },
-                },
-              ],
-            },
           }),
         }}
       />
@@ -298,6 +370,6 @@ export default function SesIsikSistemleriPage() {
           }),
         }}
       />
-    </main>
+    </>
   );
 }

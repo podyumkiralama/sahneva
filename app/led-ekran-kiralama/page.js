@@ -279,8 +279,7 @@ export default function Page() {
             ))}
           </div>
           <p className="mt-3 text-sm text-neutral-500">
-            Not: Görselleri <code>/public/img/led/</code> klasörüne ekleyin.
-          </p>
+                      </p>
         </section>
       )}
 

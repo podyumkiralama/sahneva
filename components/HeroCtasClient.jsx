@@ -1,4 +1,3 @@
-// components/HeroCtasClient.jsx
 "use client";
 import { useCallback } from "react";
 
@@ -7,8 +6,7 @@ export default function HeroCtasClient() {
     try {
       const x = e?.clientX ?? window.innerWidth / 2;
       const y = e?.clientY ?? 100;
-      const n = 10;
-      const life = 600;
+      const n = 10, life = 600;
       for (let i = 0; i < n; i++) {
         const el = document.createElement("span");
         el.className = "burst-particle";
@@ -31,23 +29,11 @@ export default function HeroCtasClient() {
   }, []);
 
   return (
-    <div
-      className="
-        mx-auto max-w-xl
-        flex flex-col sm:flex-row items-stretch sm:items-center
-        gap-3 sm:gap-4
-      "
-    >
+    <div className="flex justify-center gap-3 sm:gap-4">
+      {/* Eski kompakt/pil stil: yan yana ve sabit genişlik */}
       <a
         href="tel:+905453048671"
-        className="
-          w-full sm:w-auto
-          inline-flex justify-center items-center
-          rounded-xl px-5 py-3 text-base font-semibold
-          text-white bg-[#4f46e5] hover:bg-[#4338ca]
-          focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1f1f1f]
-          shadow-[0_6px_20px_-6px_rgba(79,70,229,.6)]
-        "
+        className="btn btn-primary shrink-0"
         onClick={burst}
         aria-label="Telefonla hemen ara"
       >
@@ -56,18 +42,10 @@ export default function HeroCtasClient() {
 
       <a
         href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum."
-        target="_blank"
-        rel="noopener noreferrer"
-        className="
-          w-full sm:w-auto
-          inline-flex justify-center items-center
-          rounded-xl px-5 py-3 text-base font-semibold
-          text-white bg-[#15803d] hover:bg-[#166534]
-          focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1f1f1f]
-          shadow-[0_6px_20px_-6px_rgba(21,128,61,.6)]
-        "
-        aria-label="WhatsApp üzerinden teklif iste"
+        target="_blank" rel="noopener noreferrer"
+        className="btn btn-accent shrink-0"
         onClick={burst}
+        aria-label="WhatsApp üzerinden teklif iste"
       >
         WhatsApp Teklif
       </a>

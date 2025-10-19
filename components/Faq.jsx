@@ -4,52 +4,58 @@
 import { useMemo } from "react";
 
 export default function Faq() {
+  // SEO’ya optimize 4 soru-cevap + kalıcı anchor slug
   const items = useMemo(
     () => [
       {
-        q: "Podyum kurulumu ne kadar sürer?",
-        a:
-          "Podyum kurulumu, ölçülere ve zemin koşullarına göre genellikle 1–3 saat arasında tamamlanır. Teknik ekibimiz güvenli ve hızlı montaj yapar.",
-        slug: "podyum-kurulumu-sure",
+        q: "Podyum kurulumu ne kadar sürer ve kurulumda kaç kişilik ekip görev alır?",
+        a: "Standart bir etkinlik podyumunun kurulumu genellikle 20–90 dakika arasında tamamlanır. Ölçüye göre ekip sayısı artırılarak süreç hızlandırılır.",
+        slug: "podyum-kurulumu-sure-ve-ekip",
       },
       {
-        q: "LED ekranlar dış mekanda kullanılabilir mi?",
-        a:
-          "Evet, IP65 korumalı LED ekranlarımız yağmur ve güneş ışığına karşı dayanıklıdır. Açık hava konserleri, mitingler ve festivaller için güvenle kullanılabilir.",
-        slug: "led-ekran-dis-mekan",
+        q: "LED ekranlar dış mekânda kullanılabilir mi ve hava koşullarına dayanıklı mı?",
+        a: "Evet, IP65 sınıfı dış mekân LED ekranlar yağmur, güneş ve toza dayanıklıdır. Parlaklık değeri yüksek paneller sayesinde gündüz dahi net görünür.",
+        slug: "led-ekran-dis-mekan-dayaniklilik",
       },
       {
-        q: "Ses ve ışık sistemlerinde teknik ekip sağlıyor musunuz?",
-        a:
-          "Evet, profesyonel ses ve ışık sistemleri kiralama hizmetimizde her zaman teknik ekip desteği sunuyoruz. Kurulum, canlı yönetim ve etkinlik boyunca anlık destek dahildir.",
-        slug: "ses-isik-teknik-ekip",
+        q: "Ses ve ışık sistemlerinde teknik ekip ve operatör desteği sağlıyor musunuz?",
+        a: "Kurulumdan etkinlik sonuna kadar ses ve ışık operatörleri sahada aktif görev alır. Canlı miks ve ışık senaryoları profesyonel ekip tarafından yönetilir.",
+        slug: "ses-isik-teknik-ekip-operator",
       },
       {
-        q: "Çadır kiralamada kurulum ve söküm hizmeti dahil mi?",
-        a:
-          "Evet, çadır kiralama hizmetimizde kurulum ve söküm hizmeti fiyata dahildir. Ayrıca zemin kaplama, güvenlik önlemleri ve yan aksesuarlar da talebe göre eklenebilir.",
-        slug: "cadir-kiralama-kurulum-sokum",
+        q: "Çadır kiralamada kurulum ve söküm hizmeti dâhil mi, ekstra ücret olur mu?",
+        a: "Taşıma, kurulum ve söküm standart hizmet kapsamındadır. Özel dekor veya iklimlendirme talebi olduğunda ekstra maliyetlendirme yapılabilir.",
+        slug: "cadir-kurulum-sokum-ucret",
       },
     ],
     []
   );
 
+  // JSON-LD (mini FAQ – yalnızca ana sayfa bloğu için)
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((it) => ({
+      "@type": "Question",
+      name: it.q,
+      acceptedAnswer: { "@type": "Answer", text: it.a },
+    })),
+  };
+
   return (
     <section className="container py-14 md:py-20" aria-labelledby="faq-heading">
-      <h2
-        id="faq-heading"
-        className="text-2xl md:text-3xl font-bold text-center mb-10"
-      >
+      {/* Structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <h2 id="faq-heading" className="text-2xl md:text-3xl font-bold text-center mb-10">
         Sık Sorulan Sorular
       </h2>
 
       <div className="mx-auto max-w-3xl space-y-4">
-        {items.map(({ q, a, slug }, i) => (
-          <details
-            key={slug}
-            id={slug}
-            className="faq-card group border rounded-lg p-4 open:shadow-sm"
-          >
+        {items.map(({ q, a, slug }) => (
+          <details key={slug} id={slug} className="faq-card group border rounded-lg p-4 open:shadow-sm">
             <summary
               className="flex cursor-pointer items-center justify-between gap-3 font-semibold text-neutral-900
                          focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6d28d9]/40 rounded-md"
@@ -71,7 +77,6 @@ export default function Faq() {
 
             <div className="mt-2 text-neutral-700">
               <p>{a}</p>
-              {/* küçük yardımcı satır: doğrudan bağlantı */}
               <div className="mt-3 text-xs text-neutral-500">
                 <a
                   href={`#${slug}`}

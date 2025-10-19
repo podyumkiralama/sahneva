@@ -7,33 +7,27 @@ import Faq from "../../components/Faq";
 import HeroCtasClient from "../../components/HeroCtasClient";
 import Revibanner from "../../components/Revibanner";
 
-export const revalidate = 3600;
+export const revalidate = 3600; // 1 saat
 
 export default function HomePage() {
   return (
-    // YATAY TAŞMAYI KİLİTLE
-    <main className="overflow-x-hidden">
+    <main>
       {/* HERO */}
-<div className="full-bleed relative img-skeleton" style={{backgroundColor:"#0b0f1a"}}>
-  <Image
-    src="/img/hero-bg.webp"
-    alt="Sahne, podyum, LED ekran ve ses-ışık ekipmanlarıyla kurulu etkinlik sahnesi"
-    fill
-    priority
-    fetchPriority="high"
-    decoding="async"
-    // 🔽 mobilde gerçek viewport genişliğini bildir (tarayıcı doğru boyda indirir)
-    sizes="100vw"
-    // 🔽 algısal hız için düşük çözünürlüklü blur
-    placeholder="blur"
-    blurDataURL="/img/hero-bg-low.webp"
-    // 🔽 dosya boyunu düşür (genelde 120–160 KB bandına iner)
-    quality={58}
-    className="object-cover will-change-transform"
-  />
-  <div className="absolute inset-0 hero-overlay" />
-  {/* ... hero yazıları ve CTA’lar aynen kalıyor ... */}
-</div>
+      <div className="full-bleed relative img-skeleton" style={{ backgroundColor: "#0b0f1a" }}>
+        <Image
+          src="/img/hero-bg.webp"
+          alt="Sahne, podyum, LED ekran ve ses-ışık ekipmanlarıyla kurulu etkinlik sahnesi"
+          fill
+          priority
+          fetchPriority="high"
+          decoding="async"
+          sizes="100vw"
+          placeholder="blur"
+          blurDataURL="/img/hero-bg-low.webp"
+          quality={58}
+          className="object-cover will-change-transform"
+        />
+        <div className="absolute inset-0 hero-overlay" />
 
         <div className="relative z-10 container py-20 md:py-32 text-center">
           <h1 className="text-white text-4xl md:text-6xl font-extrabold mb-4 tracking-tight">
@@ -44,6 +38,7 @@ export default function HomePage() {
             sistemleri ve çadır kiralama. Hızlı teslim, profesyonel teknik ekip.
           </p>
 
+          {/* CTA'lar (kontrast iyileştirmeli buton stilleri globals.css’te) */}
           <HeroCtasClient />
 
           <ul className="mt-6 grid max-w-3xl mx-auto grid-cols-1 sm:grid-cols-3 gap-3">
@@ -60,7 +55,9 @@ export default function HomePage() {
           </ul>
 
           <div className="mt-10 text-center">
-            <div className="text-5xl mb-3" aria-hidden>🎧</div>
+            <div className="text-5xl mb-3" aria-hidden>
+              🎧
+            </div>
             <h2 className="text-white text-2xl md:text-3xl font-semibold mb-2">
               Organizasyonunuz için Ücretsiz Danışmanlık
             </h2>
@@ -72,12 +69,8 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Revibanner'ı güvenli sarmalayıcı ile ekle */}
-      <section className="w-full overflow-x-hidden">
-        <div className="container">
-          <Revibanner />
-        </div>
-      </section>
+      {/* Google yorum banner’ı (sticky) */}
+      <Revibanner />
 
       {/* Kat altı içerik */}
       <section className="section-lazy">
@@ -92,7 +85,7 @@ export default function HomePage() {
         <CorporateEvents />
       </section>
 
-      {/* === SEO METİN BLOĞU === */}
+      {/* SEO METİN BLOĞU (Kurumsal organizasyon altına) */}
       <section className="section-lazy">
         <div className="container py-14 md:py-16">
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
@@ -103,10 +96,22 @@ export default function HomePage() {
             <article className="card">
               <h3 className="font-semibold text-lg mb-2">Uçtan Uca Teknik Hizmet</h3>
               <p className="text-neutral-700">
-                Sahneva; <a href="/sahne-kiralama" className="underline hover:no-underline font-medium">sahne sistemleri kiralama</a>,{" "}
-                <a href="/podyum-kiralama" className="underline hover:no-underline font-medium">podyum kurulumu</a>,{" "}
-                <a href="/led-ekran-kiralama" className="underline hover:no-underline font-medium">LED ekran kiralama</a> ve{" "}
-                <a href="/ses-isik-sistemleri" className="underline hover:no-underline font-medium">ses ışık sistemi kurulumu</a>{" "}
+                Sahneva;{" "}
+                <a href="/sahne-kiralama" className="underline hover:no-underline font-medium">
+                  sahne sistemleri kiralama
+                </a>
+                ,{" "}
+                <a href="/podyum-kiralama" className="underline hover:no-underline font-medium">
+                  podyum kurulumu
+                </a>
+                ,{" "}
+                <a href="/led-ekran-kiralama" className="underline hover:no-underline font-medium">
+                  LED ekran kiralama
+                </a>{" "}
+                ve{" "}
+                <a href="/ses-isik-sistemleri" className="underline hover:no-underline font-medium">
+                  ses ışık sistemi kurulumu
+                </a>{" "}
                 alanlarında uçtan uca çözümler sunar. Proje keşfi, çizim, kurulum ve canlı
                 yönetim aşamalarının tamamını profesyonel ekibimiz yürütür. Kurumsal lansman,
                 bayi toplantısı, konser, festival ve <em>kurumsal organizasyon</em> türlerinin
@@ -123,12 +128,16 @@ export default function HomePage() {
             <article className="card">
               <h3 className="font-semibold text-lg mb-2">Hızlı Kurulum, Şeffaf Fiyat</h3>
               <p className="text-neutral-700">
-                İstanbul merkezli ekibimizle Türkiye’nin her ilinde çalışıyoruz.
-                Aynı gün <strong>hızlı kurulum</strong>, yedekli ekipman ve 7/24
-                teknik destek ile riskleri minimize ederiz. İhtiyacınıza göre
-                en uygun çözümü önerip gereksiz maliyetleri önler, talep halinde
-                <a href="/led-ekran-kiralama" className="underline hover:no-underline font-medium"> LED ekran fiyatları</a> ve alternatif paketleri
-                karşılaştırmalı olarak paylaşırız. Tüm işlerimiz sözleşmeli ve e-faturalıdır.
+                İstanbul merkezli ekibimizle Türkiye’nin her ilinde çalışıyoruz. Aynı gün{" "}
+                <strong>hızlı kurulum</strong>, yedekli ekipman ve 7/24 teknik destek ile
+                riskleri minimize ederiz. İhtiyacınıza göre en uygun çözümü önerip gereksiz
+                maliyetleri önler, talep halinde
+                <a href="/led-ekran-kiralama" className="underline hover:no-underline font-medium">
+                  {" "}
+                  LED ekran fiyatları
+                </a>{" "}
+                ve alternatif paketleri karşılaştırmalı olarak paylaşırız. Tüm işlerimiz
+                sözleşmeli ve e-faturalıdır.
               </p>
               <p className="text-neutral-700 mt-3">
                 Teklif almak için hemen arayın ya da{" "}
@@ -147,7 +156,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      {/* === /SEO BLOĞU === */}
 
       <section className="section-lazy">
         <Faq />

@@ -5,7 +5,7 @@ export const metadata = {
   title: "İletişim | Sahneva",
   description:
     "Sahne, podyum, LED ekran, ses ve ışık sistemleri için bize hemen ulaşın. Hızlı teklif, modern iletişim formu ve konum bilgileri burada.",
-  alternates: { canonical: "/iletisim" },
+  alternates: { canonical: "https://www.sahneva.com/iletisim" },
 };
 
 const PHONE = "+905453048671";
@@ -13,7 +13,10 @@ const MAIL = "info@sahneva.com";
 const WHATSAPP_URL = `https://wa.me/${PHONE.replace("+", "")}?text=${encodeURIComponent(
   "Merhaba, etkinlik hakkında bilgi almak istiyorum."
 )}`;
-const MAPS_URL = "https://maps.app.goo.gl/3ZG46zKe7w9nKPa79?g_st=aç";
+
+// Google Business (profil ve yorum) — Footer'da da kullandık
+const GMB_PROFILE_URL = "https://g.page/r/CZhkMzkNOdgnEBI";
+const GMB_REVIEW_URL  = "https://g.page/r/CZhkMzkNOdgnEBI/review";
 
 export default function ContactPage() {
   return (
@@ -53,7 +56,7 @@ export default function ContactPage() {
         />
       </section>
 
-      {/* HARİTA ve FORM */}
+      {/* HARİTA + Hızlı Aksiyonlar + FORM */}
       <section className="container grid gap-10 pb-20 md:grid-cols-2">
         {/* Harita kutusu */}
         <div className="rounded-2xl overflow-hidden border bg-white shadow-md">
@@ -67,6 +70,27 @@ export default function ContactPage() {
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
           />
+          {/* Harita alt aksiyonlar */}
+          <div className="flex flex-col sm:flex-row gap-3 p-4 border-t">
+            <a
+              href={GMB_PROFILE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center rounded-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2"
+              aria-label="Google Haritalar’da Sahneva profilini aç"
+            >
+              📍 Haritalar’da Aç
+            </a>
+            <a
+              href={GMB_REVIEW_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center rounded-full bg-amber-500 hover:bg-amber-600 text-white font-semibold px-4 py-2"
+              aria-label="Google üzerinde Sahneva için yorum yaz"
+            >
+              ⭐ Google’da Yorum Yaz
+            </a>
+          </div>
         </div>
 
         {/* Basit HTML form (redirect ile) */}
@@ -131,15 +155,15 @@ export default function ContactPage() {
         </a>
         <a
           href={WHATSAPP_URL}
-          target="_blank" rel="noopener noreferrer"
+          target="_blank"
           rel="noopener noreferrer"
           className="flex flex-col items-center text-green-600 font-semibold"
         >
           💬 <span className="text-sm">WhatsApp</span>
         </a>
         <a
-          href={MAPS_URL}
-          target="_blank" rel="noopener noreferrer"
+          href={GMB_PROFILE_URL}
+          target="_blank"
           rel="noopener noreferrer"
           className="flex flex-col items-center text-indigo-600 font-semibold"
         >
@@ -158,7 +182,7 @@ function ContactCard({ icon, title, info, href, color }) {
       <p className="text-neutral-600 mb-4">{info}</p>
       <a
         href={href}
-        target="_blank" rel="noopener noreferrer"
+        target="_blank"
         rel="noopener noreferrer"
         className={`inline-flex items-center justify-center ${color} text-white font-semibold px-5 py-2 rounded-full shadow transition-all`}
       >

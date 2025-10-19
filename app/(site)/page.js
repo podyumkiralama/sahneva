@@ -1,9 +1,10 @@
+// app/(site)/page.js
 import Image from "next/image";
 import ServicesTabs from "../../components/ServicesTabs";
 import ProjectsGallery from "../../components/ProjectsGallery";
 import CorporateEvents from "../../components/CorporateEvents";
 import Faq from "../../components/Faq";
-import HeroCtasClient from "../../components/HeroCtasClient"; // yeni
+import HeroCtasClient from "../../components/HeroCtasClient";
 
 // Statik üretim: CDN’den hızlı LCP
 export const revalidate = 3600; // 1 saat; istersen 0 (tam statik)
@@ -30,10 +31,21 @@ export default function HomePage() {
           <h1 className="text-white text-4xl md:text-6xl font-extrabold mb-4 tracking-tight">
             Sahne, Podyum, LED Ekran &amp; Ses-Işık Sistemleri Kiralama
           </h1>
-          <p className="text-white/95 text-lg md:text-xl mb-8">
+          <p className="text-white/95 text-lg md:text-xl mb-6">
             Türkiye genelinde sahne ve podyum kurulumları, LED ekran, ses-ışık
             sistemleri ve çadır kiralama. Hızlı teslim, profesyonel teknik ekip.
           </p>
+
+          {/* 🔗 İç bağlantılar (SEO + UX) */}
+          <nav aria-label="Popüler hizmet bağlantıları" className="mb-6">
+            <ul className="flex flex-wrap justify-center gap-3 text-sm text-white/95 underline underline-offset-4">
+              <li><a href="/podyum-kiralama">Podyum Kiralama</a></li>
+              <li><a href="/led-ekran-kiralama">LED Ekran Kiralama</a></li>
+              <li><a href="/ses-isik-sistemleri">Ses &amp; Işık Sistemleri</a></li>
+              <li><a href="/cadir-kiralama">Çadır Kiralama</a></li>
+              <li><a href="/masa-sandalye-kiralama">Masa &amp; Sandalye</a></li>
+            </ul>
+          </nav>
 
           {/* CTA'lar — client tarafı yalnızca burada */}
           <HeroCtasClient />
@@ -64,7 +76,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Kat altı içerik: boyamayı geciktir (content-visibility) */}
+      {/* Kat altı içerik */}
       <section className="section-lazy">
         <ServicesTabs />
       </section>

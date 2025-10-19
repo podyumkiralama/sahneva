@@ -4,29 +4,33 @@ import Link from "next/link";
 import Script from "next/script";
 
 export const metadata = {
-  // Root layout’ta title template varsa (örn. "%s | Sahneva") markayı burada tekrar etmiyoruz.
-  title: "Ses ve Işık Sistemleri Kiralama",
+  title:
+    "Ses ve Işık Sistemleri Kiralama | Profesyonel Sahne Çözümleri - Sahneva",
   description:
-    "Konser, düğün, festival ve kurumsal etkinliklerde profesyonel ses ve ışık sistemleri kiralama. Line array, dijital mikser, kablosuz mikrofon, robot ışık, truss ve teknik operasyonla Türkiye genelinde kurulum.",
-  alternates: { canonical: "https://sahneva.com/ses-isik-sistemleri" },
+    "Konser, düğün, festival ve kurumsal etkinlikler için profesyonel ses ve ışık sistemleri kiralama. Line array, robot ışık ve teknik kurulum desteği.",
+  alternates: {
+    canonical: "https://sahneva.com/ses-isik-sistemleri",
+  },
   keywords: [
-    "ses sistemi kiralama",
-    "ışık sistemi kiralama",
+    "ses sistemleri kiralama",
+    "ışık sistemleri kiralama",
     "line array kiralama",
     "robot ışık kiralama",
-    "truss kiralama",
-    "dijital mikser kiralama",
-    "konser ses ışık",
-    "düğün ses sistemi",
-    "istanbul ses ışık kiralama",
+    "profesyonel ses ışık",
+    "konser ses sistemi",
+    "düğün ışık sistemi",
+    "sahne sistemleri kiralama",
   ],
   openGraph: {
-    title: "Ses ve Işık Sistemleri Kiralama",
+    title:
+      "Ses ve Işık Sistemleri Kiralama | Profesyonel Sahne Çözümleri - Sahneva",
     description:
-      "Konser, düğün, festival ve kurumsal etkinlikler için profesyonel ses & ışık çözümleri. Line array, robot ışık, truss, miksaj ve teknik operasyon.",
+      "Konser, düğün ve kurumsal etkinliklerde profesyonel ses ve ışık sistemleri. Line array, robot ışık ve teknik kurulum desteği.",
     url: "https://sahneva.com/ses-isik-sistemleri",
     type: "article",
-    images: [{ url: "/img/hizmet-sesisik.webp" }],
+    images: [
+      { url: "/img/ses-isik/hero.webp" },
+    ],
   },
 };
 

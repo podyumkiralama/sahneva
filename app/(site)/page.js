@@ -5,8 +5,6 @@ import ProjectsGallery from "../../components/ProjectsGallery";
 import CorporateEvents from "../../components/CorporateEvents";
 import Faq from "../../components/Faq";
 import HeroCtasClient from "../../components/HeroCtasClient";
-
-// ⚠️ DÜZELTME: Dosya adı ve component adı
 import ReviewBanner from "../../components/Reviewbanner";
 
 export const revalidate = 3600; // 1 saat

@@ -12,7 +12,7 @@ export const metadata = {
   openGraph: {
     title: "Hakkımızda",
     description:
-      "Sahne, podyum, LED ekran, ses–ışık ve çadır kiralama hizmetlerinde uzman ekibimizle kurumsal etkinlik prodüksiyonu.",
+      "Sahne, podyum, LED ekran, ses-ışık ve çadır kiralama hizmetlerinde uzman ekibimizle kurumsal etkinlik prodüksiyonu.",
     url: "https://www.sahneva.com/hakkimizda",
     images: ["/img/og.jpg"],
     type: "article",
@@ -21,7 +21,7 @@ export const metadata = {
   robots: { index: true, follow: true },
 };
 
-// ISR – içerik değişiklikleri hızlı gelsin
+// ISR
 export const revalidate = 60;
 
 export default function HakkimizdaPage() {
@@ -47,18 +47,9 @@ export default function HakkimizdaPage() {
     "Kesintisiz teknik destek ve danışmanlık",
   ];
 
-  const LOGOS = [
-    "/img/logos/1.webp",
-    "/img/logos/2.webp",
-    "/img/logos/3.webp",
-    "/img/logos/4.webp",
-    "/img/logos/5.webp",
-    "/img/logos/6.webp",
-  ];
-
   return (
     <div className="pb-12 md:pb-16 bg-white text-neutral-900">
-      {/* HERO – diğer sayfalarla aynı stil */}
+      {/* HERO */}
       <section className="relative h-[44vh] md:h-[56vh] w-full overflow-hidden rounded-b-3xl">
         <Image
           src="/img/hakkimizda.webp"
@@ -98,25 +89,24 @@ export default function HakkimizdaPage() {
         </div>
       </section>
 
-      {/* Biz Kimiz? */}
+      {/* Biz Kimiz */}
       <section className="container mx-auto px-4 mt-12 space-y-4 max-w-5xl">
         <h2 className="text-2xl md:text-3xl font-bold">Biz Kimiz?</h2>
         <p className="text-neutral-700 leading-relaxed">
           <strong>Sahneva</strong>, etkinlik prodüksiyonu ve ekipman kiralama alanında uzmanlaşmış bir organizasyon firmasıdır.
           Sahne, podyum, LED ekran, ses–ışık ve çadır kurulumlarından canlı yönetim ve yayın çözümlerine kadar tüm teknik süreci tek ekipte toplar.
-          Hedefimiz; riskleri azaltan, güvenli ve estetik çözümleri bütçe dostu şekilde sunmaktır.
         </p>
       </section>
 
-      {/* Neden Sahneva? / USP kutuları */}
+      {/* Neden Sahneva */}
       <section className="container mx-auto px-4 mt-10 max-w-5xl">
         <h2 className="text-2xl md:text-3xl font-bold">Neden Sahneva?</h2>
         <div className="mt-4 grid gap-4 md:grid-cols-2">
           {[
-            ["Tek Noktadan Çözüm", "Sahne, ışık, ses, LED, çadır ve lojistik tek ekip tarafından yönetilir."],
-            ["Güvenlik Önceliği", "Statik hesap, ankraj ve iş güvenliği prosedürleri eksiksiz uygulanır."],
-            ["Ölçeklenebilirlik", "Butik toplantıdan açık hava konserine kadar modüler mimari."],
-            ["Kurumsal Disiplin", "Net takvim, şeffaf teklif ve söz verilen teslim süreleri."],
+            ["Tek Noktadan Çözüm", "Tüm sahne altyapısı tek ekip tarafından yönetilir."],
+            ["Güvenlik Önceliği", "Statik hesap, iş güvenliği ve yük analizleri yapılır."],
+            ["Ölçeklenebilirlik", "Butik etkinlikten büyük festivallere uyarlanabilir mimari."],
+            ["Kurumsal Disiplin", "Proje planı, iş akışı ve teslim tarihlerine tam uyum."],
           ].map(([t, d]) => (
             <div key={t} className="rounded-2xl border p-5 shadow-sm">
               <h3 className="font-semibold">{t}</h3>
@@ -129,15 +119,44 @@ export default function HakkimizdaPage() {
       {/* Tarihçe */}
       <section className="container mx-auto px-4 mt-12 max-w-5xl">
         <h2 className="text-2xl md:text-3xl font-bold mb-4">Tarihçe</h2>
-        <ol className="relative border-l-2 border-neutral-200 pl-6 space-y-6">
+        <ol className="relative border-l-2 border-neutral-200 pl-8 space-y-6">
           {TIMELINE.map((t, i) => (
             <li key={i} className="relative">
-              <div className="absolute -left-2.5 mt-1 h-4 w-4 rounded-full bg-[#815be0]" />
+              <div className="absolute -left-3 mt-1 h-4 w-4 rounded-full bg-[#815be0]" />
               <h3 className="font-semibold">{t.y}</h3>
               <p className="text-neutral-700">{t.d}</p>
             </li>
           ))}
         </ol>
+      </section>
+
+      {/* Referans Gücü ve Deneyim (yeni) */}
+      <section className="container mx-auto px-4 mt-12 max-w-5xl">
+        <h2 className="text-2xl md:text-3xl font-bold mb-4">Referans Gücü ve Deneyim</h2>
+        <p className="text-neutral-700 leading-relaxed mb-4">
+          Sahneva, yıllar içerisinde <strong>belediyeler, kurumsal markalar, ajanslar ve etkinlik prodüksiyon firmalarıyla</strong> sürdürülebilir iş birlikleri kurmuştur.
+        </p>
+        <ul className="list-disc list-inside space-y-2 text-neutral-700">
+          <li>Kurumsal lansman etkinliklerinde teknik çözüm ortağı</li>
+          <li>Festival ve konserlerde sahne altyapı sağlayıcısı</li>
+          <li>Düğünlerde şık ve güvenli sahne projeleri</li>
+          <li>Ajanslara özel prodüksiyon partnerliği</li>
+          <li>Kamu kurumlarına güven temelli hizmet</li>
+        </ul>
+      </section>
+
+      {/* Müşteri Memnuniyeti Yaklaşımımız (yeni) */}
+      <section className="container mx-auto px-4 mt-12 max-w-5xl">
+        <h2 className="text-2xl md:text-3xl font-bold mb-4">Müşteri Memnuniyeti Yaklaşımımız</h2>
+        <p className="text-neutral-700 leading-relaxed">
+          Her proje bizim için standart bir kurulum değil, marka hikayesini sahneye taşıyan bir deneyimdir. Bu sebeple:
+        </p>
+        <ul className="list-disc list-inside space-y-2 text-neutral-700 mt-3">
+          <li>İhtiyaca göre proje bazlı çözümler geliştiririz</li>
+          <li>Keşif ve planlama sürecini şeffaf yönetiriz</li>
+          <li>Kurulum sonrası teknik destek sunmaya devam ederiz</li>
+          <li>Geri bildirimleri sonraki projelerde değerlendiririz</li>
+        </ul>
       </section>
 
       {/* Değerlerimiz */}
@@ -150,44 +169,6 @@ export default function HakkimizdaPage() {
             </li>
           ))}
         </ul>
-      </section>
-
-      {/* Referans/Logolar (opsiyonel görsel şerit) */}
-      <section className="container mx-auto px-4 mt-12 max-w-5xl">
-        <h2 className="text-2xl md:text-3xl font-bold mb-4">Birlikte Çalıştığımız Markalar</h2>
-        <div className="grid grid-cols-3 md:grid-cols-6 gap-4 items-center">
-          {LOGOS.map((src, i) => (
-            <div key={i} className="relative h-12 md:h-14 grayscale opacity-80 hover:opacity-100 transition">
-              <Image
-                src={src}
-                alt={`Referans logo ${i + 1}`}
-                fill
-                sizes="(max-width:768px) 33vw, 16vw"
-                className="object-contain"
-                loading="lazy"
-              />
-            </div>
-          ))}
-        </div>
-        <p className="sr-only">Logo görselleri temsilidir.</p>
-      </section>
-
-      {/* SSS kısa blok (SEO + içerik zenginliği) */}
-      <section className="container mx-auto px-4 mt-12 max-w-5xl">
-        <h2 className="text-2xl md:text-3xl font-bold mb-4">Sıkça Sorulanlar</h2>
-        <div className="grid md:grid-cols-2 gap-4">
-          {[
-            ["Hangi şehirlerde hizmet veriyorsunuz?", "İstanbul merkezli olmakla birlikte Türkiye genelinde kurulum yapıyoruz."],
-            ["Kurulum süreleri nedir?", "Proje kapsamına göre değişir; butik kurulumlar 2–4 saat, konser kurulumları genellikle 1 gün sürer."],
-            ["Teknik ekip sağlıyor musunuz?", "Evet. Kurulum ve etkinlik boyunca deneyimli teknik ekip sağlıyoruz."],
-            ["Fiyatlandırma nasıl yapılıyor?", "Ölçüler, ekipman türü, süre ve lojistik parametrelerine göre proje bazlı teklif hazırlanır."],
-          ].map(([q, a]) => (
-            <div key={q} className="rounded-2xl border p-5">
-              <h3 className="font-semibold">{q}</h3>
-              <p className="mt-1 text-sm text-neutral-700">{a}</p>
-            </div>
-          ))}
-        </div>
       </section>
 
       {/* CTA */}
@@ -209,46 +190,6 @@ export default function HakkimizdaPage() {
           </Link>
         </div>
       </section>
-
-      {/* JSON-LD: AboutPage + Breadcrumb (layout'taki Organization ile uyumlu) */}
-      <Script
-        id="ld-about"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "AboutPage",
-            mainEntityOfPage: "https://www.sahneva.com/hakkimizda",
-            name: "Hakkımızda",
-            description:
-              "Sahneva; sahne, podyum, LED ekran, ses–ışık sistemleri ve çadır kiralama alanında uzman bir prodüksiyon & organizasyon firmasıdır.",
-            publisher: {
-              "@type": "Organization",
-              name: "Sahneva",
-              url: "https://www.sahneva.com",
-              logo: "https://www.sahneva.com/img/logo.png",
-              telephone: "+90 545 304 8671",
-              address: { "@type": "PostalAddress", addressLocality: "İstanbul", addressCountry: "TR" },
-            },
-          }),
-        }}
-      />
-      <Script
-        id="ld-breadcrumb-about"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Anasayfa", item: "https://www.sahneva.com" },
-              { "@type": "ListItem", position: 2, name: "Hakkımızda", item: "https://www.sahneva.com/hakkimizda" },
-            ],
-          }),
-        }}
-      />
     </div>
   );
 }

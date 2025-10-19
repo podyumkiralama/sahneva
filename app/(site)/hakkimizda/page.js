@@ -1,22 +1,28 @@
 // app/hakkimizda/page.js
 import Image from "next/image";
+import Link from "next/link";
+import Script from "next/script";
 
+/* ───── META ───── */
 export const metadata = {
-  title: "Hakkımızda | Sahneva",
+  title: "Hakkımızda",
   description:
     "Sahneva; sahne, podyum, LED ekran, ses–ışık sistemleri ve çadır kiralama alanında uzman bir prodüksiyon & organizasyon firmasıdır. Türkiye genelinde hizmet veriyoruz.",
-  alternates: { canonical: "/hakkimizda" },
+  alternates: { canonical: "https://www.sahneva.com/hakkimizda" },
   openGraph: {
-    title: "Hakkımızda | Sahneva",
+    title: "Hakkımızda",
     description:
-      "Sahne, podyum, LED ekran, ses-ışık ve çadır kiralama hizmetlerinde uzman ekibimizle kurumsal etkinlik prodüksiyonu.",
-    url: "/hakkimizda",
-    siteName: "Sahneva",
+      "Sahne, podyum, LED ekran, ses–ışık ve çadır kiralama hizmetlerinde uzman ekibimizle kurumsal etkinlik prodüksiyonu.",
+    url: "https://www.sahneva.com/hakkimizda",
     images: ["/img/og.jpg"],
-    type: "website",
+    type: "article",
     locale: "tr_TR",
   },
+  robots: { index: true, follow: true },
 };
+
+// ISR – içerik değişiklikleri hızlı gelsin
+export const revalidate = 60;
 
 export default function HakkimizdaPage() {
   const STATS = [
@@ -28,7 +34,7 @@ export default function HakkimizdaPage() {
   const TIMELINE = [
     { y: "2012 – Başlangıç", d: "Butik sahne ve ses hizmetleri ile ilk adımlarımızı attık." },
     { y: "2016 – Genişleme", d: "LED ekran ve görüntü sistemlerini filomuza kattık." },
-    { y: "2020 – Kurumsallaşma", d: "Türkiye geneli lojistik ağımızı kurduk, büyük ölçekli etkinliklerde çözüm ortağı olduk." },
+    { y: "2020 – Kurumsallaşma", d: "Türkiye geneli lojistik ağımızı kurduk; büyük ölçekli etkinliklerde çözüm ortağı olduk." },
     { y: "2024 – İnovasyon", d: "Yeni nesil ekipman parkı, dijital entegrasyon ve canlı yayın çözümleriyle fark yarattık." },
   ];
 
@@ -41,35 +47,49 @@ export default function HakkimizdaPage() {
     "Kesintisiz teknik destek ve danışmanlık",
   ];
 
+  const LOGOS = [
+    "/img/logos/1.webp",
+    "/img/logos/2.webp",
+    "/img/logos/3.webp",
+    "/img/logos/4.webp",
+    "/img/logos/5.webp",
+    "/img/logos/6.webp",
+  ];
+
   return (
-    <div className="pb-12 md:pb-16">
-      {/* HERO */}
-     {/* Minimal alternatif: tek overlay + gölge */}
-<section className="relative h-[44vh] md:h-[56vh] w-full overflow-hidden">
-  <Image src="/img/hakkimizda.webp" alt="Sahneva" fill priority sizes="100vw" className="object-cover" />
-  <div className="absolute inset-0 bg-black/45" /> {/* tek katman */}
-  <div className="absolute inset-0 flex items-center">
-    <div className="container">
-      <h1 className="text-3xl md:text-5xl font-extrabold text-white drop-shadow-[0_3px_12px_rgba(0,0,0,0.7)]">
-        Hakkımızda
-      </h1>
-      <p className="mt-2 max-w-3xl text-white/95 md:text-lg leading-relaxed">
-       Türkiye genelinde <strong>sahne, podyum, LED ekran, ses–ışık</strong> sistemleri ve
-            kurulum hizmetlerini <strong>tek çatı altında</strong> sunuyoruz. Kurumsal disiplin ve
-            güçlü teknik ekipmanla yanınızdayız.
-      </p>
-    </div>
-  </div>
-</section>
+    <div className="pb-12 md:pb-16 bg-white text-neutral-900">
+      {/* HERO – diğer sayfalarla aynı stil */}
+      <section className="relative h-[44vh] md:h-[56vh] w-full overflow-hidden rounded-b-3xl">
+        <Image
+          src="/img/hakkimizda.webp"
+          alt="Sahneva — ekip ve sahne kurulumları"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
+        <div aria-hidden="true" className="absolute inset-0 bg-black/45" />
+        <div className="absolute inset-0 flex items-center">
+          <div className="container mx-auto px-4">
+            <h1 className="text-3xl md:text-5xl font-extrabold text-white drop-shadow">
+              Hakkımızda
+            </h1>
+            <p className="mt-2 max-w-3xl text-white/95 md:text-lg leading-relaxed">
+              Türkiye genelinde <strong>sahne, podyum, LED ekran, ses–ışık</strong> sistemleri ve
+              kurulum hizmetlerini <strong>tek çatı altında</strong> sunuyoruz. Kurumsal disiplin ve
+              güçlü teknik ekipmanla yanınızdayız.
+            </p>
+          </div>
+        </div>
+      </section>
 
-
-      {/* İSTATİSTİKLER */}
+      {/* Hızlı İstatistikler */}
       <section className="-mt-10 md:-mt-12 relative z-10">
-        <div className="container grid gap-4 md:grid-cols-3">
+        <div className="container mx-auto px-4 grid gap-4 md:grid-cols-3">
           {STATS.map((k, i) => (
             <div
               key={i}
-              className="rounded-2xl bg-white/70 backdrop-blur shadow-sm border border-white/50 p-5 md:p-6 transition hover:shadow-md"
+              className="rounded-2xl bg-white/80 backdrop-blur shadow-sm border border-white p-5 md:p-6 transition hover:shadow-md"
             >
               <div className="text-2xl md:text-3xl font-extrabold tracking-tight">{k.n}</div>
               <div className="mt-1 text-neutral-700 font-medium">{k.t}</div>
@@ -78,19 +98,36 @@ export default function HakkimizdaPage() {
         </div>
       </section>
 
-      {/* BİZ KİMİZ */}
-      <section className="container mt-12 space-y-4">
+      {/* Biz Kimiz? */}
+      <section className="container mx-auto px-4 mt-12 space-y-4 max-w-5xl">
         <h2 className="text-2xl md:text-3xl font-bold">Biz Kimiz?</h2>
         <p className="text-neutral-700 leading-relaxed">
-          <strong>Sahneva</strong>, etkinlik prodüksiyonu ve ekipman kiralama alanında uzmanlaşmış bir organizasyon
-          firmasıdır. Sahne, podyum, LED ekran, ses–ışık ve çadır kurulumlarından canlı yönetim ve yayın çözümlerine
-          kadar tüm teknik süreci tek ekipte toplar. Hedefimiz; riskleri azaltan, güvenli ve estetik çözümleri
-          bütçe dostu şekilde sunmaktır.
+          <strong>Sahneva</strong>, etkinlik prodüksiyonu ve ekipman kiralama alanında uzmanlaşmış bir organizasyon firmasıdır.
+          Sahne, podyum, LED ekran, ses–ışık ve çadır kurulumlarından canlı yönetim ve yayın çözümlerine kadar tüm teknik süreci tek ekipte toplar.
+          Hedefimiz; riskleri azaltan, güvenli ve estetik çözümleri bütçe dostu şekilde sunmaktır.
         </p>
       </section>
 
-      {/* TARİHÇE */}
-      <section className="container mt-12">
+      {/* Neden Sahneva? / USP kutuları */}
+      <section className="container mx-auto px-4 mt-10 max-w-5xl">
+        <h2 className="text-2xl md:text-3xl font-bold">Neden Sahneva?</h2>
+        <div className="mt-4 grid gap-4 md:grid-cols-2">
+          {[
+            ["Tek Noktadan Çözüm", "Sahne, ışık, ses, LED, çadır ve lojistik tek ekip tarafından yönetilir."],
+            ["Güvenlik Önceliği", "Statik hesap, ankraj ve iş güvenliği prosedürleri eksiksiz uygulanır."],
+            ["Ölçeklenebilirlik", "Butik toplantıdan açık hava konserine kadar modüler mimari."],
+            ["Kurumsal Disiplin", "Net takvim, şeffaf teklif ve söz verilen teslim süreleri."],
+          ].map(([t, d]) => (
+            <div key={t} className="rounded-2xl border p-5 shadow-sm">
+              <h3 className="font-semibold">{t}</h3>
+              <p className="mt-1 text-sm text-neutral-700">{d}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Tarihçe */}
+      <section className="container mx-auto px-4 mt-12 max-w-5xl">
         <h2 className="text-2xl md:text-3xl font-bold mb-4">Tarihçe</h2>
         <ol className="relative border-l-2 border-neutral-200 pl-6 space-y-6">
           {TIMELINE.map((t, i) => (
@@ -103,26 +140,8 @@ export default function HakkimizdaPage() {
         </ol>
       </section>
 
-      {/* MİSYON & VİZYON */}
-      <section className="container mt-12 grid md:grid-cols-2 gap-8">
-        <div className="rounded-2xl bg-white shadow-sm p-6 border">
-          <h3 className="text-xl font-bold mb-2">Misyon</h3>
-          <p className="text-neutral-700 leading-relaxed">
-            Markaların ve kurumların mesajlarını, kusursuz teknik akış ve estetik sahne tasarımıyla etkileyici
-            deneyimlere dönüştürmek.
-          </p>
-        </div>
-        <div className="rounded-2xl bg-white shadow-sm p-6 border">
-          <h3 className="text-xl font-bold mb-2">Vizyon</h3>
-          <p className="text-neutral-700 leading-relaxed">
-            Türkiye’de referans gösterilen, uluslararası arenada tercih edilen ve sürdürülebilir çözümler üreten
-            bir etkinlik teknolojileri markası olmak.
-          </p>
-        </div>
-      </section>
-
-      {/* DEĞERLERİMİZ */}
-      <section className="container mt-12">
+      {/* Değerlerimiz */}
+      <section className="container mx-auto px-4 mt-12 max-w-5xl">
         <h2 className="text-2xl md:text-3xl font-bold mb-4">Değerlerimiz</h2>
         <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 text-neutral-700">
           {VALUES.map((v, i) => (
@@ -133,23 +152,103 @@ export default function HakkimizdaPage() {
         </ul>
       </section>
 
-      {/* CTA */}
-      <section className="container mt-12">
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-          <a
-            href="/hizmetler"
-            className="px-6 py-3 bg-[#815be0] text-white rounded-lg font-semibold hover:opacity-90"
-          >
-            Hizmetlerimizi Keşfet
-          </a>
-          <a
-            href="/iletisim"
-            className="px-6 py-3 border rounded-lg font-semibold hover:bg-neutral-50"
-          >
-            Bizimle İletişime Geç
-          </a>
+      {/* Referans/Logolar (opsiyonel görsel şerit) */}
+      <section className="container mx-auto px-4 mt-12 max-w-5xl">
+        <h2 className="text-2xl md:text-3xl font-bold mb-4">Birlikte Çalıştığımız Markalar</h2>
+        <div className="grid grid-cols-3 md:grid-cols-6 gap-4 items-center">
+          {LOGOS.map((src, i) => (
+            <div key={i} className="relative h-12 md:h-14 grayscale opacity-80 hover:opacity-100 transition">
+              <Image
+                src={src}
+                alt={`Referans logo ${i + 1}`}
+                fill
+                sizes="(max-width:768px) 33vw, 16vw"
+                className="object-contain"
+                loading="lazy"
+              />
+            </div>
+          ))}
+        </div>
+        <p className="sr-only">Logo görselleri temsilidir.</p>
+      </section>
+
+      {/* SSS kısa blok (SEO + içerik zenginliği) */}
+      <section className="container mx-auto px-4 mt-12 max-w-5xl">
+        <h2 className="text-2xl md:text-3xl font-bold mb-4">Sıkça Sorulanlar</h2>
+        <div className="grid md:grid-cols-2 gap-4">
+          {[
+            ["Hangi şehirlerde hizmet veriyorsunuz?", "İstanbul merkezli olmakla birlikte Türkiye genelinde kurulum yapıyoruz."],
+            ["Kurulum süreleri nedir?", "Proje kapsamına göre değişir; butik kurulumlar 2–4 saat, konser kurulumları genellikle 1 gün sürer."],
+            ["Teknik ekip sağlıyor musunuz?", "Evet. Kurulum ve etkinlik boyunca deneyimli teknik ekip sağlıyoruz."],
+            ["Fiyatlandırma nasıl yapılıyor?", "Ölçüler, ekipman türü, süre ve lojistik parametrelerine göre proje bazlı teklif hazırlanır."],
+          ].map(([q, a]) => (
+            <div key={q} className="rounded-2xl border p-5">
+              <h3 className="font-semibold">{q}</h3>
+              <p className="mt-1 text-sm text-neutral-700">{a}</p>
+            </div>
+          ))}
         </div>
       </section>
+
+      {/* CTA */}
+      <section className="container mx-auto px-4 mt-12">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <Link
+            href="/hizmetler"
+            className="px-6 py-3 bg-[#815be0] text-white rounded-lg font-semibold hover:opacity-90"
+            aria-label="Hizmetlerimizi Keşfet"
+          >
+            Hizmetlerimizi Keşfet
+          </Link>
+          <Link
+            href="/iletisim"
+            className="px-6 py-3 border rounded-lg font-semibold hover:bg-neutral-50"
+            aria-label="Bizimle İletişime Geç"
+          >
+            Bizimle İletişime Geç
+          </Link>
+        </div>
+      </section>
+
+      {/* JSON-LD: AboutPage + Breadcrumb (layout'taki Organization ile uyumlu) */}
+      <Script
+        id="ld-about"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "AboutPage",
+            mainEntityOfPage: "https://www.sahneva.com/hakkimizda",
+            name: "Hakkımızda",
+            description:
+              "Sahneva; sahne, podyum, LED ekran, ses–ışık sistemleri ve çadır kiralama alanında uzman bir prodüksiyon & organizasyon firmasıdır.",
+            publisher: {
+              "@type": "Organization",
+              name: "Sahneva",
+              url: "https://www.sahneva.com",
+              logo: "https://www.sahneva.com/img/logo.png",
+              telephone: "+90 545 304 8671",
+              address: { "@type": "PostalAddress", addressLocality: "İstanbul", addressCountry: "TR" },
+            },
+          }),
+        }}
+      />
+      <Script
+        id="ld-breadcrumb-about"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Anasayfa", item: "https://www.sahneva.com" },
+              { "@type": "ListItem", position: 2, name: "Hakkımızda", item: "https://www.sahneva.com/hakkimizda" },
+            ],
+          }),
+        }}
+      />
     </div>
   );
 }

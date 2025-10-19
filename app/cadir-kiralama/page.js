@@ -1,43 +1,61 @@
 // app/cadir-kiralama/page.js
 import Image from "next/image";
 import Link from "next/link";
+import Script from "next/script";
 
+/* --------------------------- META / OPEN GRAPH --------------------------- */
 export const metadata = {
   title: "Çadır Kiralama | Pagoda, Şeffaf, Endüstriyel Çözümler - Sahneva",
   description:
     "Pagoda 5×5/6×6, şeffaf dome, fuar ve endüstriyel depolama çadırları. Zemin kaplama, aydınlatma, elektrik ve lojistik dâhil Türkiye geneli profesyonel kurulum.",
   alternates: { canonical: "https://sahneva.com/cadir-kiralama" },
+  keywords: [
+    "çadır kiralama",
+    "pagoda çadır kiralama",
+    "şeffaf çadır",
+    "dome çadır",
+    "fuar çadırı",
+    "endüstriyel çadır",
+    "depolama çadırı",
+    "çadır kurulumu",
+    "zemin kaplama",
+  ],
   openGraph: {
     title: "Çadır Kiralama | Sahneva",
     description:
       "Açık hava etkinlikleri için modern ve güvenli çadır sistemleri: pagoda, şeffaf, fuar ve endüstriyel çözümler.",
     url: "https://sahneva.com/cadir-kiralama",
-    type: "website",
+    type: "article",
     images: [{ url: "/img/cadir/hero.webp", width: 1200, height: 800, alt: "Sahneva Çadır Kiralama" }],
   },
 };
 
+/* --------------------------------- PAGE --------------------------------- */
 export default function CadirKiralamaPage() {
   return (
-    <main className="min-h-screen bg-white">
-      {/* HERO */}
-<section className="relative h-[340px] flex items-center justify-center bg-neutral-900 text-white">
-  <Image
-    src="/img/cadir/hero.webp"
-    alt="Sahneva - Çadır Kiralama ve profesyonel kurulum"
-    fill
-    priority
-    className="object-cover object-center opacity-60"
-    sizes="100vw"
-  />
-  <div className="relative z-10 text-center px-4">
-    <h1 className="text-3xl sm:text-5xl font-bold mb-3">Çadır Kiralama</h1>
-    <p className="max-w-2xl mx-auto text-lg text-neutral-200">
-      Pagoda, şeffaf ve endüstriyel çadır çözümleri. Zemin kaplama, aydınlatma ve lojistikle birlikte Türkiye genelinde kurulum.
-    </p>
-  </div>
-</section>
-
+    <main className="min-h-screen bg-white text-neutral-900">
+      {/* HERO (LCP için priority, yüksek kontrast overlay) */}
+      <section
+        className="relative h-[340px] sm:h-[420px] md:h-[520px] flex items-center justify-center bg-neutral-900 text-white overflow-hidden"
+        aria-label="Çadır Kiralama Kahraman Görsel"
+      >
+        <Image
+          src="/img/cadir/hero.webp"
+          alt="Sahneva - Çadır kiralama ve profesyonel kurulum"
+          fill
+          priority
+          // Mobilde tam genişlik, daha büyük ekranlarda 1200px hedef
+          sizes="(max-width:640px) 100vw, (max-width:1024px) 100vw, 1200px"
+          className="object-cover object-center"
+        />
+        <div aria-hidden className="absolute inset-0 bg-black/55" />
+        <div className="relative z-10 text-center px-4">
+          <h1 className="text-3xl sm:text-5xl font-bold mb-3">Çadır Kiralama</h1>
+          <p className="max-w-2xl mx-auto text-base sm:text-lg text-neutral-100">
+            Pagoda, şeffaf ve endüstriyel çadır çözümleri. Zemin kaplama, aydınlatma ve lojistikle birlikte Türkiye geneli kurulum.
+          </p>
+        </div>
+      </section>
 
       {/* GİRİŞ */}
       <section className="container mx-auto px-4 py-12 max-w-5xl">
@@ -60,11 +78,12 @@ export default function CadirKiralamaPage() {
         <figure className="mb-6">
           <Image
             src="/img/cadir/pagoda.webp"
-            alt="Pagoda çadır kurulumu (5×5 / 6×6 m)"
+            alt="Pagoda çadır kurulumu — 5×5 / 6×6 m modüller"
             width={1200}
             height={650}
+            loading="lazy"
+            sizes="(max-width:768px) 100vw, 1200px"
             className="rounded-lg shadow-md object-cover w-full"
-            sizes="100vw"
           />
           <figcaption className="mt-2 text-sm text-neutral-600 text-center">
             Karşılama ve satış alanları için estetik Pagoda çadırlar
@@ -81,11 +100,12 @@ export default function CadirKiralamaPage() {
         <figure className="mb-6">
           <Image
             src="/img/cadir/seffaf.webp"
-            alt="Şeffaf çadır - gece aydınlatmasıyla davet organizasyonu"
+            alt="Şeffaf çadır — gece aydınlatmasıyla davet organizasyonu"
             width={1200}
             height={650}
+            loading="lazy"
+            sizes="(max-width:768px) 100vw, 1200px"
             className="rounded-lg shadow-md object-cover w-full"
-            sizes="100vw"
           />
           <figcaption className="mt-2 text-sm text-neutral-600 text-center">
             Şeffaf çadırlar davet ve lansmanlarda güçlü bir görsel etki sunar
@@ -153,7 +173,7 @@ export default function CadirKiralamaPage() {
         </div>
       </section>
 
-      {/* GALERİ */}
+      {/* GALERİ (lazy + doğru sizes) */}
       <section className="container mx-auto px-4 py-12 max-w-5xl">
         <h2 className="text-2xl font-semibold mb-6">🖼️ Galeri</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -161,11 +181,12 @@ export default function CadirKiralamaPage() {
             <figure key={i} className="overflow-hidden rounded-lg bg-white shadow">
               <Image
                 src={`/img/cadir/${n}`}
-                alt={`Çadır kurulumu ${i + 1}`}
+                alt={`Çadır kurulumu görseli ${i + 1}`}
                 width={800}
                 height={600}
-                className="w-full h-40 object-cover"
-                sizes="(max-width:768px) 50vw, 25vw"
+                loading="lazy"
+                sizes="(max-width:640px) 50vw, (max-width:1024px) 25vw, 25vw"
+                className="w-full h-40 object-cover transition-transform duration-300 hover:scale-105"
               />
             </figure>
           ))}
@@ -199,7 +220,7 @@ export default function CadirKiralamaPage() {
         </ul>
       </section>
 
-      {/* HİZMET KAPSAMI & FİYATLAR (SEO destek) */}
+      {/* HİZMET KAPSAMI & FİYATLAR + İÇ LİNKLER */}
       <section className="bg-neutral-50 py-12">
         <div className="container mx-auto px-4 max-w-5xl">
           <h2 className="text-2xl font-semibold mb-4">💬 Hizmet Kapsamı & Fiyatlar</h2>
@@ -210,13 +231,15 @@ export default function CadirKiralamaPage() {
             rüzgâr koşulları ve ekipman ihtiyaçlarına göre <strong>özel teklif</strong> hazırlanır. Kurulum, lojistik,
             aydınlatma, podyum ve elektrik altyapısı tek paket hâlinde sunulabilir.
           </p>
-          <div className="mt-4 flex gap-4 flex-wrap">
-            <Link href="/podyum-kiralama" className="underline text-[#815be0]">
-              Podyum (Zemin) Kiralama
-            </Link>
-            <Link href="/led-ekran-kiralama" className="underline text-[#815be0]">
-              LED Ekran Kiralama
-            </Link>
+
+          {/* İLGİLİ HİZMETLER */}
+          <div className="mt-6">
+            <h3 className="font-semibold mb-3">İlgili Hizmetler</h3>
+            <ul className="flex flex-wrap gap-3 text-sm">
+              <li><Link href="/podyum-kiralama" className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50">Podyum (Zemin) Kiralama</Link></li>
+              <li><Link href="/led-ekran-kiralama" className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50">LED Ekran Kiralama</Link></li>
+              <li><Link href="/ses-isik-sistemleri" className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50">Ses & Işık Sistemleri</Link></li>
+            </ul>
           </div>
         </div>
       </section>
@@ -239,17 +262,72 @@ export default function CadirKiralamaPage() {
             target="_blank"
             rel="noopener noreferrer"
             className="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:opacity-90"
+            aria-label="WhatsApp ile teklif iste"
           >
             WhatsApp Teklif
           </a>
           <a
             href="tel:05453048671"
             className="bg-white/10 border border-white/30 px-6 py-3 rounded-lg font-semibold hover:bg-white/20"
+            aria-label="Telefonla arayın: 0545 304 86 71"
           >
             0545 304 86 71’i Ara
           </a>
         </div>
       </section>
+
+      {/* JSON-LD: Service + Breadcrumb */}
+      <Script
+        id="ld-service-cadir"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Service",
+            serviceType: "Çadır Kiralama",
+            name: "Çadır Kiralama",
+            description:
+              "Pagoda, şeffaf dome, fuar ve endüstriyel çadır çözümleri. Zemin kaplama, aydınlatma, elektrik ve lojistik dâhil kurulum.",
+            areaServed: { "@type": "Country", name: "TR" },
+            provider: {
+              "@type": "LocalBusiness",
+              name: "Sahneva",
+              url: "https://www.sahneva.com",
+              telephone: "+90 545 304 8671",
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "İstanbul",
+                addressCountry: "TR",
+              },
+            },
+            hasOfferCatalog: {
+              "@type": "OfferCatalog",
+              name: "Çadır Paketleri",
+              itemListElement: [
+                { "@type": "Offer", name: "Pagoda 5×5 / 6×6", availability: "https://schema.org/InStock" },
+                { "@type": "Offer", name: "Şeffaf / Dome Çadır", availability: "https://schema.org/InStock" },
+                { "@type": "Offer", name: "Endüstriyel Depolama Çadırı", availability: "https://schema.org/InStock" },
+              ],
+            },
+          }),
+        }}
+      />
+      <Script
+        id="ld-breadcrumb-cadir"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Anasayfa", item: "https://www.sahneva.com" },
+              { "@type": "ListItem", position: 2, name: "Çadır Kiralama", item: "https://www.sahneva.com/cadir-kiralama" },
+            ],
+          }),
+        }}
+      />
     </main>
   );
 }

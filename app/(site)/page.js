@@ -5,30 +5,18 @@ import ProjectsGallery from "../../components/ProjectsGallery";
 import CorporateEvents from "../../components/CorporateEvents";
 import Faq from "../../components/Faq";
 import HeroCtasClient from "../../components/HeroCtasClient";
+// DİKKAT: Dosya adı büyük/küçük harf uyumlu olmalı
 import ReviewBanner from "../../components/Reviewbanner";
 
 export const revalidate = 3600; // 1 saat
 
 export default function HomePage() {
   return (
-    <main>
-      {/* Sayfa özel global fix (yalnızca bu sayfada uygulanır) */}
-      <style jsx global>{`
-        html, body { overflow-x: hidden; }
-      `}</style>
-
+    <main className="overflow-x-hidden">
       {/* HERO */}
-      {/* full-bleed yerine svw kullanan, taşma yapmayan sarmalayıcı */}
       <div
-        className="relative img-skeleton overflow-hidden"
-        style={{
-          backgroundColor: "#0b0f1a",
-          position: "relative",
-          marginLeft: "calc(50% - 50svw)",
-          marginRight: "calc(50% - 50svw)",
-          width: "100svw",
-          inlineSize: "100svw",
-        }}
+        className="full-bleed relative overflow-x-hidden"
+        style={{ backgroundColor: "#0b0f1a" }}
       >
         <Image
           src="/img/hero-bg.webp"
@@ -41,9 +29,10 @@ export default function HomePage() {
           placeholder="blur"
           blurDataURL="/img/hero-bg-low.webp"
           quality={58}
-          className="object-cover will-change-transform"
+          className="object-cover"
         />
-        <div className="absolute inset-0 hero-overlay" />
+        {/* overlay */}
+        <div className="absolute inset-0 hero-overlay pointer-events-none" />
 
         <div className="relative z-10 container py-20 md:py-32 text-center">
           <h1 className="text-white text-4xl md:text-6xl font-extrabold mb-4 tracking-tight">
@@ -57,19 +46,24 @@ export default function HomePage() {
           {/* CTA'lar */}
           <HeroCtasClient />
 
+          {/* Rozetler */}
           <ul className="mt-6 grid max-w-3xl mx-auto grid-cols-1 sm:grid-cols-3 gap-3">
             {[
               ["⭐", "4.9 Müşteri Memnuniyeti"],
               ["🔧", "Aynı Gün Kurulum"],
               ["👷", "Profesyonel Teknik Ekip"],
             ].map(([icon, label], i) => (
-              <li key={i} className="badge">
+              <li
+                key={i}
+                className="badge whitespace-nowrap overflow-hidden text-ellipsis"
+              >
                 <span aria-hidden>{icon}</span>
                 <span>{label}</span>
               </li>
             ))}
           </ul>
 
+          {/* Alt bilgi */}
           <div className="mt-10 text-center">
             <div className="text-5xl mb-3" aria-hidden>
               🎧
@@ -105,7 +99,8 @@ export default function HomePage() {
       <section className="section-lazy">
         <div className="container py-14 md:py-16">
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
-            Etkinlik Prodüksiyon & Organizasyon – Türkiye Geneli Teknik Çözüm Ortağınız
+            Etkinlik Prodüksiyon & Organizasyon – Türkiye Geneli Teknik Çözüm
+            Ortağınız
           </h2>
 
           <div className="grid gap-6 md:grid-cols-2">
@@ -163,17 +158,18 @@ export default function HomePage() {
             </article>
 
             <article className="card">
-              <h3 className="font-semibold text-lg mb-2">Hızlı Kurulum, Şeffaf Fiyat</h3>
+              <h3 className="font-semibold text-lg mb-2">
+                Hızlı Kurulum, Şeffaf Fiyat
+              </h3>
               <p className="text-neutral-700">
                 İstanbul merkezli ekibimizle Türkiye’nin her ilinde çalışıyoruz.
                 Aynı gün <strong>hızlı kurulum</strong>, yedekli ekipman ve 7/24
                 teknik destek ile riskleri minimize ederiz. İhtiyacınıza göre en
-                uygun çözümü önerip gereksiz maliyetleri önler, talep halinde
+                uygun çözümü önerip gereksiz maliyetleri önler, talep halinde{" "}
                 <a
                   href="/led-ekran-kiralama"
                   className="underline hover:no-underline font-medium"
                 >
-                  {" "}
                   LED ekran fiyatları
                 </a>{" "}
                 ve alternatif paketleri karşılaştırmalı olarak paylaşırız. Tüm

@@ -42,8 +42,10 @@ const CONTENT = {
   ],
 };
 
+// ⚠️ Title artık sadece hizmet adını veriyor.
+// Root layout'taki template (örn. "%s | Sahneva") otomatik ekler.
 export const metadata = {
-  title: `${svc?.title ?? "Podyum Kiralama"} | Sahneva`,
+  title: svc?.title ?? "Podyum Kiralama",
   description:
     svc?.excerpt ||
     "Podyum sahne kiralama: 1×1 ve 2×1 panellerle modüler kurulum, kaymaz kaplama, rampa/korkuluk ve profesyonel montaj.",
@@ -65,7 +67,6 @@ export default function Page() {
     svc?.desc ??
     "Podyum sahne kiralama: 1×1 ve 2×1 panellerle modüler kurulum, kaymaz kaplama ve profesyonel ekip.";
 
-  // ✅ Hero image fallback
   const heroSrc = svc?.img ?? CONTENT.gallery[0];
 
   return (

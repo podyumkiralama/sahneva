@@ -1,4 +1,3 @@
-// components/Footer.jsx
 "use client";
 
 import Link from "next/link";
@@ -104,6 +103,30 @@ export default function Footer() {
             <li><Link href="/hizmetler" className="hover:text-white transition-colors">Hizmetler</Link></li>
             <li><Link href="/sss" className="hover:text-white transition-colors">Sık Sorulan Sorular</Link></li>
             <li><Link href="/kvkk" className="hover:text-white transition-colors">KVKK / Gizlilik</Link></li>
+
+            {/* 🔽 EKLENDİ: Google Business bağlantıları */}
+            <li>
+              <a
+                href="https://g.page/r/CZhkMzkNOdgnEBI"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors"
+                aria-label="Google Haritalar'da Sahneva"
+              >
+                Google Haritalar’da bizi bulun
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://g.page/r/CZhkMzkNOdgnEBI/review"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors"
+                aria-label="Google üzerinde Sahneva için yorum yazın"
+              >
+                Google’da yorum yaz ⭐
+              </a>
+            </li>
           </ul>
         </nav>
 

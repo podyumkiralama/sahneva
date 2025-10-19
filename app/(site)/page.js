@@ -5,7 +5,7 @@ import ProjectsGallery from "../../components/ProjectsGallery";
 import CorporateEvents from "../../components/CorporateEvents";
 import Faq from "../../components/Faq";
 import HeroCtasClient from "../../components/HeroCtasClient";
-import ReviewBanner from "../../components/Reviewbanner";
+import Revibanner from "../../components/Revibanner";
 
 export const revalidate = 3600; // 1 saat
 
@@ -13,7 +13,7 @@ export default function HomePage() {
   return (
     <main>
       {/* HERO */}
-      <div className="full-bleed relative img-skeleton" style={{ backgroundColor: "#0b0f1a" }}>
+      <div className="full-bleed relative img-skeleton">
         <Image
           src="/img/hero-bg.webp"
           alt="Sahne, podyum, LED ekran ve ses-ışık ekipmanlarıyla kurulu etkinlik sahnesi"
@@ -22,9 +22,7 @@ export default function HomePage() {
           fetchPriority="high"
           decoding="async"
           sizes="100vw"
-          placeholder="blur"
-          blurDataURL="/img/hero-bg-low.webp"
-          quality={58}
+          quality={62}
           className="object-cover will-change-transform"
         />
         <div className="absolute inset-0 hero-overlay" />
@@ -38,7 +36,7 @@ export default function HomePage() {
             sistemleri ve çadır kiralama. Hızlı teslim, profesyonel teknik ekip.
           </p>
 
-          {/* CTA'lar */}
+          {/* CTA'lar (yüksek kontrast stiller globals.css’te) */}
           <HeroCtasClient />
 
           <ul className="mt-6 grid max-w-3xl mx-auto grid-cols-1 sm:grid-cols-3 gap-3">
@@ -68,7 +66,7 @@ export default function HomePage() {
       </div>
 
       {/* Google yorum banner’ı (sticky) */}
-      <ReviewBanner />
+      <Revibanner />
 
       {/* Kat altı içerik */}
       <section className="section-lazy">
@@ -83,7 +81,7 @@ export default function HomePage() {
         <CorporateEvents />
       </section>
 
-      {/* SEO METİN BLOĞU */}
+      {/* SEO METİN BLOĞU (Kurumsal organizasyon altına) */}
       <section className="section-lazy">
         <div className="container py-14 md:py-16">
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
@@ -94,10 +92,22 @@ export default function HomePage() {
             <article className="card">
               <h3 className="font-semibold text-lg mb-2">Uçtan Uca Teknik Hizmet</h3>
               <p className="text-neutral-700">
-                Sahneva; <a href="/sahne-kiralama" className="underline hover:no-underline font-medium">sahne sistemleri kiralama</a>,{" "}
-                <a href="/podyum-kiralama" className="underline hover:no-underline font-medium">podyum kurulumu</a>,{" "}
-                <a href="/led-ekran-kiralama" className="underline hover:no-underline font-medium">LED ekran kiralama</a> ve{" "}
-                <a href="/ses-isik-sistemleri" className="underline hover:no-underline font-medium">ses ışık sistemi kurulumu</a>{" "}
+                Sahneva;{" "}
+                <a href="/sahne-kiralama" className="underline hover:no-underline font-medium">
+                  sahne sistemleri kiralama
+                </a>
+                ,{" "}
+                <a href="/podyum-kiralama" className="underline hover:no-underline font-medium">
+                  podyum kurulumu
+                </a>
+                ,{" "}
+                <a href="/led-ekran-kiralama" className="underline hover:no-underline font-medium">
+                  LED ekran kiralama
+                </a>{" "}
+                ve{" "}
+                <a href="/ses-isik-sistemleri" className="underline hover:no-underline font-medium">
+                  ses ışık sistemi kurulumu
+                </a>{" "}
                 alanlarında uçtan uca çözümler sunar. Proje keşfi, çizim, kurulum ve canlı
                 yönetim aşamalarının tamamını profesyonel ekibimiz yürütür. Kurumsal lansman,
                 bayi toplantısı, konser, festival ve <em>kurumsal organizasyon</em> türlerinin
@@ -114,12 +124,16 @@ export default function HomePage() {
             <article className="card">
               <h3 className="font-semibold text-lg mb-2">Hızlı Kurulum, Şeffaf Fiyat</h3>
               <p className="text-neutral-700">
-                İstanbul merkezli ekibimizle Türkiye’nin her ilinde çalışıyoruz.
-                Aynı gün <strong>hızlı kurulum</strong>, yedekli ekipman ve 7/24
-                teknik destek ile riskleri minimize ederiz. İhtiyacınıza göre
-                en uygun çözümü önerip gereksiz maliyetleri önler, talep halinde
-                <a href="/led-ekran-kiralama" className="underline hover:no-underline font-medium"> LED ekran fiyatları</a> ve alternatif paketleri
-                karşılaştırmalı olarak paylaşırız. Tüm işlerimiz sözleşmeli ve e-faturalıdır.
+                İstanbul merkezli ekibimizle Türkiye’nin her ilinde çalışıyoruz. Aynı gün{" "}
+                <strong>hızlı kurulum</strong>, yedekli ekipman ve 7/24 teknik destek ile
+                riskleri minimize ederiz. İhtiyacınıza göre en uygun çözümü önerip gereksiz
+                maliyetleri önler, talep halinde
+                <a href="/led-ekran-kiralama" className="underline hover:no-underline font-medium">
+                  {" "}
+                  LED ekran fiyatları
+                </a>{" "}
+                ve alternatif paketleri karşılaştırmalı olarak paylaşırız. Tüm işlerimiz
+                sözleşmeli ve e-faturalıdır.
               </p>
               <p className="text-neutral-700 mt-3">
                 Teklif almak için hemen arayın ya da{" "}

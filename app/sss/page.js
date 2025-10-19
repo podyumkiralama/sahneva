@@ -5,7 +5,7 @@ import ProjectsGallery from "../../components/ProjectsGallery";
 import CorporateEvents from "../../components/CorporateEvents";
 import Faq from "../../components/Faq";
 import HeroCtasClient from "../../components/HeroCtasClient";
-import Revibanner from "../../components/Revibanner";
+import Revibanner from "../../components/Reviewbanner";
 
 export const revalidate = 3600;
 

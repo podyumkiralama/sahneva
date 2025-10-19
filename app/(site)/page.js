@@ -5,8 +5,6 @@ import ProjectsGallery from "../../components/ProjectsGallery";
 import CorporateEvents from "../../components/CorporateEvents";
 import Faq from "../../components/Faq";
 import HeroCtasClient from "../../components/HeroCtasClient";
-
-// ⚠️ DÜZELTME: Dosya adı ve component adı
 import ReviewBanner from "../../components/Reviewbanner";
 
 export const revalidate = 3600; // 1 saat
@@ -14,8 +12,24 @@ export const revalidate = 3600; // 1 saat
 export default function HomePage() {
   return (
     <main>
+      {/* Sayfa özel global fix (yalnızca bu sayfada uygulanır) */}
+      <style jsx global>{`
+        html, body { overflow-x: hidden; }
+      `}</style>
+
       {/* HERO */}
-      <div className="full-bleed relative img-skeleton" style={{ backgroundColor: "#0b0f1a" }}>
+      {/* full-bleed yerine svw kullanan, taşma yapmayan sarmalayıcı */}
+      <div
+        className="relative img-skeleton overflow-hidden"
+        style={{
+          backgroundColor: "#0b0f1a",
+          position: "relative",
+          marginLeft: "calc(50% - 50svw)",
+          marginRight: "calc(50% - 50svw)",
+          width: "100svw",
+          inlineSize: "100svw",
+        }}
+      >
         <Image
           src="/img/hero-bg.webp"
           alt="Sahne, podyum, LED ekran ve ses-ışık ekipmanlarıyla kurulu etkinlik sahnesi"
@@ -57,7 +71,9 @@ export default function HomePage() {
           </ul>
 
           <div className="mt-10 text-center">
-            <div className="text-5xl mb-3" aria-hidden>🎧</div>
+            <div className="text-5xl mb-3" aria-hidden>
+              🎧
+            </div>
             <h2 className="text-white text-2xl md:text-3xl font-semibold mb-2">
               Organizasyonunuz için Ücretsiz Danışmanlık
             </h2>
@@ -96,19 +112,52 @@ export default function HomePage() {
             <article className="card">
               <h3 className="font-semibold text-lg mb-2">Uçtan Uca Teknik Hizmet</h3>
               <p className="text-neutral-700">
-                Sahneva; <a href="/sahne-kiralama" className="underline hover:no-underline font-medium">sahne sistemleri kiralama</a>,{" "}
-                <a href="/podyum-kiralama" className="underline hover:no-underline font-medium">podyum kurulumu</a>,{" "}
-                <a href="/led-ekran-kiralama" className="underline hover:no-underline font-medium">LED ekran kiralama</a> ve{" "}
-                <a href="/ses-isik-sistemleri" className="underline hover:no-underline font-medium">ses ışık sistemi kurulumu</a>{" "}
-                alanlarında uçtan uca çözümler sunar. Proje keşfi, çizim, kurulum ve canlı
-                yönetim aşamalarının tamamını profesyonel ekibimiz yürütür. Kurumsal lansman,
-                bayi toplantısı, konser, festival ve <em>kurumsal organizasyon</em> türlerinin
-                tümünde güvenli ve ölçeklenebilir altyapı kurarız.
+                Sahneva;{" "}
+                <a
+                  href="/sahne-kiralama"
+                  className="underline hover:no-underline font-medium"
+                >
+                  sahne sistemleri kiralama
+                </a>
+                ,{" "}
+                <a
+                  href="/podyum-kiralama"
+                  className="underline hover:no-underline font-medium"
+                >
+                  podyum kurulumu
+                </a>
+                ,{" "}
+                <a
+                  href="/led-ekran-kiralama"
+                  className="underline hover:no-underline font-medium"
+                >
+                  LED ekran kiralama
+                </a>{" "}
+                ve{" "}
+                <a
+                  href="/ses-isik-sistemleri"
+                  className="underline hover:no-underline font-medium"
+                >
+                  ses ışık sistemi kurulumu
+                </a>{" "}
+                alanlarında uçtan uca çözümler sunar. Proje keşfi, çizim,
+                kurulum ve canlı yönetim aşamalarının tamamını profesyonel
+                ekibimiz yürütür. Kurumsal lansman, bayi toplantısı, konser,
+                festival ve <em>kurumsal organizasyon</em> türlerinin tümünde
+                güvenli ve ölçeklenebilir altyapı kurarız.
               </p>
               <ul className="mt-3 space-y-1 text-sm text-neutral-700 list-disc pl-5">
-                <li>IP65 dış mekân LED paneller, yüksek parlaklık ve esnek ölçüler</li>
-                <li>Line-array ses sistemleri, dijital mikser ve kablosuz mikrofonlar</li>
-                <li>Modüler <strong>podyum</strong> ve sahne platformları, kaymaz kaplama</li>
+                <li>
+                  IP65 dış mekân LED paneller, yüksek parlaklık ve esnek ölçüler
+                </li>
+                <li>
+                  Line-array ses sistemleri, dijital mikser ve kablosuz
+                  mikrofonlar
+                </li>
+                <li>
+                  Modüler <strong>podyum</strong> ve sahne platformları, kaymaz
+                  kaplama
+                </li>
                 <li>DMX kontrollü ışık, efekt ve ambiyans aydınlatma</li>
               </ul>
             </article>
@@ -118,10 +167,17 @@ export default function HomePage() {
               <p className="text-neutral-700">
                 İstanbul merkezli ekibimizle Türkiye’nin her ilinde çalışıyoruz.
                 Aynı gün <strong>hızlı kurulum</strong>, yedekli ekipman ve 7/24
-                teknik destek ile riskleri minimize ederiz. İhtiyacınıza göre
-                en uygun çözümü önerip gereksiz maliyetleri önler, talep halinde
-                <a href="/led-ekran-kiralama" className="underline hover:no-underline font-medium"> LED ekran fiyatları</a> ve alternatif paketleri
-                karşılaştırmalı olarak paylaşırız. Tüm işlerimiz sözleşmeli ve e-faturalıdır.
+                teknik destek ile riskleri minimize ederiz. İhtiyacınıza göre en
+                uygun çözümü önerip gereksiz maliyetleri önler, talep halinde
+                <a
+                  href="/led-ekran-kiralama"
+                  className="underline hover:no-underline font-medium"
+                >
+                  {" "}
+                  LED ekran fiyatları
+                </a>{" "}
+                ve alternatif paketleri karşılaştırmalı olarak paylaşırız. Tüm
+                işlerimiz sözleşmeli ve e-faturalıdır.
               </p>
               <p className="text-neutral-700 mt-3">
                 Teklif almak için hemen arayın ya da{" "}
@@ -134,7 +190,8 @@ export default function HomePage() {
                   WhatsApp’tan yazın
                 </a>
                 ; birkaç soru ile mekân, kişi sayısı ve içerik tipine göre doğru
-                <strong> etkinlik prodüksiyon</strong> planını birlikte oluşturalım.
+                <strong> etkinlik prodüksiyon</strong> planını birlikte
+                oluşturalım.
               </p>
             </article>
           </div>

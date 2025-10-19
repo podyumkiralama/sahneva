@@ -14,19 +14,26 @@ export default function HomePage() {
     // YATAY TAŞMAYI KİLİTLE
     <main className="overflow-x-hidden">
       {/* HERO */}
-      <div className="full-bleed relative img-skeleton overflow-hidden">
-        <Image
-          src="/img/hero-bg.webp"
-          alt="Sahne, podyum, LED ekran ve ses-ışık ekipmanlarıyla kurulu etkinlik sahnesi"
-          fill
-          priority
-          fetchPriority="high"
-          decoding="async"
-          sizes="100vw"
-          className="object-cover will-change-transform"
-          quality={62}
-        />
-        <div className="absolute inset-0 hero-overlay" />
+<div className="full-bleed relative img-skeleton" style={{backgroundColor:"#0b0f1a"}}>
+  <Image
+    src="/img/hero-bg.webp"
+    alt="Sahne, podyum, LED ekran ve ses-ışık ekipmanlarıyla kurulu etkinlik sahnesi"
+    fill
+    priority
+    fetchPriority="high"
+    decoding="async"
+    // 🔽 mobilde gerçek viewport genişliğini bildir (tarayıcı doğru boyda indirir)
+    sizes="100vw"
+    // 🔽 algısal hız için düşük çözünürlüklü blur
+    placeholder="blur"
+    blurDataURL="/img/hero-bg-low.webp"
+    // 🔽 dosya boyunu düşür (genelde 120–160 KB bandına iner)
+    quality={58}
+    className="object-cover will-change-transform"
+  />
+  <div className="absolute inset-0 hero-overlay" />
+  {/* ... hero yazıları ve CTA’lar aynen kalıyor ... */}
+</div>
 
         <div className="relative z-10 container py-20 md:py-32 text-center">
           <h1 className="text-white text-4xl md:text-6xl font-extrabold mb-4 tracking-tight">

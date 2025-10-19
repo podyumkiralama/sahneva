@@ -15,9 +15,16 @@ export const viewport = {
 
 const inter = Inter({
   subsets: ["latin"],
-  preload: false,        // render-blocking yok
-  display: "optional",   // FOIT yok, sistem fontu ile başla
-  fallback: ["system-ui", "-apple-system", "Segoe UI", "Roboto", "Arial", "sans-serif"],
+  preload: false, // render-blocking yok
+  display: "optional", // FOIT yok, sistem fontu ile başla
+  fallback: [
+    "system-ui",
+    "-apple-system",
+    "Segoe UI",
+    "Roboto",
+    "Arial",
+    "sans-serif",
+  ],
   adjustFontFallback: true,
 });
 
@@ -56,7 +63,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="tr" suppressHydrationWarning>
       <head>
-        {/* Minik kritik CSS (render-blocking olmadan) */}
+        {/* Minik kritik CSS */}
         <style id="critical-css">{`
           .pt-16{padding-top:4rem}
           @media (min-width:768px){.md\\:pt-20{padding-top:5rem}}
@@ -65,11 +72,10 @@ export default function RootLayout({ children }) {
           .object-cover{object-fit:cover}
           .container{max-width:1280px;margin-inline:auto;padding-inline:1rem}
         `}</style>
-        {/* Burada bilinçli olarak ek preconnect yok; font local yüklendiği için gerekmez */}
       </head>
 
       <body className={`${inter.className} scroll-smooth`}>
-        {/* Erişilebilirlik: klavye kullanıcıları için skip link */}
+        {/* Skip Link */}
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:z-[100] focus:top-3 focus:left-3 focus:px-3 focus:py-2 focus:rounded-lg focus:bg-white focus:shadow"
@@ -79,7 +85,7 @@ export default function RootLayout({ children }) {
 
         <Navbar />
 
-        {/* UtilityBar mobilde alta oturduğu için sayfa içeriğine alt boşluk veriyoruz */}
+        {/* İçerik */}
         <main id="main" role="main" className="pt-16 md:pt-20 mb-24 lg:mb-0">
           {children}
         </main>
@@ -109,8 +115,9 @@ export default function RootLayout({ children }) {
                 },
               ],
               sameAs: [
-                "https://www.instagram.com/sahneva",
+                "https://www.instagram.com/sahnevaorganizasyon",
                 "https://www.youtube.com/@sahneva",
+                "https://g.page/r/CZhkMzkNOdgnEBI"
               ],
             }),
           }}
@@ -134,13 +141,18 @@ export default function RootLayout({ children }) {
                 addressLocality: "İstanbul",
                 addressCountry: "TR",
               },
+              sameAs: [
+                "https://www.instagram.com/sahnevaorganizasyon",
+                "https://www.youtube.com/@sahneva",
+                "https://g.page/r/CZhkMzkNOdgnEBI"
+              ],
               priceRange: "$$",
               openingHours: "Mo-Fr 09:00-19:00",
             }),
           }}
         />
 
-        {/* JSON-LD: FAQPage */}
+        {/* JSON-LD: FAQ Preview */}
         <Script
           id="ld-faq"
           type="application/ld+json"
@@ -155,8 +167,7 @@ export default function RootLayout({ children }) {
                   name: "Podyum kurulumu ne kadar sürer?",
                   acceptedAnswer: {
                     "@type": "Answer",
-                    text:
-                      "Podyum kurulumu, ölçülere ve zemin koşullarına göre genellikle 1–3 saat sürer.",
+                    text: "Podyum kurulumu, ölçülere ve zemin koşullarına göre genellikle 1–3 saat sürer.",
                   },
                 },
                 {
@@ -164,8 +175,7 @@ export default function RootLayout({ children }) {
                   name: "LED ekranlar dış mekanda kullanılabilir mi?",
                   acceptedAnswer: {
                     "@type": "Answer",
-                    text:
-                      "Evet, IP65 korumalı LED ekranlarımız açık havada güvenle kullanılabilir.",
+                    text: "Evet, IP65 korumalı LED ekranlarımız açık havada güvenle kullanılabilir.",
                   },
                 },
                 {
@@ -173,8 +183,7 @@ export default function RootLayout({ children }) {
                   name: "Ses ve ışık sistemlerinde teknik ekip sağlıyor musunuz?",
                   acceptedAnswer: {
                     "@type": "Answer",
-                    text:
-                      "Evet, kurulum ve etkinlik boyunca teknik ekip desteği veriyoruz.",
+                    text: "Evet, kurulum ve etkinlik boyunca teknik ekip desteği veriyoruz.",
                   },
                 },
                 {
@@ -182,8 +191,7 @@ export default function RootLayout({ children }) {
                   name: "Çadır kiralamada kurulum ve söküm dahil mi?",
                   acceptedAnswer: {
                     "@type": "Answer",
-                    text:
-                      "Evet, kurulum ve söküm dahildir; zemin kaplama ve aksesuarlar opsiyoneldir.",
+                    text: "Evet, kurulum ve söküm dahildir; zemin kaplama ve aksesuarlar opsiyoneldir.",
                   },
                 },
               ],

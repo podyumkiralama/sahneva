@@ -8,13 +8,12 @@ import HeroCtasClient from "../../components/HeroCtasClient";
 // DİKKAT: Dosya adı büyük/küçük harf uyumlu olmalı
 import ReviewBanner from "../../components/Reviewbanner";
 
-// ⚠️ Not: Server Component'ta ssr:false YASAK. Sadece dinamik import + Suspense kullan.
-const ServicesTabsLazy = dynamic(() => import("../../components/ServicesTabs")); // client component
-const ProjectsGalleryLazy = dynamic(() => import("../../components/ProjectsGallery")); // client component
+// ⚠️ Server Component'ta `ssr:false` kullanmayız. Sadece dinamik import + Suspense kullan.
+const ServicesTabsLazy = dynamic(() => import("../../components/ServicesTabs")); // "use client" olmalı
+const ProjectsGalleryLazy = dynamic(() => import("../../components/ProjectsGallery")); // "use client" olmalı
 
 export const revalidate = 3600; // 1 saat
 
-// Basit skeleton bileşenleri (Server Component içinde kullanılabilir)
 function SectionSkeleton() {
   return (
     <div className="container py-14 md:py-16">
@@ -25,7 +24,8 @@ function SectionSkeleton() {
 
 export default function HomePage() {
   return (
-    <main className="overflow-x-hidden">
+    // W3C: yalnızca 1 adet <main> olsun; bunu layout.js içinde tutuyoruz → burada <div> kullanıyoruz
+    <div className="overflow-x-hidden">
       {/* HERO */}
       <div
         className="full-bleed relative overflow-x-hidden"
@@ -108,9 +108,9 @@ export default function HomePage() {
         </Suspense>
       </section>
 
-      <section className="section-lazy">
+      <div className="section-lazy">
         <CorporateEvents />
-      </section>
+      </div>
 
       {/* SEO METİN BLOĞU */}
       <section className="section-lazy">
@@ -159,15 +159,9 @@ export default function HomePage() {
                 güvenli ve ölçeklenebilir altyapı kurarız.
               </p>
               <ul className="mt-3 space-y-1 text-sm text-neutral-700 list-disc pl-5">
-                <li>
-                  IP65 dış mekân LED paneller, yüksek parlaklık ve esnek ölçüler
-                </li>
-                <li>
-                  Line-array ses sistemleri, dijital mikser ve kablosuz mikrofonlar
-                </li>
-                <li>
-                  Modüler <strong>podyum</strong> ve sahne platformları, kaymaz kaplama
-                </li>
+                <li>IP65 dış mekân LED paneller, yüksek parlaklık ve esnek ölçüler</li>
+                <li>Line-array ses sistemleri, dijital mikser ve kablosuz mikrofonlar</li>
+                <li>Modüler <strong>podyum</strong> ve sahne platformları, kaymaz kaplama</li>
                 <li>DMX kontrollü ışık, efekt ve ambiyans aydınlatma</li>
               </ul>
             </article>
@@ -206,9 +200,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="section-lazy">
+      <div className="section-lazy">
         <Faq />
-      </section>
-    </main>
+      </div>
+    </div>
   );
 }

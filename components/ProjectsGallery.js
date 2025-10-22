@@ -120,6 +120,7 @@ export default function ProjectsGallery() {
   const [title, setTitle] = useState("");
   const [items, setItems] = useState([]);
   const [index, setIndex] = useState(0);
+  const [failed, setFailed] = useState(() => new Set()); // 404 verenleri işaretle
 
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
@@ -146,14 +147,37 @@ export default function ProjectsGallery() {
     }, 180);
   }, []);
 
+  const findNextValid = useCallback(
+    (start, dir = 1) => {
+      if (!items || items.length === 0) return -1;
+      let i = start;
+      for (let step = 0; step < items.length; step++) {
+        i = (i + dir + items.length) % items.length;
+        const src = items[i];
+        if (!failed.has(src)) return i;
+      }
+      return -1;
+    },
+    [items, failed]
+  );
+
   const prev = useCallback(() => {
-    setIndex((i) => (i - 1 + items.length) % items.length);
-  }, [items.length]);
+    if (!items || items.length <= 1) return;
+    setIndex((i) => {
+      const nextIdx = findNextValid(i, -1);
+      return nextIdx === -1 ? i : nextIdx;
+    });
+  }, [items, findNextValid]);
 
   const next = useCallback(() => {
-    setIndex((i) => (i + 1) % items.length);
-  }, [items.length]);
+    if (!items || items.length <= 1) return;
+    setIndex((i) => {
+      const nextIdx = findNextValid(i, +1);
+      return nextIdx === -1 ? i : nextIdx;
+    });
+  }, [items, findNextValid]);
 
+  // Lightbox açıkken: güçlü body-lock + cleanup
   useEffect(() => {
     if (!isOpen) return;
 
@@ -162,7 +186,8 @@ export default function ProjectsGallery() {
       window.innerWidth - document.documentElement.clientWidth;
     const body = document.body;
     const html = document.documentElement;
-    const prev = {
+
+    const prevStyles = {
       position: body.style.position,
       top: body.style.top,
       width: body.style.width,
@@ -170,14 +195,17 @@ export default function ProjectsGallery() {
       overflow: body.style.overflow,
       overscrollBehavior: body.style.overscrollBehavior,
     };
-    body._prevLock = prev;
-    body.style.position = "fixed";
-    body.style.top = `-${scrollYRef.current}px`;
-    body.style.width = "100%";
-    if (scrollbarW > 0) body.style.paddingRight = `${scrollbarW}px`;
-    body.style.overflow = "hidden";
-    body.style.overscrollBehavior = "contain";
-    html.style.scrollBehavior = "auto";
+    body._prevLock = prevStyles;
+
+    try {
+      body.style.position = "fixed";
+      body.style.top = `-${scrollYRef.current}px`;
+      body.style.width = "100%";
+      if (scrollbarW > 0) body.style.paddingRight = `${scrollbarW}px`;
+      body.style.overflow = "hidden";
+      body.style.overscrollBehavior = "contain";
+      html.style.scrollBehavior = "auto";
+    } catch {}
 
     const onKey = (e) => {
       if (e.key === "Escape") close();
@@ -200,29 +228,32 @@ export default function ProjectsGallery() {
         }
       }
     };
-    window.addEventListener("keydown", onKey);
 
+    window.addEventListener("keydown", onKey);
     setTimeout(() => closeBtnRef.current?.focus(), 0);
 
     return () => {
-      const prevSaved = body._prevLock;
-      const y = scrollYRef.current || 0;
-      body.style.position = prevSaved?.position || "";
-      body.style.top = prevSaved?.top || "";
-      body.style.width = prevSaved?.width || "";
-      body.style.paddingRight = prevSaved?.paddingRight || "";
-      body.style.overflow = prevSaved?.overflow || "";
-      body.style.overscrollBehavior = prevSaved?.overscrollBehavior || "";
-      window.scrollTo(0, y);
-      html.style.scrollBehavior = "";
-      window.removeEventListener("keydown", onKey);
+      try {
+        const y = scrollYRef.current || 0;
+        const restore = body._prevLock || {};
+        body.style.position = restore.position || "";
+        body.style.top = restore.top || "";
+        body.style.width = restore.width || "";
+        body.style.paddingRight = restore.paddingRight || "";
+        body.style.overflow = restore.overflow || "";
+        body.style.overscrollBehavior = restore.overscrollBehavior || "";
+        window.scrollTo(0, y);
+        html.style.scrollBehavior = "";
+      } finally {
+        window.removeEventListener("keydown", onKey);
+      }
     };
   }, [isOpen, close, prev, next]);
 
+  // Swipe
   const onTouchStart = (e) => {
     touchStartX.current = e.changedTouches[0].clientX;
   };
-
   const onTouchEnd = (e) => {
     touchEndX.current = e.changedTouches[0].clientX;
     const delta = touchEndX.current - touchStartX.current;
@@ -231,6 +262,7 @@ export default function ProjectsGallery() {
     else next();
   };
 
+  // Komşu görselleri ön-yükle (akıcı gezinme)
   useEffect(() => {
     if (!isOpen || items.length < 2) return;
     const nextIdx = (index + 1) % items.length;
@@ -241,6 +273,7 @@ export default function ProjectsGallery() {
     b.src = items[prevIdx];
   }, [isOpen, index, items]);
 
+  // Reduce motion
   const prefersReducedMotion =
     typeof window !== "undefined" &&
     window.matchMedia &&
@@ -262,7 +295,7 @@ export default function ProjectsGallery() {
 
               <button
                 type="button"
-                onClick={(e) => open(groupTitle, images, 0)}
+                onClick={() => open(groupTitle, images, 0)}
                 className="group relative w-full h-44 md:h-56 overflow-hidden rounded-2xl border bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/60"
                 aria-label={`${groupTitle} galeriyi aç`}
               >
@@ -278,6 +311,7 @@ export default function ProjectsGallery() {
                   sizes={COVER_SIZES}
                   quality={60}
                   decoding="async"
+                  // İlk satır (lg: 3 sütun) kapaklarını eager yükle; preload yok.
                   loading={i < 3 ? "eager" : "lazy"}
                   fetchPriority="low"
                 />
@@ -360,6 +394,13 @@ export default function ProjectsGallery() {
               quality={80}
               priority
               decoding="async"
+              onError={() => {
+                const bad = items[index];
+                setFailed((s) => new Set(s).add(bad));
+                const nextIdx = findNextValid(index, +1);
+                if (nextIdx === -1) close();
+                else setIndex(nextIdx);
+              }}
             />
           </div>
 

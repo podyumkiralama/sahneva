@@ -1,39 +1,31 @@
 // app/(site)/page.js
 import Image from "next/image";
 import dynamic from "next/dynamic";
+import { Suspense } from "react";
 import CorporateEvents from "../../components/CorporateEvents";
 import Faq from "../../components/Faq";
 import HeroCtasClient from "../../components/HeroCtasClient";
-// Dosya adı büyük/küçük harf duyarlı olabilir
+// DİKKAT: Dosya adı büyük/küçük harf uyumlu olmalı
 import ReviewBanner from "../../components/Reviewbanner";
 
-// Dinamik (SSR off) + hafif skeleton
-const ServicesTabsLazy = dynamic(() => import("../../components/ServicesTabs"), {
-  ssr: false,
-  loading: () => (
-    <div className="container py-14 md:py-16">
-      <div className="h-40 rounded-2xl bg-neutral-100 animate-pulse" />
-    </div>
-  ),
-});
-
-const ProjectsGalleryLazy = dynamic(
-  () => import("../../components/ProjectsGallery"),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="container py-14 md:py-16">
-        <div className="h-40 rounded-2xl bg-neutral-100 animate-pulse" />
-      </div>
-    ),
-  }
-);
+// ⚠️ Not: Server Component'ta ssr:false YASAK. Sadece dinamik import + Suspense kullan.
+const ServicesTabsLazy = dynamic(() => import("../../components/ServicesTabs")); // client component
+const ProjectsGalleryLazy = dynamic(() => import("../../components/ProjectsGallery")); // client component
 
 export const revalidate = 3600; // 1 saat
 
+// Basit skeleton bileşenleri (Server Component içinde kullanılabilir)
+function SectionSkeleton() {
+  return (
+    <div className="container py-14 md:py-16">
+      <div className="h-40 rounded-2xl bg-neutral-100 animate-pulse" />
+    </div>
+  );
+}
+
 export default function HomePage() {
   return (
-    <div className="overflow-x-hidden">
+    <main className="overflow-x-hidden">
       {/* HERO */}
       <div
         className="full-bleed relative overflow-x-hidden"
@@ -103,20 +95,24 @@ export default function HomePage() {
       {/* Google yorum banner’ı (sticky) */}
       <ReviewBanner />
 
-      {/* Kat altı içerik (başlıksız bloklar -> div) */}
-      <div className="section-lazy">
-        <ServicesTabsLazy />
-      </div>
+      {/* Kat altı içerik */}
+      <section className="section-lazy">
+        <Suspense fallback={<SectionSkeleton />}>
+          <ServicesTabsLazy />
+        </Suspense>
+      </section>
 
-      <div className="section-lazy">
-        <ProjectsGalleryLazy />
-      </div>
+      <section className="section-lazy">
+        <Suspense fallback={<SectionSkeleton />}>
+          <ProjectsGalleryLazy />
+        </Suspense>
+      </section>
 
-      <div className="section-lazy">
+      <section className="section-lazy">
         <CorporateEvents />
-      </div>
+      </section>
 
-      {/* SEO METİN BLOĞU (başlık içerdiği için section bırakıldı) */}
+      {/* SEO METİN BLOĞU */}
       <section className="section-lazy">
         <div className="container py-14 md:py-16">
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
@@ -126,9 +122,7 @@ export default function HomePage() {
 
           <div className="grid gap-6 md:grid-cols-2">
             <article className="card">
-              <h3 className="font-semibold text-lg mb-2">
-                Uçtan Uca Teknik Hizmet
-              </h3>
+              <h3 className="font-semibold text-lg mb-2">Uçtan Uca Teknik Hizmet</h3>
               <p className="text-neutral-700">
                 Sahneva{" "}
                 <a
@@ -179,9 +173,7 @@ export default function HomePage() {
             </article>
 
             <article className="card">
-              <h3 className="font-semibold text-lg mb-2">
-                Hızlı Kurulum, Şeffaf Fiyat
-              </h3>
+              <h3 className="font-semibold text-lg mb-2">Hızlı Kurulum, Şeffaf Fiyat</h3>
               <p className="text-neutral-700">
                 İstanbul merkezli ekibimizle Türkiye’nin her ilinde çalışıyoruz.
                 Aynı gün <strong>hızlı kurulum</strong>, yedekli ekipman ve 7/24
@@ -214,9 +206,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      <div className="section-lazy">
+      <section className="section-lazy">
         <Faq />
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }

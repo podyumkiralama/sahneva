@@ -228,7 +228,7 @@ export default function ProjectsGallery() {
 
       {/* 1 / 2 / 3 sütun grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {Object.entries(GALLERIES).map(([groupTitle, images]) => {
+        {Object.entries(GALLERIES).map(([groupTitle, images], i) => {
           const cover = images[0];
           return (
             <div key={groupTitle} className="space-y-3">
@@ -250,8 +250,9 @@ export default function ProjectsGallery() {
                   sizes={COVER_SIZES}
                   quality={60}
                   decoding="async"
+                  // İlk satır (lg: 3 sütun) kapaklarını eager yükle; preload yok.
+                  loading={i < 3 ? "eager" : "lazy"}
                   fetchPriority="low"
-                  loading="lazy"
                 />
                 <span
                   className={`absolute inset-0 ${

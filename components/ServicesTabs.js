@@ -102,11 +102,11 @@ export default function ServicesTabs() {
     [active]
   );
 
-  // Burst efekti (globals.css’te .burst-particle var)
+  // Burst efekti
   const burst = useCallback((e) => {
     const btn = e.currentTarget;
     const rect = btn.getBoundingClientRect();
-    const x = e.clientX - rect.left; // buton içi koordinat
+    const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
     const particleCount = 12;
@@ -124,7 +124,6 @@ export default function ServicesTabs() {
       s.style.setProperty("--dy", `${Math.sin(angle) * distance}px`);
       s.style.setProperty("--dr", `${(Math.random() - 0.5) * 90}deg`);
       s.style.setProperty("--life", `${450 + Math.random() * 250}ms`);
-      // mor ↔ yeşil geçişli parçacıklar
       s.style.setProperty("--burst-c1", "#6d28d9");
       s.style.setProperty("--burst-c2", "#22c55e");
       btn.appendChild(s);
@@ -196,8 +195,9 @@ export default function ServicesTabs() {
                 alt={t.alt}
                 fill
                 sizes={HIZMET_SIZES}
-                priority={i === 0}
-                fetchPriority={i === 0 ? "high" : "low"}
+                /* preload yerine: */
+                loading={i === 0 ? "eager" : "lazy"}
+                fetchPriority="low"
                 decoding="async"
                 quality={70}
                 className="object-cover"

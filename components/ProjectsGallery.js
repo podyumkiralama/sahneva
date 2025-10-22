@@ -6,9 +6,9 @@ import Image from "next/image";
 
 // Kart kapakları (resim liste grid)
 const COVER_SIZES =
-  "(max-width: 640px) 320px, " +   // telefon -> DPR=2 ≈ 640w
-  "(max-width: 1024px) 480px, " +  // tablet (2 sütun) -> DPR=2 ≈ 960w (~1080w seçilir)
-  "414px";                         // ≥1024px, 3 sütun -> DPR=2 ≈ 828w
+  "(max-width: 640px) 320px, " +
+  "(max-width: 1024px) 480px, " +
+  "414px"; // ≥1024px, 3 sütun -> DPR=2 ≈ 828w
 
 // Lightbox büyük görsel
 const LIGHTBOX_SIZES = "(max-width: 1024px) 100vw, 1024px";
@@ -125,6 +125,7 @@ export default function ProjectsGallery() {
   const touchEndX = useRef(0);
   const lastFocus = useRef(null);
   const closeBtnRef = useRef(null);
+  const scrollYRef = useRef(0);
 
   const open = (groupTitle, images, startIndex = 0) => {
     lastFocus.current = document.activeElement;
@@ -139,7 +140,6 @@ export default function ProjectsGallery() {
     setAnim(false);
     setTimeout(() => {
       setIsOpen(false);
-      // odağı geri ver
       if (lastFocus.current && typeof lastFocus.current.focus === "function") {
         lastFocus.current.focus();
       }
@@ -154,17 +154,36 @@ export default function ProjectsGallery() {
     setIndex((i) => (i + 1) % items.length);
   }, [items.length]);
 
-  // Lightbox açıkken: scroll kilidi + klavye + odak
   useEffect(() => {
     if (!isOpen) return;
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+
+    scrollYRef.current = window.scrollY || window.pageYOffset || 0;
+    const scrollbarW =
+      window.innerWidth - document.documentElement.clientWidth;
+    const body = document.body;
+    const html = document.documentElement;
+    const prev = {
+      position: body.style.position,
+      top: body.style.top,
+      width: body.style.width,
+      paddingRight: body.style.paddingRight,
+      overflow: body.style.overflow,
+      overscrollBehavior: body.style.overscrollBehavior,
+    };
+    body._prevLock = prev;
+    body.style.position = "fixed";
+    body.style.top = `-${scrollYRef.current}px`;
+    body.style.width = "100%";
+    if (scrollbarW > 0) body.style.paddingRight = `${scrollbarW}px`;
+    body.style.overflow = "hidden";
+    body.style.overscrollBehavior = "contain";
+    html.style.scrollBehavior = "auto";
+
     const onKey = (e) => {
       if (e.key === "Escape") close();
       if (e.key === "ArrowLeft") prev();
       if (e.key === "ArrowRight") next();
       if (e.key === "Tab") {
-        // basit fokus tuzağı: tek odaklanabilir öğeler butonlar
         const focusables = Array.from(
           document.querySelectorAll('[data-lightbox-focus="1"]')
         );
@@ -182,19 +201,28 @@ export default function ProjectsGallery() {
       }
     };
     window.addEventListener("keydown", onKey);
-    // close butonuna odak
+
     setTimeout(() => closeBtnRef.current?.focus(), 0);
 
     return () => {
-      document.body.style.overflow = prevOverflow;
+      const prevSaved = body._prevLock;
+      const y = scrollYRef.current || 0;
+      body.style.position = prevSaved?.position || "";
+      body.style.top = prevSaved?.top || "";
+      body.style.width = prevSaved?.width || "";
+      body.style.paddingRight = prevSaved?.paddingRight || "";
+      body.style.overflow = prevSaved?.overflow || "";
+      body.style.overscrollBehavior = prevSaved?.overscrollBehavior || "";
+      window.scrollTo(0, y);
+      html.style.scrollBehavior = "";
       window.removeEventListener("keydown", onKey);
     };
   }, [isOpen, close, prev, next]);
 
-  // Swipe
   const onTouchStart = (e) => {
     touchStartX.current = e.changedTouches[0].clientX;
   };
+
   const onTouchEnd = (e) => {
     touchEndX.current = e.changedTouches[0].clientX;
     const delta = touchEndX.current - touchStartX.current;
@@ -203,7 +231,6 @@ export default function ProjectsGallery() {
     else next();
   };
 
-  // Komşu görselleri ön-yükle (daha akıcı gezinme)
   useEffect(() => {
     if (!isOpen || items.length < 2) return;
     const nextIdx = (index + 1) % items.length;
@@ -214,7 +241,6 @@ export default function ProjectsGallery() {
     b.src = items[prevIdx];
   }, [isOpen, index, items]);
 
-  // Reduce motion: animasyon sürelerini kıs
   const prefersReducedMotion =
     typeof window !== "undefined" &&
     window.matchMedia &&
@@ -245,12 +271,13 @@ export default function ProjectsGallery() {
                   alt={`${groupTitle} kapak görseli`}
                   fill
                   className={`object-cover ${
-                    prefersReducedMotion ? "" : "group-hover:scale-105 transition-transform"
+                    prefersReducedMotion
+                      ? ""
+                      : "group-hover:scale-105 transition-transform"
                   }`}
                   sizes={COVER_SIZES}
                   quality={60}
                   decoding="async"
-                  // İlk satır (lg: 3 sütun) kapaklarını eager yükle; preload yok.
                   loading={i < 3 ? "eager" : "lazy"}
                   fetchPriority="low"
                 />
@@ -282,6 +309,10 @@ export default function ProjectsGallery() {
           }}
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
+          style={{
+            overscrollBehavior: "contain",
+            WebkitOverflowScrolling: "touch",
+          }}
         >
           <button
             ref={closeBtnRef}
@@ -314,7 +345,9 @@ export default function ProjectsGallery() {
 
           <div
             className={`relative w-full max-w-5xl aspect-[16/10] ${
-              prefersReducedMotion ? "" : "transform transition-transform duration-200"
+              prefersReducedMotion
+                ? ""
+                : "transform transition-transform duration-200"
             } ${anim ? "scale-100" : "scale-95"}`}
           >
             <Image

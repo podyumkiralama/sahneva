@@ -6,9 +6,7 @@ import Image from "next/image";
 
 // Kart kapakları (resim liste grid)
 const COVER_SIZES =
-  "(max-width: 640px) 320px, " +
-  "(max-width: 1024px) 480px, " +
-  "414px"; // ≥1024px, 3 sütun -> DPR=2 ≈ 828w
+  "(max-width: 640px) 320px, (max-width: 1024px) 480px, 414px";
 
 // Lightbox büyük görsel
 const LIGHTBOX_SIZES = "(max-width: 1024px) 100vw, 1024px";
@@ -26,32 +24,6 @@ const GALLERIES = {
     "/img/galeri/podyum-kiralama-8.webp",
     "/img/galeri/podyum-kiralama-9.webp",
     "/img/galeri/podyum-kiralama-10.webp",
-    "/img/galeri/podyum-kiralama-11.webp",
-    "/img/galeri/podyum-kiralama-12.webp",
-    "/img/galeri/podyum-kiralama-13.webp",
-    "/img/galeri/podyum-kiralama-14.webp",
-    "/img/galeri/podyum-kiralama-15.webp",
-    "/img/galeri/podyum-kiralama-16.webp",
-    "/img/galeri/podyum-kiralama-17.webp",
-    "/img/galeri/podyum-kiralama-18.webp",
-    "/img/galeri/podyum-kiralama-19.webp",
-    "/img/galeri/podyum-kiralama-20.webp",
-    "/img/galeri/podyum-kiralama-21.webp",
-    "/img/galeri/podyum-kiralama-22.webp",
-    "/img/galeri/podyum-kiralama-23.webp",
-    "/img/galeri/podyum-kiralama-24.webp",
-    "/img/galeri/podyum-kiralama-25.webp",
-    "/img/galeri/podyum-kiralama-26.webp",
-    "/img/galeri/podyum-kiralama-27.webp",
-    "/img/galeri/podyum-kiralama-28.webp",
-    "/img/galeri/podyum-kiralama-29.webp",
-    "/img/galeri/podyum-kiralama-30.webp",
-    "/img/galeri/podyum-kiralama-31.webp",
-    "/img/galeri/podyum-kiralama-32.webp",
-    "/img/galeri/podyum-kiralama-33.webp",
-    "/img/galeri/podyum-kiralama-34.webp",
-    "/img/galeri/podyum-kiralama-35.webp",
-    "/img/galeri/podyum-kiralama-36.webp",
   ],
   "LED Ekran Kiralama": [
     "/img/galeri/led-ekran-kiralama-1.webp",
@@ -60,36 +32,6 @@ const GALLERIES = {
     "/img/galeri/led-ekran-kiralama-4.webp",
     "/img/galeri/led-ekran-kiralama-5.webp",
     "/img/galeri/led-ekran-kiralama-6.webp",
-    "/img/galeri/led-ekran-kiralama-7.webp",
-    "/img/galeri/led-ekran-kiralama-8.webp",
-    "/img/galeri/led-ekran-kiralama-9.webp",
-    "/img/galeri/led-ekran-kiralama-10.webp",
-    "/img/galeri/led-ekran-kiralama-11.webp",
-    "/img/galeri/led-ekran-kiralama-12.webp",
-    "/img/galeri/led-ekran-kiralama-13.webp",
-    "/img/galeri/led-ekran-kiralama-14.webp",
-    "/img/galeri/led-ekran-kiralama-15.webp",
-    "/img/galeri/led-ekran-kiralama-16.webp",
-    "/img/galeri/led-ekran-kiralama-17.webp",
-    "/img/galeri/led-ekran-kiralama-18.webp",
-    "/img/galeri/led-ekran-kiralama-19.webp",
-    "/img/galeri/led-ekran-kiralama-20.webp",
-    "/img/galeri/led-ekran-kiralama-21.webp",
-    "/img/galeri/led-ekran-kiralama-22.webp",
-    "/img/galeri/led-ekran-kiralama-23.webp",
-    "/img/galeri/led-ekran-kiralama-24.webp",
-    "/img/galeri/led-ekran-kiralama-25.webp",
-    "/img/galeri/led-ekran-kiralama-26.webp",
-    "/img/galeri/led-ekran-kiralama-27.webp",
-    "/img/galeri/led-ekran-kiralama-28.webp",
-    "/img/galeri/led-ekran-kiralama-29.webp",
-    "/img/galeri/led-ekran-kiralama-30.webp",
-    "/img/galeri/led-ekran-kiralama-31.webp",
-    "/img/galeri/led-ekran-kiralama-32.webp",
-    "/img/galeri/led-ekran-kiralama-33.webp",
-    "/img/galeri/led-ekran-kiralama-34.webp",
-    "/img/galeri/led-ekran-kiralama-35.webp",
-    "/img/galeri/led-ekran-kiralama-36.webp",
   ],
   "Çadır Kiralama": [
     "/img/galeri/cadir-kiralama-1.webp",
@@ -99,18 +41,6 @@ const GALLERIES = {
     "/img/galeri/cadir-kiralama-5.webp",
     "/img/galeri/cadir-kiralama-6.webp",
     "/img/galeri/cadir-kiralama-7.webp",
-    "/img/galeri/cadir-kiralama-8.webp",
-    "/img/galeri/cadir-kiralama-9.webp",
-    "/img/galeri/cadir-kiralama-10.webp",
-    "/img/galeri/cadir-kiralama-11.webp",
-    "/img/galeri/cadir-kiralama-12.webp",
-    "/img/galeri/cadir-kiralama-13.webp",
-    "/img/galeri/cadir-kiralama-14.webp",
-    "/img/galeri/cadir-kiralama-15.webp",
-    "/img/galeri/cadir-kiralama-16.webp",
-    "/img/galeri/cadir-kiralama-17.webp",
-    "/img/galeri/cadir-kiralama-18.webp",
-    "/img/galeri/cadir-kiralama-19.webp",
   ],
 };
 
@@ -177,7 +107,7 @@ export default function ProjectsGallery() {
     });
   }, [items, findNextValid]);
 
-  // Lightbox açıkken: güçlü body-lock + cleanup
+  // Lightbox açıkken: güçlü body-lock + cleanup (mobil adres çubuğu uyumlu)
   useEffect(() => {
     if (!isOpen) return;
 
@@ -262,7 +192,7 @@ export default function ProjectsGallery() {
     else next();
   };
 
-  // Komşu görselleri ön-yükle (akıcı gezinme)
+  // Komşu görselleri ön-yükle
   useEffect(() => {
     if (!isOpen || items.length < 2) return;
     const nextIdx = (index + 1) % items.length;
@@ -273,7 +203,6 @@ export default function ProjectsGallery() {
     b.src = items[prevIdx];
   }, [isOpen, index, items]);
 
-  // Reduce motion
   const prefersReducedMotion =
     typeof window !== "undefined" &&
     window.matchMedia &&
@@ -311,7 +240,6 @@ export default function ProjectsGallery() {
                   sizes={COVER_SIZES}
                   quality={60}
                   decoding="async"
-                  // İlk satır (lg: 3 sütun) kapaklarını eager yükle; preload yok.
                   loading={i < 3 ? "eager" : "lazy"}
                   fetchPriority="low"
                 />
@@ -348,20 +276,22 @@ export default function ProjectsGallery() {
             WebkitOverflowScrolling: "touch",
           }}
         >
+          {/* Üst sağ: Kapat (safe-area ile) */}
           <button
             ref={closeBtnRef}
             data-lightbox-focus="1"
-            className="absolute top-4 right-4 md:top-6 md:right-6 text-white/90 hover:text-white bg-white/10 hover:bg-white/20 rounded-full p-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+            className="hidden md:block absolute top-4 right-4 md:top-6 md:right-6 text-white/90 hover:text-white bg-white/10 hover:bg-white/20 rounded-full p-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
             onClick={close}
             aria-label="Kapat"
-            autoFocus
+            style={{ paddingTop: "max(0px, env(safe-area-inset-top))" }}
           >
             ✕
           </button>
 
+          {/* Yan oklar: sadece md+ ekranlarda */}
           <button
             data-lightbox-focus="1"
-            className="absolute top-1/2 left-4 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white rounded-full w-12 h-12 md:w-16 md:h-16 flex items-center justify-center text-3xl md:text-5xl shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+            className="hidden md:flex absolute top-1/2 left-4 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white rounded-full w-12 h-12 md:w-16 md:h-16 items-center justify-center text-3xl md:text-5xl shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
             onClick={prev}
             aria-label="Önceki"
           >
@@ -370,13 +300,14 @@ export default function ProjectsGallery() {
 
           <button
             data-lightbox-focus="1"
-            className="absolute top-1/2 right-4 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white rounded-full w-12 h-12 md:w-16 md:h-16 flex items-center justify-center text-3xl md:text-5xl shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+            className="hidden md:flex absolute top-1/2 right-4 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white rounded-full w-12 h-12 md:w-16 md:h-16 items-center justify-center text-3xl md:text-5xl shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
             onClick={next}
             aria-label="Sonraki"
           >
             ›
           </button>
 
+          {/* Görsel alanı */}
           <div
             className={`relative w-full max-w-5xl aspect-[16/10] ${
               prefersReducedMotion
@@ -404,8 +335,42 @@ export default function ProjectsGallery() {
             />
           </div>
 
-          <div className="absolute bottom-4 left-0 right-0 text-center text-white/90 text-sm">
+          {/* Bilgi/indikatör */}
+          <div className="absolute bottom-[72px] md:bottom-4 left-0 right-0 text-center text-white/90 text-sm">
             {title} — {index + 1}/{items.length}
+          </div>
+
+          {/* Mobil alt kontrol çubuğu (her zaman görünür) */}
+          <div
+            className="md:hidden fixed inset-x-0 bottom-0 z-[10000] bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-black/50"
+            style={{ paddingBottom: "max(12px, env(safe-area-inset-bottom))" }}
+          >
+            <div className="mx-auto max-w-xl flex items-center justify-between gap-2 px-4 py-3">
+              <button
+                data-lightbox-focus="1"
+                onClick={close}
+                className="flex-1 rounded-lg bg-white/15 text-white py-2 font-semibold"
+                aria-label="Kapat"
+              >
+                ✕ Kapat
+              </button>
+              <button
+                data-lightbox-focus="1"
+                onClick={prev}
+                className="flex-1 rounded-lg bg-white/15 text-white py-2 font-semibold"
+                aria-label="Önceki"
+              >
+                ‹ Önceki
+              </button>
+              <button
+                data-lightbox-focus="1"
+                onClick={next}
+                className="flex-1 rounded-lg bg-white/15 text-white py-2 font-semibold"
+                aria-label="Sonraki"
+              >
+                Sonraki ›
+              </button>
+            </div>
           </div>
         </div>
       )}

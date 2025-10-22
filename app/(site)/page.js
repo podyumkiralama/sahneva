@@ -1,12 +1,33 @@
 // app/(site)/page.js
 import Image from "next/image";
-import ServicesTabs from "../../components/ServicesTabs";
-import ProjectsGallery from "../../components/ProjectsGallery";
+import dynamic from "next/dynamic";
 import CorporateEvents from "../../components/CorporateEvents";
 import Faq from "../../components/Faq";
 import HeroCtasClient from "../../components/HeroCtasClient";
 // DİKKAT: Dosya adı büyük/küçük harf uyumlu olmalı
 import ReviewBanner from "../../components/Reviewbanner";
+
+// ⬇️ Sekme ve Galeri bileşenlerini dinamik yükle (SSR kapalı + hafif skeleton)
+const ServicesTabsLazy = dynamic(() => import("../../components/ServicesTabs"), {
+  ssr: false,
+  loading: () => (
+    <div className="container py-14 md:py-16">
+      <div className="h-40 rounded-2xl bg-neutral-100 animate-pulse" />
+    </div>
+  ),
+});
+
+const ProjectsGalleryLazy = dynamic(
+  () => import("../../components/ProjectsGallery"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="container py-14 md:py-16">
+        <div className="h-40 rounded-2xl bg-neutral-100 animate-pulse" />
+      </div>
+    ),
+  }
+);
 
 export const revalidate = 3600; // 1 saat
 
@@ -84,11 +105,11 @@ export default function HomePage() {
 
       {/* Kat altı içerik */}
       <section className="section-lazy">
-        <ServicesTabs />
+        <ServicesTabsLazy />
       </section>
 
       <section className="section-lazy">
-        <ProjectsGallery />
+        <ProjectsGalleryLazy />
       </section>
 
       <section className="section-lazy">
@@ -107,7 +128,7 @@ export default function HomePage() {
             <article className="card">
               <h3 className="font-semibold text-lg mb-2">Uçtan Uca Teknik Hizmet</h3>
               <p className="text-neutral-700">
-                Sahneva;{" "}
+                Sahneva{" "}
                 <a
                   href="/sahne-kiralama"
                   className="underline hover:no-underline font-medium"
@@ -146,21 +167,17 @@ export default function HomePage() {
                   IP65 dış mekân LED paneller, yüksek parlaklık ve esnek ölçüler
                 </li>
                 <li>
-                  Line-array ses sistemleri, dijital mikser ve kablosuz
-                  mikrofonlar
+                  Line-array ses sistemleri, dijital mikser ve kablosuz mikrofonlar
                 </li>
                 <li>
-                  Modüler <strong>podyum</strong> ve sahne platformları, kaymaz
-                  kaplama
+                  Modüler <strong>podyum</strong> ve sahne platformları, kaymaz kaplama
                 </li>
                 <li>DMX kontrollü ışık, efekt ve ambiyans aydınlatma</li>
               </ul>
             </article>
 
             <article className="card">
-              <h3 className="font-semibold text-lg mb-2">
-                Hızlı Kurulum, Şeffaf Fiyat
-              </h3>
+              <h3 className="font-semibold text-lg mb-2">Hızlı Kurulum, Şeffaf Fiyat</h3>
               <p className="text-neutral-700">
                 İstanbul merkezli ekibimizle Türkiye’nin her ilinde çalışıyoruz.
                 Aynı gün <strong>hızlı kurulum</strong>, yedekli ekipman ve 7/24
@@ -186,8 +203,7 @@ export default function HomePage() {
                   WhatsApp’tan yazın
                 </a>
                 ; birkaç soru ile mekân, kişi sayısı ve içerik tipine göre doğru
-                <strong> etkinlik prodüksiyon</strong> planını birlikte
-                oluşturalım.
+                <strong> etkinlik prodüksiyon</strong> planını birlikte oluşturalım.
               </p>
             </article>
           </div>

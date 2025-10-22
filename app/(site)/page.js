@@ -1,35 +1,27 @@
 // app/(site)/page.js
 import Image from "next/image";
 import dynamic from "next/dynamic";
+import { Suspense } from "react";
 import CorporateEvents from "../../components/CorporateEvents";
 import Faq from "../../components/Faq";
 import HeroCtasClient from "../../components/HeroCtasClient";
 // DİKKAT: Dosya adı büyük/küçük harf uyumlu olmalı
 import ReviewBanner from "../../components/Reviewbanner";
 
-// ⬇️ Sekme ve Galeri bileşenlerini dinamik yükle (SSR kapalı + hafif skeleton)
-const ServicesTabsLazy = dynamic(() => import("../../components/ServicesTabs"), {
-  ssr: false,
-  loading: () => (
+// ⚠️ Not: Server Component'ta ssr:false YASAK. Sadece dinamik import + Suspense kullan.
+const ServicesTabsLazy = dynamic(() => import("../../components/ServicesTabs")); // client component
+const ProjectsGalleryLazy = dynamic(() => import("../../components/ProjectsGallery")); // client component
+
+export const revalidate = 3600; // 1 saat
+
+// Basit skeleton bileşenleri (Server Component içinde kullanılabilir)
+function SectionSkeleton() {
+  return (
     <div className="container py-14 md:py-16">
       <div className="h-40 rounded-2xl bg-neutral-100 animate-pulse" />
     </div>
-  ),
-});
-
-const ProjectsGalleryLazy = dynamic(
-  () => import("../../components/ProjectsGallery"),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="container py-14 md:py-16">
-        <div className="h-40 rounded-2xl bg-neutral-100 animate-pulse" />
-      </div>
-    ),
-  }
-);
-
-export const revalidate = 3600; // 1 saat
+  );
+}
 
 export default function HomePage() {
   return (
@@ -105,11 +97,15 @@ export default function HomePage() {
 
       {/* Kat altı içerik */}
       <section className="section-lazy">
-        <ServicesTabsLazy />
+        <Suspense fallback={<SectionSkeleton />}>
+          <ServicesTabsLazy />
+        </Suspense>
       </section>
 
       <section className="section-lazy">
-        <ProjectsGalleryLazy />
+        <Suspense fallback={<SectionSkeleton />}>
+          <ProjectsGalleryLazy />
+        </Suspense>
       </section>
 
       <section className="section-lazy">

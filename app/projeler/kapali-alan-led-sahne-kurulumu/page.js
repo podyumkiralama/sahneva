@@ -14,7 +14,7 @@ export const metadata = {
       "Devlet Protokolüne Uygun Kapalı Alan LED ve Sahne Kurulumu — Teknik Referans",
     description:
       "24×6 m P2 LED, 24×8 m sahne/podyum, scaff ve truss ile büyük ölçekli kapalı alan kurulumu.",
-    images: ["/img/projeler/kapali-alan-led/01.webp"],
+    images: ["/img/projeler/kapali-alan-led/1.webp"], // ← düzeltildi
     url: "https://www.sahneva.com/projeler/kapali-alan-led-sahne-kurulumu",
   },
   twitter: {
@@ -23,29 +23,30 @@ export const metadata = {
       "Devlet Protokolüne Uygun Kapalı Alan LED ve Sahne Kurulumu — Teknik Referans",
     description:
       "Kapalı alan (40’lık çadır) üzerinde 24×6 m P2 LED ve 24×8 m sahne/podyum kurulum referansı.",
-    images: ["/img/projeler/kapali-alan-led/01.webp"],
+    images: ["/img/projeler/kapali-alan-led/1.webp"], // ← düzeltildi
   },
 };
 
+// ← tamamı düzeltildi (1–5.webp)
 const IMAGES = [
   {
-    src: "/img/projeler/kapali-alan-led/01.webp",
+    src: "/img/projeler/kapali-alan-led/1.webp",
     alt: "Kapalı alan çadır içinde 24×6 m P2 ana LED ekran ve 24×8 m sahne/podyum",
   },
   {
-    src: "/img/projeler/kapali-alan-led/02.webp",
+    src: "/img/projeler/kapali-alan-led/2.webp",
     alt: "Scaff iskelet sistemi ve truss üst yapı ile kurulan sahne",
   },
   {
-    src: "/img/projeler/kapali-alan-led/03.webp",
+    src: "/img/projeler/kapali-alan-led/3.webp",
     alt: "Protokol standardında aydınlatma ve görsel yayın düzeni",
   },
   {
-    src: "/img/projeler/kapali-alan-led/04.webp",
+    src: "/img/projeler/kapali-alan-led/4.webp",
     alt: "40’lık çadır iç zemin hazırlığı ve halı kaplama detayları",
   },
   {
-    src: "/img/projeler/kapali-alan-led/05.webp",
+    src: "/img/projeler/kapali-alan-led/5.webp",
     alt: "Büyük ölçekli kapalı alan kurulumundan genel görünüm",
   },
 ];
@@ -77,9 +78,7 @@ export default function CasePage() {
 
       {/* ÖZET KARTLARI */}
       <section aria-labelledby="ozet-baslik" className="container py-10 md:py-14">
-        <h2 id="ozet-baslik" className="sr-only">
-          Kurulum Özeti
-        </h2>
+        <h2 id="ozet-baslik" className="sr-only">Kurulum Özeti</h2>
         <div className="grid gap-6 md:grid-cols-3">
           <article className="p-5 rounded-2xl border bg-white">
             <h3 className="font-semibold mb-2">Teknik Ölçüler</h3>
@@ -144,10 +143,9 @@ export default function CasePage() {
         <CaseGallery images={IMAGES} />
       </section>
 
-      {/* JSON-LD: Project (nötr, kampanya adı yok) */}
+      {/* JSON-LD */}
       <script
         type="application/ld+json"
-        // HTML5 validator uyarıları tetiklemesin diye inline JSON.stringify
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
@@ -172,4 +170,3 @@ export default function CasePage() {
     </div>
   );
 }
-

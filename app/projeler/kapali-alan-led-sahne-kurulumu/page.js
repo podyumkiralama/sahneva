@@ -39,7 +39,6 @@ const IMAGES = [
   { src: "/img/projeler/kapali-alan-led/07.webp", alt: "Sahne yan cephe ve ışık yerleşimi" },
   { src: "/img/projeler/kapali-alan-led/08.webp", alt: "Truss altında aydınlatma ve rigging detayları" },
   { src: "/img/projeler/kapali-alan-led/09.webp", alt: "Genel kurulumun tamamlanmış geniş açı görünümü" },
-  { src: "/img/projeler/kapali-alan-led/10.webp", alt: "Işıklandırılmış sahne final görünümü" },
 ];
 
 export default function CasePage() {
@@ -227,3 +226,4 @@ export default function CasePage() {
     </div>
   );
 }
+

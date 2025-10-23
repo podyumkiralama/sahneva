@@ -1,12 +1,13 @@
 // app/projeler/kapali-alan-led-sahne-kurulumu/page.js
 import Image from "next/image";
+import Link from "next/link";
 import CaseGallery from "../../../components/CaseGallery";
 
 export const metadata = {
   title:
     "Devlet Protokolüne Uygun Kapalı Alan LED ve Sahne Kurulumu — Teknik Referans | Sahneva",
   description:
-    "Kapalı alan (40’lık çadır) üzerinde 24×8 m sahne/podyum, 24×6 m P2 LED ekran, scaff ve truss altyapısı ile 2 günde, 60 kişilik teknik ekiple tamamlanan büyük ölçekli kurulum.",
+    "40’lık çadır içinde 24×8 m sahne/podyum ve 24×6 m P2 LED ekran; scaff ve truss üst yapısıyla, 60 kişilik ekiple 2 günde tamamlanan büyük ölçekli kurulum.",
   alternates: { canonical: "/projeler/kapali-alan-led-sahne-kurulumu" },
   openGraph: {
     type: "article",
@@ -14,7 +15,7 @@ export const metadata = {
       "Devlet Protokolüne Uygun Kapalı Alan LED ve Sahne Kurulumu — Teknik Referans",
     description:
       "24×6 m P2 LED, 24×8 m sahne/podyum, scaff ve truss ile büyük ölçekli kapalı alan kurulumu.",
-    images: ["/img/projeler/kapali-alan-led/1.webp"], // ← düzeltildi
+    images: ["/img/projeler/kapali-alan-led/01.webp"], // OG görseli (ilk kare)
     url: "https://www.sahneva.com/projeler/kapali-alan-led-sahne-kurulumu",
   },
   twitter: {
@@ -22,33 +23,23 @@ export const metadata = {
     title:
       "Devlet Protokolüne Uygun Kapalı Alan LED ve Sahne Kurulumu — Teknik Referans",
     description:
-      "Kapalı alan (40’lık çadır) üzerinde 24×6 m P2 LED ve 24×8 m sahne/podyum kurulum referansı.",
-    images: ["/img/projeler/kapali-alan-led/1.webp"], // ← düzeltildi
+      "Kapalı alan sahne & LED uygulaması — 24×6 m P2 LED ve 24×8 m sahne/podyum.",
+    images: ["/img/projeler/kapali-alan-led/01.webp"],
   },
 };
 
-// ← tamamı düzeltildi (1–5.webp)
+// ⚠ Görselleri aynı klasöre 01–10.webp olarak koyabilirsin (kaç adet varsa o kadarı yeter).
 const IMAGES = [
-  {
-    src: "/img/projeler/kapali-alan-led/1.webp",
-    alt: "Kapalı alan çadır içinde 24×6 m P2 ana LED ekran ve 24×8 m sahne/podyum",
-  },
-  {
-    src: "/img/projeler/kapali-alan-led/2.webp",
-    alt: "Scaff iskelet sistemi ve truss üst yapı ile kurulan sahne",
-  },
-  {
-    src: "/img/projeler/kapali-alan-led/3.webp",
-    alt: "Protokol standardında aydınlatma ve görsel yayın düzeni",
-  },
-  {
-    src: "/img/projeler/kapali-alan-led/4.webp",
-    alt: "40’lık çadır iç zemin hazırlığı ve halı kaplama detayları",
-  },
-  {
-    src: "/img/projeler/kapali-alan-led/5.webp",
-    alt: "Büyük ölçekli kapalı alan kurulumundan genel görünüm",
-  },
+  { src: "/img/projeler/kapali-alan-led/01.webp", alt: "Kapalı alan çadır içinde 24×6 m P2 LED ekran ve 24×8 m sahne/podyum genel görünüm" },
+  { src: "/img/projeler/kapali-alan-led/02.webp", alt: "Truss üst yapı ve sahne yerleşimi" },
+  { src: "/img/projeler/kapali-alan-led/03.webp", alt: "P2 LED ekranın sahne ile entegrasyonu" },
+  { src: "/img/projeler/kapali-alan-led/04.webp", alt: "Scaff iskelet sistemi ve podyum platformu" },
+  { src: "/img/projeler/kapali-alan-led/05.webp", alt: "Oturma düzeni geniş açı görünüm" },
+  { src: "/img/projeler/kapali-alan-led/06.webp", alt: "LED ön sahne perspektifi" },
+  { src: "/img/projeler/kapali-alan-led/07.webp", alt: "Sahne yan cephe ve ışık yerleşimi" },
+  { src: "/img/projeler/kapali-alan-led/08.webp", alt: "Truss altında aydınlatma ve rigging detayları" },
+  { src: "/img/projeler/kapali-alan-led/09.webp", alt: "Genel kurulumun tamamlanmış geniş açı görünümü" },
+  { src: "/img/projeler/kapali-alan-led/10.webp", alt: "Işıklandırılmış sahne final görünümü" },
 ];
 
 export default function CasePage() {
@@ -58,7 +49,7 @@ export default function CasePage() {
       <section className="relative bg-neutral-950">
         <Image
           src={IMAGES[0].src}
-          alt="Kapalı alan çadır içinde 24×6 m P2 ana LED ekran ve 24×8 m sahne/podyum"
+          alt="Kapalı alan çadır içinde 24×6 m P2 LED ekran ve 24×8 m sahne/podyum"
           fill
           priority
           sizes="100vw"
@@ -69,9 +60,20 @@ export default function CasePage() {
             Kapalı Alan LED & Sahne Kurulumu (Protokol Seviyesi)
           </h1>
           <p className="mt-4 max-w-3xl text-white/90">
-            40’lık çadır içinde 24×8 m sahne/podyum ve 24×6 m P2 (2&nbsp;mm) ana LED ekran ile,
-            scaff ve truss üst yapısı kullanılarak gerçekleştirilmiş büyük ölçekli kurulum.
-            İçerik tamamen teknik referans amaçlıdır; kampanya adı kullanılmaz.
+            40’lık çadır içinde{" "}
+            <Link href="/podyum-kiralama" className="underline font-medium">
+              24×8 m sahne/podyum
+            </Link>{" "}
+            ve{" "}
+            <Link href="/led-ekran-kiralama" className="underline font-medium">
+              24×6 m P2 LED ekran
+            </Link>{" "}
+            kurulumunu;{" "}
+            <Link href="/sahne-kiralama" className="underline font-medium">
+              scaff + truss
+            </Link>{" "}
+            üst yapısı ile gerçekleştirdik. İçerik; kampanya adı vermeden, teknik
+            referans amaçlı hazırlanmıştır.
           </p>
         </div>
       </section>
@@ -84,8 +86,7 @@ export default function CasePage() {
             <h3 className="font-semibold mb-2">Teknik Ölçüler</h3>
             <ul className="text-sm text-neutral-700 space-y-1 list-disc pl-4">
               <li>Sahne / Podyum: <strong>24 × 8 m</strong></li>
-              <li>LED Ekran: <strong>24 × 6 m</strong></li>
-              <li>Piksel Aralığı: <strong>P2 (2 mm)</strong></li>
+              <li>LED Ekran: <strong>24 × 6 m</strong> (P2)</li>
               <li>Üst Yapı: <strong>Truss</strong> + Scaff iskelet</li>
             </ul>
           </article>
@@ -95,7 +96,12 @@ export default function CasePage() {
             <ul className="text-sm text-neutral-700 space-y-1 list-disc pl-4">
               <li>Kurulum Yeri: Dış alana kurulu <strong>40’lık çadır</strong></li>
               <li>İç Zemin: Özel hazırlık + <strong>halı kaplama</strong></li>
-              <li>Ses & Işık: Line-array, robot ışık, sahne aydınlatma</li>
+              <li>
+                <Link href="/ses-isik-sistemleri" className="underline font-medium">
+                  Ses & Işık
+                </Link>
+                : Line-array, robot ışık, sahne aydınlatma
+              </li>
             </ul>
           </article>
 
@@ -104,46 +110,97 @@ export default function CasePage() {
             <ul className="text-sm text-neutral-700 space-y-1 list-disc pl-4">
               <li>Ekip Büyüklüğü: <strong>60 kişi</strong></li>
               <li>Kurulum Süresi: <strong>2 iş günü</strong></li>
-              <li>Etkinlik Ölçeği: Protokol seviyesi (üst düzey katılım)</li>
+              <li>Ölçek: Protokol seviyesi (üst düzey katılım)</li>
             </ul>
             <p className="text-xs text-neutral-500 mt-2">
-              Not: Sayfa bir teknik referanstır; belirli bir kampanya/kurum adı içermez.
+              Not: Sayfa teknik referanstır; belirli bir kampanya/kurum adı içermez.
             </p>
           </article>
         </div>
       </section>
 
-      {/* AÇIKLAMA */}
+      {/* AÇIKLAMA (iç linkli) */}
       <section aria-labelledby="aciklama-baslik" className="container pb-10 md:pb-12">
         <h2 id="aciklama-baslik" className="text-xl md:text-2xl font-bold mb-4">
           Uygulama ve Yaklaşım
         </h2>
         <div className="prose max-w-none text-neutral-700">
           <p>
-            Kurulum; dış alan üzerine inşa edilen 40’lık çadır içinde, güvenli rigging ve
-            hızlı montaj öncelikleriyle planlandı. Zemin hazırlığı tamamlandıktan sonra sahne
-            ve LED taşıyıcı iskelet (scaff) kuruldu; truss üst yapı ile ses ve aydınlatma
-            elemanlarının konumlandırılması yapıldı. Yüksek parlaklık ve geniş görüş açısı için
-            P2 (2&nbsp;mm) piksel aralıklı 24×6 m ana LED ekran tercih edildi.
+            Kurulum; dış alan üzerine inşa edilen 40’lık çadırda, güvenli rigging ve hızlı
+            montaj öncelikleriyle planlandı. Zemin hazırlığı tamamlandıktan sonra{" "}
+            <Link href="/podyum-kiralama" className="underline font-medium">
+              podyum
+            </Link>{" "}
+            ve LED taşıyıcı iskelet (scaff) kuruldu;{" "}
+            <Link href="/sahne-kiralama" className="underline font-medium">
+              truss
+            </Link>{" "}
+            üst yapı ile ses ve aydınlatma elemanlarının konumlandırılması yapıldı. Görüş açısı
+            ve parlaklık için{" "}
+            <Link href="/led-ekran-kiralama" className="underline font-medium">
+              P2 LED ekran
+            </Link>{" "}
+            tercih edildi.
           </p>
           <p>
-            Operasyon, 60 kişilik teknik ekiple 2 iş gününde tamamlandı. Yayın zinciri yedekli
-            kurgulandı; protokol standardı dikkate alınarak sahne görünürlüğü, akustik ve ışık
-            dengesi test edildi. İçerik yalnızca teknik referans amaçlıdır; kurulum, üst düzey
-            katılım beklenen resmi bir etkinlik protokolüne uygun şekilde gerçekleştirilmiştir.
+            Yayın zinciri yedekli kurgulandı; protokol standardı dikkate alınarak sahne
+            görünürlüğü, akustik ve{" "}
+            <Link href="/ses-isik-sistemleri" className="underline font-medium">
+              ışık dengesi
+            </Link>{" "}
+            test edildi. Çadır içi{" "}
+            <Link href="/cadir-kiralama" className="underline font-medium">
+              zemin kaplama
+            </Link>{" "}
+            tamamlandıktan sonra oturma düzeni yerleştirildi.
           </p>
         </div>
       </section>
 
+      {/* BU PROJEDE KULLANILAN HİZMETLER (internal link hub) */}
+      <section aria-labelledby="services-used" className="container pb-8">
+        <h2 id="services-used" className="text-xl md:text-2xl font-bold mb-4">
+          Bu Projede Kullanılan Hizmetler
+        </h2>
+        <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <li><Link href="/podyum-kiralama" className="card block p-4 rounded-xl border hover:shadow-sm">Podyum Kiralama</Link></li>
+          <li><Link href="/led-ekran-kiralama" className="card block p-4 rounded-xl border hover:shadow-sm">LED Ekran Kiralama</Link></li>
+          <li><Link href="/ses-isik-sistemleri" className="card block p-4 rounded-xl border hover:shadow-sm">Ses & Işık Sistemleri</Link></li>
+          <li><Link href="/cadir-kiralama" className="card block p-4 rounded-xl border hover:shadow-sm">Çadır Kiralama</Link></li>
+          <li><Link href="/sahne-kiralama" className="card block p-4 rounded-xl border hover:shadow-sm">Sahne Kurulumu</Link></li>
+        </ul>
+      </section>
+
       {/* GALERİ */}
-      <section aria-labelledby="galeri-baslik" className="container pb-14 md:pb-16">
+      <section aria-labelledby="galeri-baslik" className="container pb-10 md:pb-14">
         <h2 id="galeri-baslik" className="text-xl md:text-2xl font-bold mb-6">
           Görsel Galeri
         </h2>
         <CaseGallery images={IMAGES} />
       </section>
 
-      {/* JSON-LD */}
+      {/* CTA (internal link) */}
+      <section aria-labelledby="cta-baslik" className="container pb-14 md:pb-16">
+        <h2 id="cta-baslik" className="sr-only">Teklif CTA</h2>
+        <div className="rounded-2xl border p-6 md:p-8 bg-white flex flex-col md:flex-row items-start md:items-center gap-4 justify-between">
+          <p className="text-neutral-800">
+            Benzer bir kapalı alan sahne & LED kurulumuna mı ihtiyacınız var? İhtiyacınıza uygun paketi birlikte planlayalım.
+          </p>
+          <div className="flex gap-3">
+            <Link href="/iletisim" className="btn btn-primary">Teklif Alın</Link>
+            <a
+              href="https://wa.me/905453048671?text=Merhaba%2C+kapal%C4%B1+alan+sahne+%26+LED+kurulumu+i%C3%A7in+teklif+almak+istiyorum."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn"
+            >
+              WhatsApp
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* JSON-LD: Project */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

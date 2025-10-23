@@ -1,13 +1,11 @@
 // app/sitemap.js
-import { services } from "@/lib/data";
+import { services, projects } from "@/lib/data";
 
 const SITE = "https://www.sahneva.com";
-const abs = (p) => (p.startsWith("http") ? p : `${SITE}${p}`);
-
-// BUGÜN
+const abs = (p) => (p?.startsWith("http") ? p : `${SITE}${p}`);
 const NOW_ISO = new Date().toISOString();
 
-// ❶ Statik sayfalar (lastMod = bugün)
+// ❶ Statik sayfalar
 const STATIC_PAGES = [
   { path: "/",                       lastMod: NOW_ISO, change: "weekly",  pr: 1.0 },
   { path: "/hizmetler",              lastMod: NOW_ISO, change: "weekly",  pr: 0.9 },
@@ -22,28 +20,19 @@ const STATIC_PAGES = [
   { path: "/sss",                    lastMod: NOW_ISO, change: "monthly", pr: 0.7 },
 ];
 
-// ❷ Sayfa bazlı görseller
+// ❷ Sayfa bazlı görseller (isteğe bağlı)
 const IMAGE_MAP = {
   "/": ["/img/hero-bg.webp"],
   "/podyum-kiralama": [
     "/img/hizmet-podyum.webp",
-    "/img/podyum/1.webp",
-    "/img/podyum/2.webp",
-    "/img/podyum/3.webp",
     "/img/galeri/podyum-kiralama-1.webp",
   ],
   "/led-ekran-kiralama": [
     "/img/hizmet-led-ekran.webp",
-    "/img/led/1.webp",
-    "/img/led/2.webp",
-    "/img/led/3.webp",
     "/img/galeri/led-ekran-kiralama-1.webp",
   ],
   "/cadir-kiralama": [
     "/img/hizmet-cadir.webp",
-    "/img/cadir/1.webp",
-    "/img/cadir/2.webp",
-    "/img/cadir/3.webp",
     "/img/galeri/cadir-kiralama-1.webp",
   ],
   "/sahne-kiralama": ["/img/hizmet-sahne.webp"],
@@ -53,28 +42,50 @@ const IMAGE_MAP = {
   "/hakkimizda": ["/img/hakkimizda.webp"],
 };
 
-// ❸ services’ten dinamik ek (varsa)
+// ❸ services → dinamik
 function dynamicFromServices() {
   const seen = new Set(STATIC_PAGES.map((s) => s.path));
   return (services ?? [])
     .map((s) => ({
       path: `/${s.slug}`,
-      lastMod: s?.updatedAt ?? NOW_ISO, // varsa updatedAt
+      lastMod: s?.updatedAt ?? NOW_ISO,
       change: "weekly",
       pr: 0.9,
     }))
     .filter((x) => !seen.has(x.path));
 }
 
-// ❹ Next.js sitemap çıktısı
-export default function sitemap() {
-  const pages = [...STATIC_PAGES, ...dynamicFromServices()];
+// ❹ projects → dinamik
+function dynamicFromProjects() {
+  return (projects ?? []).map((p) => ({
+    path: `/projeler/${p.slug}`,
+    lastMod: p?.updatedAt ?? NOW_ISO,
+    change: p?.changeFrequency ?? "monthly",
+    pr: p?.priority ?? 0.8,
+    images: (p?.images ?? []).map(abs),
+  }));
+}
 
-  return pages.map(({ path, lastMod, change, pr }) => ({
+// ❺ Next.js sitemap çıktısı
+export default function sitemap() {
+  const base = [...STATIC_PAGES, ...dynamicFromServices()];
+  const proj = dynamicFromProjects();
+
+  const baseWithImages = base.map(({ path, lastMod, change, pr }) => ({
     url: abs(path),
     lastModified: new Date(lastMod).toISOString(),
     changeFrequency: change,
     priority: pr,
     images: (IMAGE_MAP[path] ?? []).map(abs),
   }));
+
+  const projectItems = proj.map(({ path, lastMod, change, pr, images }) => ({
+    url: abs(path),
+    lastModified: new Date(lastMod).toISOString(),
+    changeFrequency: change,
+    priority: pr,
+    images,
+  }));
+
+  return [...baseWithImages, ...projectItems];
 }

@@ -30,16 +30,17 @@ export const metadata = {
 
 // ⚠ Görselleri aynı klasöre 01–10.webp olarak koyabilirsin (kaç adet varsa o kadarı yeter).
 const IMAGES = [
-  { src: "/img/projeler/kapali-alan-led/1.webp", alt: "Kapalı alan çadır içinde 24×6 m P2 LED ekran ve 24×8 m sahne/podyum genel görünüm" },
-  { src: "/img/projeler/kapali-alan-led/2.webp", alt: "Truss üst yapı ve sahne yerleşimi" },
-  { src: "/img/projeler/kapali-alan-led/3.webp", alt: "P2 LED ekranın sahne ile entegrasyonu" },
-  { src: "/img/projeler/kapali-alan-led/4.webp", alt: "Scaff iskelet sistemi ve podyum platformu" },
-  { src: "/img/projeler/kapali-alan-led/5.webp", alt: "Oturma düzeni geniş açı görünüm" },
-  { src: "/img/projeler/kapali-alan-led/6.webp", alt: "LED ön sahne perspektifi" },
-  { src: "/img/projeler/kapali-alan-led/7.webp", alt: "Sahne yan cephe ve ışık yerleşimi" },
-  { src: "/img/projeler/kapali-alan-led/8.webp", alt: "Truss altında aydınlatma ve rigging detayları" },
-  { src: "/img/projeler/kapali-alan-led/9.webp", alt: "Genel kurulumun tamamlanmış geniş açı görünümü" },
+  { src: "/img/projeler/kapali-alan-led/1.webp", alt: "Protokol seviyesi LED sahne kurulumu; P2 çözünürlüklü 24×6 m ana LED ekran ve truss üst yapı görünümü" },
+  { src: "/img/projeler/kapali-alan-led/2.webp", alt: "24×8 m podyum önüne yerleştirilmiş protokol oturma alanı ve LED ekran arka plan kurulumu" },
+  { src: "/img/projeler/kapali-alan-led/3.webp", alt: "Yeşillik dekor arka plan üzerine konumlandırılmış projeye özel sosyal konut tanıtım panosu" },
+  { src: "/img/projeler/kapali-alan-led/4.webp", alt: "P2 LED ekran ve yeşil duvar dekorlu sahne alanı genel görüntüsü" },
+  { src: "/img/projeler/kapali-alan-led/5.webp", alt: "24×8 m podyum üzerinde LED ekran kurulumunun tamamlandığı genel sahne görüntüsü" },
+  { src: "/img/projeler/kapali-alan-led/6.webp", alt: "Truss iskelet sistemiyle desteklenen geniş katılımlı kapalı alan etkinlik sahnesi genel planı" },
+  { src: "/img/projeler/kapali-alan-led/7.webp", alt: "Tam kapasite sandalye dizilimiyle birlikte LED ekran odaklı sahne genel kurulumu" },
+  { src: "/img/projeler/kapali-alan-led/8.webp", alt: "Sahne ön görünümü, podyum ve sandalye dizilimleriyle birlikte protokol düzenine hazır kurulum" },
+  { src: "/img/projeler/kapali-alan-led/9.webp", alt: "Teknik kurulum sonrası sahne ve oturma düzeninin son kontrollerinin yapıldığı geniş açılı görünüm" },
 ];
+
 
 export default function CasePage() {
   return (
@@ -226,5 +227,6 @@ export default function CasePage() {
     </div>
   );
 }
+
 
 

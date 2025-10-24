@@ -5,13 +5,14 @@ import { Suspense } from "react";
 import CorporateEvents from "../../components/CorporateEvents";
 import Faq from "../../components/Faq";
 import HeroCtasClient from "../../components/HeroCtasClient";
+// DİKKAT: Dosya adı büyük/küçük harf uyumlu olmalı
 import ReviewBanner from "../../components/Reviewbanner";
 
-// Dinamik (Server Components uyumlu) – ssr:false YOK
-const ServicesTabsLazy = dynamic(() => import("../../components/ServicesTabs"));
-const ProjectsGalleryLazy = dynamic(() => import("../../components/ProjectsGallery"));
+// ⚠️ Server Component'ta `ssr:false` kullanmayız. Sadece dinamik import + Suspense kullan.
+const ServicesTabsLazy = dynamic(() => import("../../components/ServicesTabs")); // "use client" olmalı
+const ProjectsGalleryLazy = dynamic(() => import("../../components/ProjectsGallery")); // "use client" olmalı
 
-export const revalidate = 3600;
+export const revalidate = 3600; // 1 saat
 
 function SectionSkeleton() {
   return (
@@ -23,120 +24,132 @@ function SectionSkeleton() {
 
 export default function HomePage() {
   return (
-    // <main> layout.js içindeyse burada <div> kullanın (W3: tek main)
+    // W3C: yalnızca 1 adet <main> olsun; bunu layout.js içinde tutuyoruz → burada <div> kullanıyoruz
     <div className="overflow-x-hidden">
-      {/* HERO (LCP optimize + okunabilir overlay) */}
-  <div className="relative overflow-x-hidden" style={{ backgroundColor: "#0b0f1a" }}>
-  <div className="relative h-[64vh] md:h-[72vh]">
-    <Image
-      src="/img/hero-bg.webp"
-      alt="Sahne, podyum, LED ekran ve ses-ışık ekipmanlarıyla kurulu etkinlik sahnesi"
-      fill                    // <-- yeniden fill (absolute konumlanır)
-      priority
-      fetchPriority="high"
-      sizes="100vw"
-      placeholder="empty"
-      className="object-cover"
-    />
-    {/* Koyu overlay */}
-    <div className="absolute inset-0 bg-black/60" aria-hidden="true" />
+      {/* HERO */}
+      <div
+        className="full-bleed relative overflow-x-hidden"
+        style={{ backgroundColor: "#0b0f1a" }}
+      >
+        <Image
+          src="/img/hero-bg.webp"
+          alt="Sahne, podyum, LED ekran ve ses-ışık ekipmanlarıyla kurulu etkinlik sahnesi"
+          fill
+          priority
+          fetchPriority="high"
+          decoding="async"
+          sizes="100vw"
+          placeholder="blur"
+          blurDataURL="/img/hero-bg-low.webp"
+          quality={58}
+          className="object-cover"
+        />
+        {/* overlay */}
+        <div className="absolute inset-0 hero-overlay pointer-events-none" />
 
-    {/* İçerik: görselin ÜSTÜNDE */}
-    <div className="absolute inset-0 z-10 flex items-center">
-      <div className="container text-center">
-        <h1 className="text-white text-4xl md:text-6xl font-extrabold mb-4 tracking-tight">
-          Sahne, Podyum, LED Ekran &amp; Ses-Işık Sistemleri Kiralama
-        </h1>
-        <p className="text-white/95 text-lg md:text-xl mb-8 max-w-3xl mx-auto">
-          Türkiye genelinde sahne ve podyum kurulumları, LED ekran, ses-ışık
-          sistemleri ve çadır kiralama. Hızlı teslim, profesyonel teknik ekip.
-        </p>
-
-        <HeroCtasClient />
-
-        <ul className="mt-6 grid max-w-3xl mx-auto grid-cols-1 sm:grid-cols-3 gap-3">
-          {[
-            ["⭐", "4.9 Müşteri Memnuniyeti"],
-            ["🔧", "Aynı Gün Kurulum"],
-            ["👷", "Profesyonel Teknik Ekip"],
-          ].map(([icon, label], i) => (
-            <li key={i} className="badge whitespace-nowrap overflow-hidden text-ellipsis">
-              <span aria-hidden>{icon}</span>
-              <span>{label}</span>
-            </li>
-          ))}
-        </ul>
-
-        <div className="mt-10 text-center">
-          <div className="text-5xl mb-3" aria-hidden>🎧</div>
-          <h2 className="text-white text-2xl md:text-3xl font-semibold mb-2">
-            Organizasyonunuz için Ücretsiz Danışmanlık
-          </h2>
-          <p className="text-white/90 max-w-3xl mx-auto">
-            Etkinliğiniz için en doğru sahne, podyum, ses-ışık ve ekran
-            çözümlerini ücretsiz danışmanlıkla birlikte planlayalım.
+        <div className="relative z-10 container py-20 md:py-32 text-center">
+          <h1 className="text-white text-4xl md:text-6xl font-extrabold mb-4 tracking-tight">
+            Sahne, Podyum, LED Ekran &amp; Ses-Işık Sistemleri Kiralama
+          </h1>
+          <p className="text-white/95 text-lg md:text-xl mb-8">
+            Türkiye genelinde sahne ve podyum kurulumları, LED ekran, ses-ışık
+            sistemleri ve çadır kiralama. Hızlı teslim, profesyonel teknik ekip.
           </p>
+
+          {/* CTA'lar */}
+          <HeroCtasClient />
+
+          {/* Rozetler */}
+          <ul className="mt-6 grid max-w-3xl mx-auto grid-cols-1 sm:grid-cols-3 gap-3">
+            {[
+              ["⭐", "4.9 Müşteri Memnuniyeti"],
+              ["🔧", "Aynı Gün Kurulum"],
+              ["👷", "Profesyonel Teknik Ekip"],
+            ].map(([icon, label], i) => (
+              <li
+                key={i}
+                className="badge whitespace-nowrap overflow-hidden text-ellipsis"
+              >
+                <span aria-hidden>{icon}</span>
+                <span>{label}</span>
+              </li>
+            ))}
+          </ul>
+
+          {/* Alt bilgi */}
+          <div className="mt-10 text-center">
+            <div className="text-5xl mb-3" aria-hidden>
+              🎧
+            </div>
+            <h2 className="text-white text-2xl md:text-3xl font-semibold mb-2">
+              Organizasyonunuz için Ücretsiz Danışmanlık
+            </h2>
+            <p className="text-white/90 max-w-3xl mx-auto">
+              Etkinliğiniz için en doğru sahne, podyum, ses-ışık ve ekran
+              çözümlerini ücretsiz danışmanlıkla birlikte planlayalım.
+            </p>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
 
-
-      {/* Google yorum banner’ı */}
+      {/* Google yorum banner’ı (sticky) */}
       <ReviewBanner />
 
-      {/* Hizmet Sekmeleri */}
-      <section className="section-lazy" aria-labelledby="home-services">
-        <h2 id="home-services" className="sr-only">Hizmetler</h2>
+      {/* Kat altı içerik */}
+      <section className="section-lazy">
         <Suspense fallback={<SectionSkeleton />}>
           <ServicesTabsLazy />
         </Suspense>
       </section>
 
-      {/* Projeler / Galeri */}
-      <section className="section-lazy" aria-labelledby="home-projects">
-        <h2 id="home-projects" className="sr-only">Son Projeler ve Galeri</h2>
+      <section className="section-lazy">
         <Suspense fallback={<SectionSkeleton />}>
           <ProjectsGalleryLazy />
         </Suspense>
       </section>
 
-      {/* Kurumsal Etkinlikler */}
-      <section className="section-lazy" aria-labelledby="home-corporate">
-        <h2 id="home-corporate" className="sr-only">Kurumsal Etkinlik Hizmetleri</h2>
+      <div className="section-lazy">
         <CorporateEvents />
-      </section>
+      </div>
 
-      {/* SEO METİN BLOĞU (mevcut metin korunuyor) */}
-      <section className="section-lazy" aria-labelledby="home-seo-text">
-        <h2 id="home-seo-text" className="sr-only">
-          Etkinlik Prodüksiyon ve Organizasyon Açıklaması
-        </h2>
-
+      {/* SEO METİN BLOĞU */}
+      <section className="section-lazy">
         <div className="container py-14 md:py-16">
-          <h3 className="text-2xl md:text-3xl font-bold text-center mb-8">
-            Etkinlik Prodüksiyon & Organizasyon – Türkiye Geneli Teknik Çözüm Ortağınız
-          </h3>
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
+            Etkinlik Prodüksiyon & Organizasyon – Türkiye Geneli Teknik Çözüm
+            Ortağınız
+          </h2>
 
           <div className="grid gap-6 md:grid-cols-2">
             <article className="card">
-              <h4 className="font-semibold text-lg mb-2">Uçtan Uca Teknik Hizmet</h4>
+              <h3 className="font-semibold text-lg mb-2">Uçtan Uca Teknik Hizmet</h3>
               <p className="text-neutral-700">
                 Sahneva{" "}
-                <a href="/sahne-kiralama" className="underline hover:no-underline font-medium">
+                <a
+                  href="/sahne-kiralama"
+                  className="underline hover:no-underline font-medium"
+                >
                   sahne sistemleri kiralama
                 </a>
                 ,{" "}
-                <a href="/podyum-kiralama" className="underline hover:no-underline font-medium">
+                <a
+                  href="/podyum-kiralama"
+                  className="underline hover:no-underline font-medium"
+                >
                   podyum kurulumu
                 </a>
                 ,{" "}
-                <a href="/led-ekran-kiralama" className="underline hover:no-underline font-medium">
+                <a
+                  href="/led-ekran-kiralama"
+                  className="underline hover:no-underline font-medium"
+                >
                   LED ekran kiralama
                 </a>{" "}
                 ve{" "}
-                <a href="/ses-isik-sistemleri" className="underline hover:no-underline font-medium">
+                <a
+                  href="/ses-isik-sistemleri"
+                  className="underline hover:no-underline font-medium"
+                >
                   ses ışık sistemi kurulumu
                 </a>{" "}
                 alanlarında uçtan uca çözümler sunar. Proje keşfi, çizim,
@@ -154,13 +167,16 @@ export default function HomePage() {
             </article>
 
             <article className="card">
-              <h4 className="font-semibold text-lg mb-2">Hızlı Kurulum, Şeffaf Fiyat</h4>
+              <h3 className="font-semibold text-lg mb-2">Hızlı Kurulum, Şeffaf Fiyat</h3>
               <p className="text-neutral-700">
                 İstanbul merkezli ekibimizle Türkiye’nin her ilinde çalışıyoruz.
                 Aynı gün <strong>hızlı kurulum</strong>, yedekli ekipman ve 7/24
                 teknik destek ile riskleri minimize ederiz. İhtiyacınıza göre en
                 uygun çözümü önerip gereksiz maliyetleri önler, talep halinde{" "}
-                <a href="/led-ekran-kiralama" className="underline hover:no-underline font-medium">
+                <a
+                  href="/led-ekran-kiralama"
+                  className="underline hover:no-underline font-medium"
+                >
                   LED ekran fiyatları
                 </a>{" "}
                 ve alternatif paketleri karşılaştırmalı olarak paylaşırız. Tüm
@@ -184,46 +200,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* PREMIUM – PRESTİJLİ ANLATIM BLOĞU (2. dosyadan esinlenilmiş, SEO dostu) */}
-      <section className="section-lazy" aria-labelledby="home-premium">
-        <h2 id="home-premium" className="container text-2xl md:text-3xl font-bold mb-4 mt-2">
-          Neden Yüksek Ölçekli Kurulumlarda Sahneva Tercih Ediliyor?
-        </h2>
-        <div className="container pb-10 md:pb-12">
-          <div className="prose max-w-none text-neutral-700">
-            <p>
-              Büyük markalar ve protokol düzeyi etkinlikler, sadece güçlü ekipman değil
-              kusursuz bir operasyon akışı gerektirir. Sahneva;{" "}
-              <a href="/sahne-kiralama" className="underline font-medium">truss</a> ve
-              scaff iskelet altyapısından{" "}
-              <a href="/led-ekran-kiralama" className="underline font-medium">P2-P6 LED</a> ekranlara,
-              <a href="/ses-isik-sistemleri" className="underline font-medium"> ses-ışık</a> optimizasyonundan
-              <a href="/podyum-kiralama" className="underline font-medium"> podyum</a> geometrisine kadar,
-              tüm bileşenleri tek bir teknik omurga altında birleştirir. Bu yaklaşım; görüntü kalitesi,
-              akustik denge ve güvenli rigging’i aynı anda sağlar.
-            </p>
-            <p>
-              Zaman baskısının yüksek olduğu projelerde saha koordinasyonu ve yedekli yayın
-              yapısı kritik önem taşır. Keşif, planlama ve lojistiği aynı anda yürüten ekiplerimiz,
-              kısa sürede kurulum yaparken güvenlik standardından ödün vermez. Böylece, açılış anında
-              “sahne hazır” demek bir hedef değil, bir standart olur.
-            </p>
-            <ul className="mt-4 space-y-2 list-disc pl-5">
-              <li>Yüksek parlaklık ve geniş görüş açısı için optimize <strong>LED ekran</strong> konfigürasyonları</li>
-              <li>Güvenli <strong>rigging</strong>, truss ve <strong>scaff</strong> üst yapı çözümleri</li>
-              <li>Alan ve akustiğe göre ölçeklenen <strong>ses-ışık</strong> tasarımı</li>
-              <li>Modüler <strong>podyum</strong> ve güvenlik unsurları (korkuluk, rampa, kaymaz kaplama)</li>
-              <li>Hızlı kurulum, yedekli yayın zinciri ve <strong>7/24 teknik destek</strong></li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* SSS */}
-      <section className="section-lazy" aria-labelledby="home-faq">
-        <h2 id="home-faq" className="sr-only">Sık Sorulan Sorular</h2>
+      <div className="section-lazy">
         <Faq />
-      </section>
+      </div>
     </div>
   );
 }

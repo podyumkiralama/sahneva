@@ -1,36 +1,21 @@
 // app/(site)/page.js
 import Image from "next/image";
-import dynamic from "next/dynamic";
-import { Suspense } from "react";
+import ServicesTabs from "../../components/ServicesTabs";
+import ProjectsGallery from "../../components/ProjectsGallery";
 import CorporateEvents from "../../components/CorporateEvents";
 import Faq from "../../components/Faq";
 import HeroCtasClient from "../../components/HeroCtasClient";
-// DİKKAT: Dosya adı büyük/küçük harf uyumlu olmalı
-import ReviewBanner from "../../components/Reviewbanner";
 
-// ⚠️ Server Component'ta `ssr:false` kullanmayız. Sadece dinamik import + Suspense kullan.
-const ServicesTabsLazy = dynamic(() => import("../../components/ServicesTabs")); // "use client" olmalı
-const ProjectsGalleryLazy = dynamic(() => import("../../components/ProjectsGallery")); // "use client" olmalı
+// ⚠️ DÜZELTME: Dosya adı ve component adı
+import ReviewBanner from "../../components/Reviewbanner";
 
 export const revalidate = 3600; // 1 saat
 
-function SectionSkeleton() {
-  return (
-    <div className="container py-14 md:py-16">
-      <div className="h-40 rounded-2xl bg-neutral-100 animate-pulse" />
-    </div>
-  );
-}
-
 export default function HomePage() {
   return (
-    // W3C: yalnızca 1 adet <main> olsun; bunu layout.js içinde tutuyoruz → burada <div> kullanıyoruz
-    <div className="overflow-x-hidden">
+    <main>
       {/* HERO */}
-      <div
-        className="full-bleed relative overflow-x-hidden"
-        style={{ backgroundColor: "#0b0f1a" }}
-      >
+      <div className="full-bleed relative img-skeleton" style={{ backgroundColor: "#0b0f1a" }}>
         <Image
           src="/img/hero-bg.webp"
           alt="Sahne, podyum, LED ekran ve ses-ışık ekipmanlarıyla kurulu etkinlik sahnesi"
@@ -42,10 +27,9 @@ export default function HomePage() {
           placeholder="blur"
           blurDataURL="/img/hero-bg-low.webp"
           quality={58}
-          className="object-cover"
+          className="object-cover will-change-transform"
         />
-        {/* overlay */}
-        <div className="absolute inset-0 hero-overlay pointer-events-none" />
+        <div className="absolute inset-0 hero-overlay" />
 
         <div className="relative z-10 container py-20 md:py-32 text-center">
           <h1 className="text-white text-4xl md:text-6xl font-extrabold mb-4 tracking-tight">
@@ -59,28 +43,21 @@ export default function HomePage() {
           {/* CTA'lar */}
           <HeroCtasClient />
 
-          {/* Rozetler */}
           <ul className="mt-6 grid max-w-3xl mx-auto grid-cols-1 sm:grid-cols-3 gap-3">
             {[
               ["⭐", "4.9 Müşteri Memnuniyeti"],
               ["🔧", "Aynı Gün Kurulum"],
               ["👷", "Profesyonel Teknik Ekip"],
             ].map(([icon, label], i) => (
-              <li
-                key={i}
-                className="badge whitespace-nowrap overflow-hidden text-ellipsis"
-              >
+              <li key={i} className="badge">
                 <span aria-hidden>{icon}</span>
                 <span>{label}</span>
               </li>
             ))}
           </ul>
 
-          {/* Alt bilgi */}
           <div className="mt-10 text-center">
-            <div className="text-5xl mb-3" aria-hidden>
-              🎧
-            </div>
+            <div className="text-5xl mb-3" aria-hidden>🎧</div>
             <h2 className="text-white text-2xl md:text-3xl font-semibold mb-2">
               Organizasyonunuz için Ücretsiz Danışmanlık
             </h2>
@@ -97,66 +74,36 @@ export default function HomePage() {
 
       {/* Kat altı içerik */}
       <section className="section-lazy">
-        <Suspense fallback={<SectionSkeleton />}>
-          <ServicesTabsLazy />
-        </Suspense>
+        <ServicesTabs />
       </section>
 
       <section className="section-lazy">
-        <Suspense fallback={<SectionSkeleton />}>
-          <ProjectsGalleryLazy />
-        </Suspense>
+        <ProjectsGallery />
       </section>
 
-      <div className="section-lazy">
+      <section className="section-lazy">
         <CorporateEvents />
-      </div>
+      </section>
 
       {/* SEO METİN BLOĞU */}
       <section className="section-lazy">
         <div className="container py-14 md:py-16">
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
-            Etkinlik Prodüksiyon & Organizasyon – Türkiye Geneli Teknik Çözüm
-            Ortağınız
+            Etkinlik Prodüksiyon & Organizasyon – Türkiye Geneli Teknik Çözüm Ortağınız
           </h2>
 
           <div className="grid gap-6 md:grid-cols-2">
             <article className="card">
               <h3 className="font-semibold text-lg mb-2">Uçtan Uca Teknik Hizmet</h3>
               <p className="text-neutral-700">
-                Sahneva{" "}
-                <a
-                  href="/sahne-kiralama"
-                  className="underline hover:no-underline font-medium"
-                >
-                  sahne sistemleri kiralama
-                </a>
-                ,{" "}
-                <a
-                  href="/podyum-kiralama"
-                  className="underline hover:no-underline font-medium"
-                >
-                  podyum kurulumu
-                </a>
-                ,{" "}
-                <a
-                  href="/led-ekran-kiralama"
-                  className="underline hover:no-underline font-medium"
-                >
-                  LED ekran kiralama
-                </a>{" "}
-                ve{" "}
-                <a
-                  href="/ses-isik-sistemleri"
-                  className="underline hover:no-underline font-medium"
-                >
-                  ses ışık sistemi kurulumu
-                </a>{" "}
-                alanlarında uçtan uca çözümler sunar. Proje keşfi, çizim,
-                kurulum ve canlı yönetim aşamalarının tamamını profesyonel
-                ekibimiz yürütür. Kurumsal lansman, bayi toplantısı, konser,
-                festival ve <em>kurumsal organizasyon</em> türlerinin tümünde
-                güvenli ve ölçeklenebilir altyapı kurarız.
+                Sahneva; <a href="/sahne-kiralama" className="underline hover:no-underline font-medium">sahne sistemleri kiralama</a>,{" "}
+                <a href="/podyum-kiralama" className="underline hover:no-underline font-medium">podyum kurulumu</a>,{" "}
+                <a href="/led-ekran-kiralama" className="underline hover:no-underline font-medium">LED ekran kiralama</a> ve{" "}
+                <a href="/ses-isik-sistemleri" className="underline hover:no-underline font-medium">ses ışık sistemi kurulumu</a>{" "}
+                alanlarında uçtan uca çözümler sunar. Proje keşfi, çizim, kurulum ve canlı
+                yönetim aşamalarının tamamını profesyonel ekibimiz yürütür. Kurumsal lansman,
+                bayi toplantısı, konser, festival ve <em>kurumsal organizasyon</em> türlerinin
+                tümünde güvenli ve ölçeklenebilir altyapı kurarız.
               </p>
               <ul className="mt-3 space-y-1 text-sm text-neutral-700 list-disc pl-5">
                 <li>IP65 dış mekân LED paneller, yüksek parlaklık ve esnek ölçüler</li>
@@ -171,16 +118,10 @@ export default function HomePage() {
               <p className="text-neutral-700">
                 İstanbul merkezli ekibimizle Türkiye’nin her ilinde çalışıyoruz.
                 Aynı gün <strong>hızlı kurulum</strong>, yedekli ekipman ve 7/24
-                teknik destek ile riskleri minimize ederiz. İhtiyacınıza göre en
-                uygun çözümü önerip gereksiz maliyetleri önler, talep halinde{" "}
-                <a
-                  href="/led-ekran-kiralama"
-                  className="underline hover:no-underline font-medium"
-                >
-                  LED ekran fiyatları
-                </a>{" "}
-                ve alternatif paketleri karşılaştırmalı olarak paylaşırız. Tüm
-                işlerimiz sözleşmeli ve e-faturalıdır.
+                teknik destek ile riskleri minimize ederiz. İhtiyacınıza göre
+                en uygun çözümü önerip gereksiz maliyetleri önler, talep halinde
+                <a href="/led-ekran-kiralama" className="underline hover:no-underline font-medium"> LED ekran fiyatları</a> ve alternatif paketleri
+                karşılaştırmalı olarak paylaşırız. Tüm işlerimiz sözleşmeli ve e-faturalıdır.
               </p>
               <p className="text-neutral-700 mt-3">
                 Teklif almak için hemen arayın ya da{" "}
@@ -200,9 +141,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      <div className="section-lazy">
+      <section className="section-lazy">
         <Faq />
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }

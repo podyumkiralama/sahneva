@@ -6,7 +6,7 @@ import CorporateEvents from "../../components/CorporateEvents";
 import Faq from "../../components/Faq";
 import HeroCtasClient from "../../components/HeroCtasClient";
 // DİKKAT: Dosya adı büyük/küçük harf uyumlu olmalı
-import ReviewBanner from "../../components/Reviewbanner";
+import ReviewBanner from "../../components/ReviewBanner";
 
 // ⚠️ Server Component'ta `ssr:false` kullanmayız. Sadece dinamik import + Suspense kullan.
 const ServicesTabsLazy = dynamic(() => import("../../components/ServicesTabs")); // "use client" olmalı
@@ -36,14 +36,12 @@ export default function HomePage() {
           alt="Sahne, podyum, LED ekran ve ses-ışık ekipmanlarıyla kurulu etkinlik sahnesi"
           fill
           priority
-          fetchPriority="high"
-          decoding="async"
           sizes="100vw"
           placeholder="blur"
-          blurDataURL="/img/hero-bg-low.webp"
-          quality={58}
+          blurDataURL="/img/hero-bg-low.webp" // mevcut değilse kaldır veya dosyayı ekle
           className="object-cover"
         />
+
         {/* overlay */}
         <div className="absolute inset-0 hero-overlay pointer-events-none" />
 
@@ -60,7 +58,10 @@ export default function HomePage() {
           <HeroCtasClient />
 
           {/* Rozetler */}
-          <ul className="mt-6 grid max-w-3xl mx-auto grid-cols-1 sm:grid-cols-3 gap-3">
+          <ul
+            className="mt-6 grid max-w-3xl mx-auto grid-cols-1 sm:grid-cols-3 gap-3"
+            aria-label="Hizmet Özellikleri"
+          >
             {[
               ["⭐", "4.9 Müşteri Memnuniyeti"],
               ["🔧", "Aynı Gün Kurulum"],
@@ -199,63 +200,63 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-           <section className="section-lazy" aria-labelledby="premium-title">
-  <h2 id="premium-title" className="container text-2xl md:text-3xl font-bold mb-4">
-    Neden Yüksek Ölçekli Kurulumlarda <span className="whitespace-nowrap">Sahneva</span> Tercih Ediliyor?
-  </h2>
 
-  <div className="container pb-10 md:pb-12">
-    <div className="prose max-w-none text-neutral-700">
-      <p>
-        Büyük ölçekli ve protokol seviyesindeki etkinliklerde yalnızca güçlü ekipman değil,
-        <strong> kusursuz operasyon</strong> ve <strong>güvenli rigging</strong> esastır. Sahneva;{" "}
-        <a href="/sahne-kiralama" className="underline font-medium">sahne ve podyum</a> tasarımından{" "}
-        <a href="/led-ekran-kiralama" className="underline font-medium">P2–P6 LED ekran</a> konfigürasyonlarına,{" "}
-        <a href="/ses-isik-sistemleri" className="underline font-medium">ses-ışık</a> optimizasyonundan
-        truss ve <em>scaff</em> üst yapılara kadar tüm bileşenleri tek bir teknik omurga altında birleştirir.
-        Sonuç; net görüntü, dengeli akustik ve her koşulda güven veren bir sahne mimarisidir.
-      </p>
+      {/* PREMIUM BLOK */}
+      <section className="section-lazy" aria-labelledby="premium-title">
+        <h2 id="premium-title" className="container text-2xl md:text-3xl font-bold mb-4">
+          Neden Yüksek Ölçekli Kurulumlarda <span className="whitespace-nowrap">Sahneva</span> Tercih Ediliyor?
+        </h2>
 
-      <p className="mt-4">
-        Zaman baskısının yüksek olduğu projelerde <strong>planlama, lojistik ve canlı yayın zinciri</strong> aynı anda
-        yönetilir. İstanbul merkezli operasyon ekibimiz, Türkiye genelinde eş zamanlı kurulumları kısa sürede
-        tamamlayacak kapasitededir. Her proje; alan keşfi, yük hesabı, taşıyıcı sistem yerleşimi ve kapsamlı
-        testlerle teslim edilir. Standart hedefimiz basittir: <em>açılış anında sahne kusursuz çalışır.</em>
-      </p>
+        <div className="container pb-10 md:pb-12">
+          <div className="prose max-w-none text-neutral-700">
+            <p>
+              Büyük ölçekli ve protokol seviyesindeki etkinliklerde yalnızca güçlü ekipman değil,
+              <strong> kusursuz operasyon</strong> ve <strong>güvenli rigging</strong> esastır. Sahneva;{" "}
+              <a href="/sahne-kiralama" className="underline font-medium">sahne ve podyum</a> tasarımından{" "}
+              <a href="/led-ekran-kiralama" className="underline font-medium">P2–P6 LED ekran</a> konfigürasyonlarına,{" "}
+              <a href="/ses-isik-sistemleri" className="underline font-medium">ses-ışık</a> optimizasyonundan
+              truss ve <em>scaff</em> üst yapılara kadar tüm bileşenleri tek bir teknik omurga altında birleştirir.
+              Sonuç; net görüntü, dengeli akustik ve her koşulda güven veren bir sahne mimarisidir.
+            </p>
 
-      <h3 className="mt-6 text-lg md:text-xl font-semibold">
-        Sahneva ile Çalışmanın Güçlü Yanları
-      </h3>
-      <ul className="mt-2 space-y-2 list-disc pl-5">
-        <li>
-          Yüksek parlaklık ve geniş görüş açısı için optimize <strong>LED ekran</strong> konumlandırması
-          (P2–P6 seçenekleri)
-        </li>
-        <li>
-          <strong>Truss</strong> ve <strong>scaff</strong> üst yapılarla güvenli rigging; zorlu alanlara uygun
-          modüler çözümler
-        </li>
-        <li>
-          Alan akustiğine göre ölçeklenen <strong>ses-ışık</strong> tasarımı ve yedekli yayın mimarisi
-        </li>
-        <li>
-          <strong>Hızlı kurulum</strong>, risk yönetimi ve etkinlik boyunca 7/24 teknik destek
-        </li>
-        <li>
-          Şeffaf teklif yapısı; gereksiz maliyeti önleyen planlama ve <strong>kurumsal raporlama</strong>
-        </li>
-      </ul>
+            <p className="mt-4">
+              Zaman baskısının yüksek olduğu projelerde <strong>planlama, lojistik ve canlı yayın zinciri</strong> aynı anda
+              yönetilir. İstanbul merkezli operasyon ekibimiz, Türkiye genelinde eş zamanlı kurulumları kısa sürede
+              tamamlayacak kapasitededir. Her proje; alan keşfi, yük hesabı, taşıyıcı sistem yerleşimi ve kapsamlı
+              testlerle teslim edilir. Standart hedefimiz basittir: <em>açılış anında sahne kusursuz çalışır.</em>
+            </p>
 
-      <p className="mt-4">
-        <a href="/cadir-kiralama" className="underline font-medium">Çadır kurulumu</a>, zemin hazırlığı ve dekoratif
-        uygulamalar dâhil; etkinliğinizin tüm teknik ihtiyaçlarını tek çatı altında yönetiriz. İster kurumsal lansman,
-        ister üst düzey protokol daveti olsun, Sahneva her detayda <strong>premiyum bir deneyim</strong> üretir.
-      </p>
-    </div>
-  </div>
-</section>
+            <h3 className="mt-6 text-lg md:text-xl font-semibold">
+              Sahneva ile Çalışmanın Güçlü Yanları
+            </h3>
+            <ul className="mt-2 space-y-2 list-disc pl-5">
+              <li>
+                Yüksek parlaklık ve geniş görüş açısı için optimize <strong>LED ekran</strong> konumlandırması
+                (P2–P6 seçenekleri)
+              </li>
+              <li>
+                <strong>Truss</strong> ve <strong>scaff</strong> üst yapılarla güvenli rigging; zorlu alanlara uygun
+                modüler çözümler
+              </li>
+              <li>
+                Alan akustiğine göre ölçeklenen <strong>ses-ışık</strong> tasarımı ve yedekli yayın mimarisi
+              </li>
+              <li>
+                <strong>Hızlı kurulum</strong>, risk yönetimi ve etkinlik boyunca 7/24 teknik destek
+              </li>
+              <li>
+                Şeffaf teklif yapısı; gereksiz maliyeti önleyen planlama ve <strong>kurumsal raporlama</strong>
+              </li>
+            </ul>
 
-
+            <p className="mt-4">
+              <a href="/cadir-kiralama" className="underline font-medium">Çadır kurulumu</a>, zemin hazırlığı ve dekoratif
+              uygulamalar dâhil; etkinliğinizin tüm teknik ihtiyaçlarını tek çatı altında yönetiriz. İster kurumsal lansman,
+              ister üst düzey protokol daveti olsun, Sahneva her detayda <strong>premiyum bir deneyim</strong> üretir.
+            </p>
+          </div>
+        </div>
+      </section>
 
       <div className="section-lazy">
         <Faq />

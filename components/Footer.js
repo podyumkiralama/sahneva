@@ -1,3 +1,4 @@
+// components/Footer.js
 "use client";
 
 import Link from "next/link";
@@ -17,21 +18,14 @@ export default function Footer() {
         el.className = "burst-particle";
         const angle = (Math.PI * 2 * i) / n + Math.random() * 0.3;
         const dist = 36 + Math.random() * 36;
-        const dx = Math.cos(angle) * dist + "px";
-        const dy = Math.sin(angle) * dist + "px";
-        el.style.setProperty("--dx", dx);
-        el.style.setProperty("--dy", dy);
+        el.style.setProperty("--dx", Math.cos(angle) * dist + "px");
+        el.style.setProperty("--dy", Math.sin(angle) * dist + "px");
         el.style.setProperty("--dr", `${(Math.random() * 60 - 30).toFixed(1)}deg`);
         el.style.setProperty("--life", `${life}ms`);
-        // renkler
-        if (i % 2 === 0) {
-          el.style.setProperty("--burst-c1", "#6d28d9");
-          el.style.setProperty("--burst-c2", "#22c55e");
-        } else {
-          el.style.setProperty("--burst-c1", "#22c55e");
-          el.style.setProperty("--burst-c2", "#6d28d9");
-        }
-        el.style.width = el.style.height = 6 + Math.random() * 6 + "px";
+        el.style.setProperty("--burst-c1", i % 2 === 0 ? "#6d28d9" : "#22c55e");
+        el.style.setProperty("--burst-c2", i % 2 === 0 ? "#22c55e" : "#6d28d9");
+        const s = 6 + Math.random() * 6;
+        el.style.width = el.style.height = `${s}px`;
         el.style.left = `${x}px`;
         el.style.top = `${y}px`;
         document.body.appendChild(el);
@@ -41,17 +35,23 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="bg-[#0f1115] bg-gradient-to-t from-[#0c0e12] to-[#12141a] text-gray-300 mt-10">
+    <footer
+      role="contentinfo"
+      className="bg-[#0f1115] bg-gradient-to-t from-[#0c0e12] to-[#12141a] text-gray-300 mt-10"
+    >
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 py-10 px-6">
         {/* Sütun 1: Marka */}
         <section aria-labelledby="ft-brand">
-          <h2 id="ft-brand" className="sr-only">Sahneva Hakkında</h2>
+          <h2 id="ft-brand" className="sr-only">
+            Sahneva Hakkında
+          </h2>
           <div className="flex items-center gap-2 text-white font-semibold mb-3">
             <span aria-hidden>⭐</span> <span>SAHNEVA</span>
           </div>
           <p className="text-sm leading-6">
-            Etkinlik prodüksiyon & ekipman kiralama.
-            <br />Sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri.
+            Etkinlik prodüksiyon &amp; ekipman kiralama.
+            <br />
+            Sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri.
           </p>
 
           {/* Sosyal */}
@@ -61,6 +61,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer me"
               aria-label="Instagram"
+              title="Instagram"
               className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 hover:border-white/30 hover:bg-white/5 transition"
               onClick={burst}
             >
@@ -71,6 +72,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer me"
               aria-label="YouTube"
+              title="YouTube"
               className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 hover:border-white/30 hover:bg-white/5 transition"
               onClick={burst}
             >
@@ -85,11 +87,31 @@ export default function Footer() {
             Hizmetler
           </h2>
           <ul className="space-y-2 text-sm">
-            <li><Link href="/podyum-kiralama" className="hover:text-white transition-colors">Podyum Kiralama</Link></li>
-            <li><Link href="/led-ekran-kiralama" className="hover:text-white transition-colors">LED Ekran Kiralama</Link></li>
-            <li><Link href="/ses-isik-sistemleri" className="hover:text-white transition-colors">Ses &amp; Işık Sistemleri</Link></li>
-            <li><Link href="/sahne-kiralama" className="hover:text-white transition-colors">Sahne Kiralama</Link></li>
-            <li><Link href="/cadir-kiralama" className="hover:text-white transition-colors">Çadır Kiralama</Link></li>
+            <li>
+              <Link href="/podyum-kiralama" className="hover:text-white transition-colors">
+                Podyum Kiralama
+              </Link>
+            </li>
+            <li>
+              <Link href="/led-ekran-kiralama" className="hover:text-white transition-colors">
+                LED Ekran Kiralama
+              </Link>
+            </li>
+            <li>
+              <Link href="/ses-isik-sistemleri" className="hover:text-white transition-colors">
+                Ses &amp; Işık Sistemleri
+              </Link>
+            </li>
+            <li>
+              <Link href="/sahne-kiralama" className="hover:text-white transition-colors">
+                Sahne Kiralama
+              </Link>
+            </li>
+            <li>
+              <Link href="/cadir-kiralama" className="hover:text-white transition-colors">
+                Çadır Kiralama
+              </Link>
+            </li>
           </ul>
         </nav>
 
@@ -99,19 +121,36 @@ export default function Footer() {
             Hızlı Erişim
           </h2>
           <ul className="space-y-2 text-sm">
-            <li><Link href="/hakkimizda" className="hover:text-white transition-colors">Hakkımızda</Link></li>
-            <li><Link href="/hizmetler" className="hover:text-white transition-colors">Hizmetler</Link></li>
-            <li><Link href="/sss" className="hover:text-white transition-colors">Sık Sorulan Sorular</Link></li>
-            <li><Link href="/kvkk" className="hover:text-white transition-colors">KVKK / Gizlilik</Link></li>
+            <li>
+              <Link href="/hakkimizda" className="hover:text-white transition-colors">
+                Hakkımızda
+              </Link>
+            </li>
+            <li>
+              <Link href="/hizmetler" className="hover:text-white transition-colors">
+                Hizmetler
+              </Link>
+            </li>
+            <li>
+              <Link href="/sss" className="hover:text-white transition-colors">
+                Sık Sorulan Sorular
+              </Link>
+            </li>
+            <li>
+              <Link href="/kvkk" className="hover:text-white transition-colors">
+                KVKK / Gizlilik
+              </Link>
+            </li>
 
-            {/* 🔽 EKLENDİ: Google Business bağlantıları */}
+            {/* Google Business bağlantıları */}
             <li>
               <a
                 href="https://g.page/r/CZhkMzkNOdgnEBI"
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="noopener noreferrer nofollow"
                 className="hover:text-white transition-colors"
                 aria-label="Google Haritalar'da Sahneva"
+                title="Google Haritalar"
               >
                 Google Haritalar’da bizi bulun
               </a>
@@ -120,9 +159,10 @@ export default function Footer() {
               <a
                 href="https://g.page/r/CZhkMzkNOdgnEBI/review"
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="noopener noreferrer nofollow"
                 className="hover:text-white transition-colors"
                 aria-label="Google üzerinde Sahneva için yorum yazın"
+                title="Google Yorum"
               >
                 Google’da yorum yaz ⭐
               </a>
@@ -136,26 +176,38 @@ export default function Footer() {
             İletişim
           </h2>
 
-          <ul className="mt-3 space-y-2 text-sm">
-            <li className="flex items-center gap-2">
-              <span className="opacity-70" aria-hidden>📍</span> İstanbul / Türkiye
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="opacity-70" aria-hidden>📞</span>
-              <a href="tel:+905453048671" className="hover:text-white font-semibold" onClick={burst}>
-                +90 545 304 8671
-              </a>
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="opacity-70" aria-hidden>✉️</span>
-              <a href="mailto:info@sahneva.com" className="hover:text-white" onClick={burst}>
-                info@sahneva.com
-              </a>
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="opacity-70" aria-hidden>⏰</span> Hafta içi 09:00–19:00
-            </li>
-          </ul>
+          <address className="not-italic">
+            <ul className="mt-3 space-y-2 text-sm">
+              <li className="flex items-center gap-2">
+                <span className="opacity-70" aria-hidden>
+                  📍
+                </span>{" "}
+                İstanbul / Türkiye
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="opacity-70" aria-hidden>
+                  📞
+                </span>
+                <a href="tel:+905453048671" className="hover:text-white font-semibold" onClick={burst}>
+                  +90 545 304 8671
+                </a>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="opacity-70" aria-hidden>
+                  ✉️
+                </span>
+                <a href="mailto:info@sahneva.com" className="hover:text-white" onClick={burst}>
+                  info@sahneva.com
+                </a>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="opacity-70" aria-hidden>
+                  ⏰
+                </span>{" "}
+                Hafta içi 09:00–19:00
+              </li>
+            </ul>
+          </address>
 
           {/* CTA */}
           <div className="flex flex-wrap gap-3 mt-4">
@@ -185,7 +237,9 @@ export default function Footer() {
       <div className="border-t border-white/10 text-center text-xs text-gray-400 py-4">
         Türkiye genelinde sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri.
         <br className="sm:hidden" />
-        <span className="ml-2">© {new Date().getFullYear()} Sahneva — Tüm hakları saklıdır.</span>
+        <span className="ml-2" suppressHydrationWarning>
+          © {new Date().getFullYear()} Sahneva — Tüm hakları saklıdır.
+        </span>
       </div>
     </footer>
   );

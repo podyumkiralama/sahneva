@@ -28,14 +28,12 @@ export default function Navbar() {
   const servicesBtnId = "nav-services-button";
   const servicesMenuId = "nav-services-menu";
 
-  // Burst efekt (ufak görsel geri bildirim)
   const burst = useCallback((e) => {
     try {
       const x = e?.clientX ?? window.innerWidth / 2;
       const y = e?.clientY ?? 80;
       const n = 10;
       const life = 600;
-
       for (let i = 0; i < n; i++) {
         const el = document.createElement("span");
         el.className = "burst-particle";
@@ -57,7 +55,6 @@ export default function Navbar() {
     } catch {}
   }, []);
 
-  // Scroll durumu
   useEffect(() => {
     let ticking = false;
     const onScroll = () => {
@@ -73,7 +70,6 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // ESC ile kapatma
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === "Escape") {
@@ -86,14 +82,12 @@ export default function Navbar() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Rota değişince menüleri kapat
   useEffect(() => {
     setMobileOpen(false);
     setServicesOpen(false);
     setMobileServicesOpen(false);
   }, [pathname]);
 
-  // Mobil menü açıkken body scroll kilidi
   useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = mobileOpen ? "hidden" : prev || "";
@@ -102,7 +96,6 @@ export default function Navbar() {
     };
   }, [mobileOpen]);
 
-  // Desktop dropdown dışına tıklayınca kapat
   useEffect(() => {
     function onClickOutside(e) {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -113,7 +106,6 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", onClickOutside);
   }, [servicesOpen]);
 
-  // Bileşen unmount olurken hover timer temizle
   useEffect(() => {
     return () => {
       if (hoverTimer.current) clearTimeout(hoverTimer.current);
@@ -125,7 +117,6 @@ export default function Navbar() {
     [pathname]
   );
 
-  // Hover intent helpers
   const openNow = () => {
     if (hoverTimer.current) clearTimeout(hoverTimer.current);
     setServicesOpen(true);
@@ -137,7 +128,6 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Skip link */}
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-neutral-900 focus:px-3 focus:py-2 focus:text-white"
@@ -156,7 +146,6 @@ export default function Navbar() {
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            {/* Logo */}
             <Link href="/" className="flex items-center gap-2" aria-label="Sahneva Anasayfa">
               <Image
                 src="/img/logo.png"
@@ -169,7 +158,6 @@ export default function Navbar() {
               />
             </Link>
 
-            {/* Masaüstü Menü */}
             <nav className="hidden md:flex items-center gap-6" aria-label="Ana menü">
               <Link
                 href="/hakkimizda"
@@ -198,47 +186,47 @@ export default function Navbar() {
                     active("/hizmetler") ? "text-[#6d28d9]" : "text-neutral-800",
                     "hover:text-[#6d28d9] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6d28d9]/30",
                   ].join(" ")}
-                  aria-haspopup="true"
+                  aria-haspopup="menu"
                   aria-expanded={servicesOpen}
-                  aria-controls={servicesMenuId}
+                  aria-controls={servicesMenuId} // artık panel her zaman DOM’da
                   onClick={() => setServicesOpen((s) => !s)}
                 >
                   Hizmetler
                 </button>
 
-                {/* buton-panel arası hover köprüsü */}
                 <span
                   aria-hidden="true"
                   className="absolute left-0 right-0 top-full h-2"
                   onMouseEnter={openNow}
                 />
 
-                {servicesOpen && (
-                  <div
-                    id={servicesMenuId}
-                    role="menu"
-                    aria-labelledby={servicesBtnId}
-                    className="absolute left-0 top-full mt-2 w-56 bg-white border border-neutral-200 rounded-lg shadow-lg z-[60]"
-                    onMouseEnter={openNow}
-                    onMouseLeave={closeWithDelay}
-                  >
-                    <ul className="py-1">
-                      {serviceLinks.map(({ href, label }) => (
-                        <li key={href} role="none">
-                          <Link
-                            role="menuitem"
-                            href={href}
-                            className="block px-4 py-2 text-sm text-neutral-800 hover:bg-[#f3f0ff] hover:text-[#6d28d9]"
-                            onClick={() => setServicesOpen(false)}
-                            aria-current={active(href) ? "page" : undefined}
-                          >
-                            {label}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+                {/* ⬇️ PANEL HER ZAMAN DOM’DA; görünürlük hidden ile */}
+                <div
+                  id={servicesMenuId}
+                  role="menu"
+                  aria-labelledby={servicesBtnId}
+                  hidden={!servicesOpen}
+                  className={`absolute left-0 top-full mt-2 w-56 bg-white border border-neutral-200 rounded-lg shadow-lg z-[60]
+                              ${servicesOpen ? "" : "pointer-events-none"} `}
+                  onMouseEnter={openNow}
+                  onMouseLeave={closeWithDelay}
+                >
+                  <ul className="py-1">
+                    {serviceLinks.map(({ href, label }) => (
+                      <li key={href} role="none">
+                        <Link
+                          role="menuitem"
+                          href={href}
+                          className="block px-4 py-2 text-sm text-neutral-800 hover:bg-[#f3f0ff] hover:text-[#6d28d9]"
+                          onClick={() => setServicesOpen(false)}
+                          aria-current={active(href) ? "page" : undefined}
+                        >
+                          {label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
 
               <Link
@@ -253,7 +241,6 @@ export default function Navbar() {
                 İletişim
               </Link>
 
-              {/* WhatsApp CTA (Desktop) — yüksek kontrast */}
               <a
                 href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum."
                 target="_blank"
@@ -268,7 +255,6 @@ export default function Navbar() {
               </a>
             </nav>
 
-            {/* Hamburger Menü */}
             <button
               onClick={() => setMobileOpen((s) => !s)}
               className="md:hidden inline-flex items-center justify-center p-2 rounded
@@ -304,7 +290,6 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Overlay */}
       {mobileOpen && (
         <button
           type="button"
@@ -314,7 +299,6 @@ export default function Navbar() {
         />
       )}
 
-      {/* Mobil Menü Paneli */}
       <div
         id="mobile-menu"
         role="dialog"
@@ -340,7 +324,6 @@ export default function Navbar() {
             Hakkımızda
           </Link>
 
-          {/* Hizmetler (Mobil Akordeon) */}
           <div className="py-2">
             <button
               type="button"
@@ -398,7 +381,6 @@ export default function Navbar() {
             İletişim
           </Link>
 
-          {/* WhatsApp CTA (Mobil) — yüksek kontrast */}
           <a
             href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum."
             target="_blank"

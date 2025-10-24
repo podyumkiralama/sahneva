@@ -30,15 +30,15 @@ export const metadata = {
 
 // ⚠ Görselleri aynı klasöre 01–10.webp olarak koyabilirsin (kaç adet varsa o kadarı yeter).
 const IMAGES = [
-  { src: "/img/projeler/kapali-alan-led/01.webp", alt: "Kapalı alan çadır içinde 24×6 m P2 LED ekran ve 24×8 m sahne/podyum genel görünüm" },
-  { src: "/img/projeler/kapali-alan-led/02.webp", alt: "Truss üst yapı ve sahne yerleşimi" },
-  { src: "/img/projeler/kapali-alan-led/03.webp", alt: "P2 LED ekranın sahne ile entegrasyonu" },
-  { src: "/img/projeler/kapali-alan-led/04.webp", alt: "Scaff iskelet sistemi ve podyum platformu" },
-  { src: "/img/projeler/kapali-alan-led/05.webp", alt: "Oturma düzeni geniş açı görünüm" },
-  { src: "/img/projeler/kapali-alan-led/06.webp", alt: "LED ön sahne perspektifi" },
-  { src: "/img/projeler/kapali-alan-led/07.webp", alt: "Sahne yan cephe ve ışık yerleşimi" },
-  { src: "/img/projeler/kapali-alan-led/08.webp", alt: "Truss altında aydınlatma ve rigging detayları" },
-  { src: "/img/projeler/kapali-alan-led/09.webp", alt: "Genel kurulumun tamamlanmış geniş açı görünümü" },
+  { src: "/img/projeler/kapali-alan-led/1.webp", alt: "Kapalı alan çadır içinde 24×6 m P2 LED ekran ve 24×8 m sahne/podyum genel görünüm" },
+  { src: "/img/projeler/kapali-alan-led/2.webp", alt: "Truss üst yapı ve sahne yerleşimi" },
+  { src: "/img/projeler/kapali-alan-led/3.webp", alt: "P2 LED ekranın sahne ile entegrasyonu" },
+  { src: "/img/projeler/kapali-alan-led/4.webp", alt: "Scaff iskelet sistemi ve podyum platformu" },
+  { src: "/img/projeler/kapali-alan-led/5.webp", alt: "Oturma düzeni geniş açı görünüm" },
+  { src: "/img/projeler/kapali-alan-led/6.webp", alt: "LED ön sahne perspektifi" },
+  { src: "/img/projeler/kapali-alan-led/7.webp", alt: "Sahne yan cephe ve ışık yerleşimi" },
+  { src: "/img/projeler/kapali-alan-led/8.webp", alt: "Truss altında aydınlatma ve rigging detayları" },
+  { src: "/img/projeler/kapali-alan-led/9.webp", alt: "Genel kurulumun tamamlanmış geniş açı görünümü" },
 ];
 
 export default function CasePage() {
@@ -226,4 +226,5 @@ export default function CasePage() {
     </div>
   );
 }
+
 

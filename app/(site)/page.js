@@ -199,6 +199,36 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+                    <p className="text-neutral-700">
+  Etkinlikler için ihtiyaç duyduğunuz sahne, podyum, LED ekran ve ses-ışık sistemleri,
+  profesyonel teknik ekip eşliğinde anahtar teslim olarak kurulur. Kurulum süreci; alan
+  keşfi, projelendirme, taşıyıcı sistem yerleşimi ve final test aşamalarından oluşur.
+  Güvenlik standartlarına uygun platformlar, yüksek parlaklık değerine sahip LED ekranlar
+  ve net ses dağılımı sağlayan line-array sistemlerle, etkinlik boyunca sorunsuz bir
+  deneyim sunar.
+</p>
+
+<p className="text-neutral-700 mt-4">
+  İstanbul merkezli operasyon ekibimizle Türkiye’nin her iline hızlı erişim sağlıyoruz.
+  Teknik kurulumlar genellikle aynı gün içerisinde tamamlanmakta olup, ihtiyaca göre
+  ekstra destek ekibi ile süreç hızlandırılır. Etkinlik türü (konser, lansman, açılış,
+  festival vb.) ne olursa olsun kurulum süreci tamamen ölçeklenebilir şekilde planlanır.
+</p>
+
+<p className="text-neutral-700 mt-4">
+  Fiyatlandırma; platform ölçüsü, LED ekran çözünürlüğü (P2, P3, P4, P6), ses sistemi
+  kapasitesi ve ışık senaryolarına bağlı olarak değişiklik gösterir. İhtiyacınıza en
+  uygun çözümü birlikte belirleyerek gereksiz maliyetlerden kaçınmanızı sağlarız.
+  Yedekli sistemler, canlı yayın desteği ve sahne arkası koordinasyon hizmetleri opsiyonel
+  olarak sunulabilir.
+</p>
+
+<p className="text-neutral-700 mt-4">
+  Keşif ve danışmanlık ücretsizdir. Dilediğiniz zaman WhatsApp üzerinden ulaşarak sahne
+  planlaması, LED ekran ölçülendirmesi veya podyum yerleşimi hakkında teknik destek
+  alabilirsiniz. Etkinliğinizin konseptine en uygun yapıyı birlikte oluşturalım.
+</p>
+
 
       <div className="section-lazy">
         <Faq />

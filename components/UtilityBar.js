@@ -30,7 +30,6 @@ export default function UtilityBar() {
     return () => window.removeEventListener("keydown", onEsc);
   }, [openSearch]);
 
-  // Arama sonuçları
   const filtered =
     query.trim().length === 0
       ? ROUTES
@@ -44,11 +43,10 @@ export default function UtilityBar() {
     const current = parseFloat(
       getComputedStyle(root).getPropertyValue("--fs") || "100%"
     );
-    // % değerini okuyup hesapla
     const pct = Number.isNaN(current) ? 100 : current;
     const next = Math.min(130, Math.max(85, Math.round(pct + delta)));
     root.style.setProperty("--fs", `${next}%`);
-    burst(); // görsel geri bildirim
+    burst();
   };
 
   // Yüksek kontrast modu
@@ -65,32 +63,23 @@ export default function UtilityBar() {
 
   // ==== Burst efekt ====
   const burst = (e) => {
-    // e varsa tıklama konumunu kullan; yoksa orta-alt kısım
     const x = e?.clientX ?? window.innerWidth / 2;
     const y = e?.clientY ?? window.innerHeight - 80;
-
-    const n = 12; // parçacık sayısı
+    const n = 12;
     const life = 600;
     for (let i = 0; i < n; i++) {
       const el = document.createElement("span");
       el.className = "burst-particle";
       const angle = (Math.PI * 2 * i) / n + Math.random() * 0.3;
       const dist = 40 + Math.random() * 40;
-      const dx = Math.cos(angle) * dist + "px";
-      const dy = Math.sin(angle) * dist + "px";
-      el.style.setProperty("--dx", dx);
-      el.style.setProperty("--dy", dy);
+      el.style.setProperty("--dx", Math.cos(angle) * dist + "px");
+      el.style.setProperty("--dy", Math.sin(angle) * dist + "px");
       el.style.setProperty("--dr", `${(Math.random() * 60 - 30).toFixed(1)}deg`);
       el.style.setProperty("--life", `${life}ms`);
-      // renkler
-      if (i % 2 === 0) {
-        el.style.setProperty("--burst-c1", "#6d28d9");
-        el.style.setProperty("--burst-c2", "#22c55e");
-      } else {
-        el.style.setProperty("--burst-c1", "#22c55e");
-        el.style.setProperty("--burst-c2", "#6d28d9");
-      }
-      el.style.width = el.style.height = 6 + Math.random() * 6 + "px";
+      el.style.setProperty("--burst-c1", i % 2 === 0 ? "#6d28d9" : "#22c55e");
+      el.style.setProperty("--burst-c2", i % 2 === 0 ? "#22c55e" : "#6d28d9");
+      const s = 6 + Math.random() * 6;
+      el.style.width = el.style.height = `${s}px`;
       el.style.left = `${x}px`;
       el.style.top = `${y}px`;
       document.body.appendChild(el);
@@ -98,7 +87,6 @@ export default function UtilityBar() {
     }
   };
 
-  // Tüm butonlarda aynı onClick pattern'i
   const withBurst = (fn) => (e) => {
     burst(e);
     fn?.();
@@ -144,7 +132,8 @@ export default function UtilityBar() {
               }}
               aria-haspopup="dialog"
               aria-expanded={openSearch}
-              aria-controls="site-search-dialog"
+              /* ⬇️ HATA DÜZELTME: Modal kapalıyken aria-controls verme */
+              aria-controls={openSearch ? "site-search-dialog" : undefined}
               title="Sitede ara"
             >
               Ara
@@ -160,7 +149,7 @@ export default function UtilityBar() {
               ↑
             </button>
 
-            {/* Hızlı ara / WhatsApp menüsü */}
+            {/* Hızlı iletişim */}
             <div className="relative">
               <details className="group">
                 <summary
@@ -226,9 +215,7 @@ export default function UtilityBar() {
             </div>
             <ul className="max-h-[50vh] overflow-y-auto p-2">
               {filtered.length === 0 && (
-                <li className="px-3 py-3 text-sm text-neutral-600">
-                  Sonuç bulunamadı.
-                </li>
+                <li className="px-3 py-3 text-sm text-neutral-600">Sonuç bulunamadı.</li>
               )}
               {filtered.map((r) => (
                 <li key={r.href}>

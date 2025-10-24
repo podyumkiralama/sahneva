@@ -199,35 +199,62 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-                    <p className="text-neutral-700">
-  Etkinlikler için ihtiyaç duyduğunuz sahne, podyum, LED ekran ve ses-ışık sistemleri,
-  profesyonel teknik ekip eşliğinde anahtar teslim olarak kurulur. Kurulum süreci; alan
-  keşfi, projelendirme, taşıyıcı sistem yerleşimi ve final test aşamalarından oluşur.
-  Güvenlik standartlarına uygun platformlar, yüksek parlaklık değerine sahip LED ekranlar
-  ve net ses dağılımı sağlayan line-array sistemlerle, etkinlik boyunca sorunsuz bir
-  deneyim sunar.
-</p>
+           <section className="section-lazy" aria-labelledby="premium-title">
+  <h2 id="premium-title" className="container text-2xl md:text-3xl font-bold mb-4">
+    Neden Yüksek Ölçekli Kurulumlarda <span className="whitespace-nowrap">Sahneva</span> Tercih Ediliyor?
+  </h2>
 
-<p className="text-neutral-700 mt-4">
-  İstanbul merkezli operasyon ekibimizle Türkiye’nin her iline hızlı erişim sağlıyoruz.
-  Teknik kurulumlar genellikle aynı gün içerisinde tamamlanmakta olup, ihtiyaca göre
-  ekstra destek ekibi ile süreç hızlandırılır. Etkinlik türü (konser, lansman, açılış,
-  festival vb.) ne olursa olsun kurulum süreci tamamen ölçeklenebilir şekilde planlanır.
-</p>
+  <div className="container pb-10 md:pb-12">
+    <div className="prose max-w-none text-neutral-700">
+      <p>
+        Büyük ölçekli ve protokol seviyesindeki etkinliklerde yalnızca güçlü ekipman değil,
+        <strong> kusursuz operasyon</strong> ve <strong>güvenli rigging</strong> esastır. Sahneva;{" "}
+        <a href="/sahne-kiralama" className="underline font-medium">sahne ve podyum</a> tasarımından{" "}
+        <a href="/led-ekran-kiralama" className="underline font-medium">P2–P6 LED ekran</a> konfigürasyonlarına,{" "}
+        <a href="/ses-isik-sistemleri" className="underline font-medium">ses-ışık</a> optimizasyonundan
+        truss ve <em>scaff</em> üst yapılara kadar tüm bileşenleri tek bir teknik omurga altında birleştirir.
+        Sonuç; net görüntü, dengeli akustik ve her koşulda güven veren bir sahne mimarisidir.
+      </p>
 
-<p className="text-neutral-700 mt-4">
-  Fiyatlandırma; platform ölçüsü, LED ekran çözünürlüğü (P2, P3, P4, P6), ses sistemi
-  kapasitesi ve ışık senaryolarına bağlı olarak değişiklik gösterir. İhtiyacınıza en
-  uygun çözümü birlikte belirleyerek gereksiz maliyetlerden kaçınmanızı sağlarız.
-  Yedekli sistemler, canlı yayın desteği ve sahne arkası koordinasyon hizmetleri opsiyonel
-  olarak sunulabilir.
-</p>
+      <p className="mt-4">
+        Zaman baskısının yüksek olduğu projelerde <strong>planlama, lojistik ve canlı yayın zinciri</strong> aynı anda
+        yönetilir. İstanbul merkezli operasyon ekibimiz, Türkiye genelinde eş zamanlı kurulumları kısa sürede
+        tamamlayacak kapasitededir. Her proje; alan keşfi, yük hesabı, taşıyıcı sistem yerleşimi ve kapsamlı
+        testlerle teslim edilir. Standart hedefimiz basittir: <em>açılış anında sahne kusursuz çalışır.</em>
+      </p>
 
-<p className="text-neutral-700 mt-4">
-  Keşif ve danışmanlık ücretsizdir. Dilediğiniz zaman WhatsApp üzerinden ulaşarak sahne
-  planlaması, LED ekran ölçülendirmesi veya podyum yerleşimi hakkında teknik destek
-  alabilirsiniz. Etkinliğinizin konseptine en uygun yapıyı birlikte oluşturalım.
-</p>
+      <h3 className="mt-6 text-lg md:text-xl font-semibold">
+        Sahneva ile Çalışmanın Güçlü Yanları
+      </h3>
+      <ul className="mt-2 space-y-2 list-disc pl-5">
+        <li>
+          Yüksek parlaklık ve geniş görüş açısı için optimize <strong>LED ekran</strong> konumlandırması
+          (P2–P6 seçenekleri)
+        </li>
+        <li>
+          <strong>Truss</strong> ve <strong>scaff</strong> üst yapılarla güvenli rigging; zorlu alanlara uygun
+          modüler çözümler
+        </li>
+        <li>
+          Alan akustiğine göre ölçeklenen <strong>ses-ışık</strong> tasarımı ve yedekli yayın mimarisi
+        </li>
+        <li>
+          <strong>Hızlı kurulum</strong>, risk yönetimi ve etkinlik boyunca 7/24 teknik destek
+        </li>
+        <li>
+          Şeffaf teklif yapısı; gereksiz maliyeti önleyen planlama ve <strong>kurumsal raporlama</strong>
+        </li>
+      </ul>
+
+      <p className="mt-4">
+        <a href="/cadir-kiralama" className="underline font-medium">Çadır kurulumu</a>, zemin hazırlığı ve dekoratif
+        uygulamalar dâhil; etkinliğinizin tüm teknik ihtiyaçlarını tek çatı altında yönetiriz. İster kurumsal lansman,
+        ister üst düzey protokol daveti olsun, Sahneva her detayda <strong>premiyum bir deneyim</strong> üretir.
+      </p>
+    </div>
+  </div>
+</section>
+
 
 
       <div className="section-lazy">

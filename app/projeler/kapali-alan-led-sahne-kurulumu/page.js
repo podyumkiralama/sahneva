@@ -46,37 +46,30 @@ export default function CasePage() {
   return (
     <div className="overflow-x-hidden">
       {/* HERO */}
-      <section className="relative bg-neutral-950">
-        <Image
-          src={IMAGES[0].src}
-          alt="Kapalı alan çadır içinde 24×6 m P2 LED ekran ve 24×8 m sahne/podyum"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover opacity-80"
-        />
-        <div className="relative z-10 container py-20 md:py-28 text-white">
-          <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight">
-            Kapalı Alan LED & Sahne Kurulumu (Protokol Seviyesi)
-          </h1>
-          <p className="mt-4 max-w-3xl text-white/90">
-            40’lık çadır içinde{" "}
-            <Link href="/podyum-kiralama" className="underline font-medium">
-              24×8 m sahne/podyum
-            </Link>{" "}
-            ve{" "}
-            <Link href="/led-ekran-kiralama" className="underline font-medium">
-              24×6 m P2 LED ekran
-            </Link>{" "}
-            kurulumunu;{" "}
-            <Link href="/sahne-kiralama" className="underline font-medium">
-              scaff + truss
-            </Link>{" "}
-            üst yapısı ile gerçekleştirdik. İçerik; kampanya adı vermeden, teknik
-            referans amaçlı hazırlanmıştır.
-          </p>
-        </div>
-      </section>
+      <section className="relative h-[340px] flex items-center justify-center text-white">
+  {/* Arka plan görseli */}
+  <Image
+    src="/img/projeler/kapali-alan-led/1.webp"
+    alt="Kapalı alan sahne ve LED ekran kurulumu"
+    fill
+    priority
+    className="object-cover"
+  />
+
+  {/* Koyu overlay (okunabilirliği artırır) */}
+  <div className="absolute inset-0 bg-black/60"></div>
+
+  {/* Metin katmanı */}
+  <div className="relative z-10 container text-center px-4">
+    <h1 className="text-3xl md:text-5xl font-extrabold">
+      Kapalı Alan LED & Sahne Kurulumu (Protokol Seviyesi)
+    </h1>
+    <p className="mt-4 max-w-3xl mx-auto text-white/90">
+      Dış alana kurulan 40’lık çadır içinde, 24×8 m podyum ve 24×6 m P2 çözünürlüklü LED ekran kurulumuyla gerçekleştirilen büyük ölçekli sahne ve teknik altyapı çalışmasıdır. Scaff ve truss sistemleriyle desteklenen yapı, protokol seviyesinde bir etkinlik standardına uygun şekilde hazırlanmıştır.
+    </p>
+  </div>
+</section>
+
 
       {/* ÖZET KARTLARI */}
       <section aria-labelledby="ozet-baslik" className="container py-10 md:py-14">
@@ -227,6 +220,7 @@ export default function CasePage() {
     </div>
   );
 }
+
 
 
 

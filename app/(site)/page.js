@@ -26,58 +26,62 @@ export default function HomePage() {
     // <main> layout.js içindeyse burada <div> kullanın (W3: tek main)
     <div className="overflow-x-hidden">
       {/* HERO (LCP optimize + okunabilir overlay) */}
-      <div className="relative overflow-x-hidden" style={{ backgroundColor: "#0b0f1a" }}>
-        <Image
-          src="/img/hero-bg.webp"
-          alt="Sahne, podyum, LED ekran ve ses-ışık ekipmanlarıyla kurulu etkinlik sahnesi"
-          width={1920}
-          height={960}
-          priority
-          fetchPriority="high"
-          sizes="100vw"
-          placeholder="empty"
-          className="w-full h-[64vh] md:h-[72vh] object-cover"
-        />
-        <div className="absolute inset-0 bg-black/60 pointer-events-none" />
+  <div className="relative overflow-x-hidden" style={{ backgroundColor: "#0b0f1a" }}>
+  <div className="relative h-[64vh] md:h-[72vh]">
+    <Image
+      src="/img/hero-bg.webp"
+      alt="Sahne, podyum, LED ekran ve ses-ışık ekipmanlarıyla kurulu etkinlik sahnesi"
+      fill                    // <-- yeniden fill (absolute konumlanır)
+      priority
+      fetchPriority="high"
+      sizes="100vw"
+      placeholder="empty"
+      className="object-cover"
+    />
+    {/* Koyu overlay */}
+    <div className="absolute inset-0 bg-black/60" aria-hidden="true" />
 
-        <div className="relative z-10 container py-16 md:py-28 text-center">
-          <h1 className="text-white text-4xl md:text-6xl font-extrabold mb-4 tracking-tight">
-            Sahne, Podyum, LED Ekran &amp; Ses-Işık Sistemleri Kiralama
-          </h1>
-          <p className="text-white/95 text-lg md:text-xl mb-8 max-w-3xl mx-auto">
-            Türkiye genelinde sahne ve podyum kurulumları, LED ekran, ses-ışık
-            sistemleri ve çadır kiralama. Hızlı teslim, profesyonel teknik ekip.
+    {/* İçerik: görselin ÜSTÜNDE */}
+    <div className="absolute inset-0 z-10 flex items-center">
+      <div className="container text-center">
+        <h1 className="text-white text-4xl md:text-6xl font-extrabold mb-4 tracking-tight">
+          Sahne, Podyum, LED Ekran &amp; Ses-Işık Sistemleri Kiralama
+        </h1>
+        <p className="text-white/95 text-lg md:text-xl mb-8 max-w-3xl mx-auto">
+          Türkiye genelinde sahne ve podyum kurulumları, LED ekran, ses-ışık
+          sistemleri ve çadır kiralama. Hızlı teslim, profesyonel teknik ekip.
+        </p>
+
+        <HeroCtasClient />
+
+        <ul className="mt-6 grid max-w-3xl mx-auto grid-cols-1 sm:grid-cols-3 gap-3">
+          {[
+            ["⭐", "4.9 Müşteri Memnuniyeti"],
+            ["🔧", "Aynı Gün Kurulum"],
+            ["👷", "Profesyonel Teknik Ekip"],
+          ].map(([icon, label], i) => (
+            <li key={i} className="badge whitespace-nowrap overflow-hidden text-ellipsis">
+              <span aria-hidden>{icon}</span>
+              <span>{label}</span>
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-10 text-center">
+          <div className="text-5xl mb-3" aria-hidden>🎧</div>
+          <h2 className="text-white text-2xl md:text-3xl font-semibold mb-2">
+            Organizasyonunuz için Ücretsiz Danışmanlık
+          </h2>
+          <p className="text-white/90 max-w-3xl mx-auto">
+            Etkinliğiniz için en doğru sahne, podyum, ses-ışık ve ekran
+            çözümlerini ücretsiz danışmanlıkla birlikte planlayalım.
           </p>
-
-          <HeroCtasClient />
-
-          <ul className="mt-6 grid max-w-3xl mx-auto grid-cols-1 sm:grid-cols-3 gap-3">
-            {[
-              ["⭐", "4.9 Müşteri Memnuniyeti"],
-              ["🔧", "Aynı Gün Kurulum"],
-              ["👷", "Profesyonel Teknik Ekip"],
-            ].map(([icon, label], i) => (
-              <li key={i} className="badge whitespace-nowrap overflow-hidden text-ellipsis">
-                <span aria-hidden>{icon}</span>
-                <span>{label}</span>
-              </li>
-            ))}
-          </ul>
-
-          <div className="mt-10 text-center">
-            <div className="text-5xl mb-3" aria-hidden>
-              🎧
-            </div>
-            <h2 className="text-white text-2xl md:text-3xl font-semibold mb-2">
-              Organizasyonunuz için Ücretsiz Danışmanlık
-            </h2>
-            <p className="text-white/90 max-w-3xl mx-auto">
-              Etkinliğiniz için en doğru sahne, podyum, ses-ışık ve ekran
-              çözümlerini ücretsiz danışmanlıkla birlikte planlayalım.
-            </p>
-          </div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
 
       {/* Google yorum banner’ı */}
       <ReviewBanner />

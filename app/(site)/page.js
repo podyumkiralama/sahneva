@@ -6,7 +6,7 @@ import CorporateEvents from "../../components/CorporateEvents";
 import Faq from "../../components/Faq";
 import HeroCtasClient from "../../components/HeroCtasClient";
 // DİKKAT: Dosya adı büyük/küçük harf uyumlu olmalı
-import ReviewBanner from "../../components/Reviewbanner";
+import ReviewBanner from "../../components/ReviewBanner";
 
 // ⚠️ Server Component'ta `ssr:false` kullanmayız. Sadece dinamik import + Suspense kullan.
 const ServicesTabsLazy = dynamic(() => import("../../components/ServicesTabs")); // "use client" olmalı

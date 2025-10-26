@@ -8,7 +8,7 @@ import { Suspense, useCallback } from "react";
 // Ağır/etkileşimli bileşenleri dinamik yükle (ilk JS yükü düşer)
 const ServicesTabs = dynamic(() => import("../../components/ServicesTabs"));
 const ProjectsGallery = dynamic(() => import("../../components/ProjectsGallery"));
-const ReviewBanner = dynamic(() => import("../../components/ReviewBanner")); // ← EKLENDİ
+const ReviewBanner = dynamic(() => import("../../components/ReviewBanner"));
 
 // Diğerleri nispeten hafifse direkt import kalabilir:
 import CorporateEvents from "../../components/CorporateEvents";
@@ -153,11 +153,74 @@ export default function HomePage() {
           <ProjectsGallery />
         </Suspense>
 
-        {/* EKLENEN: Müşteri Yorumları / ReviewBanner */}
+        {/* Müşteri Yorumları / ReviewBanner (EKLENDİ) */}
         <Suspense fallback={<SectionSkeleton label="Yorumlar yükleniyor" />}>
           <ReviewBanner />
         </Suspense>
 
+        {/* === SEO METİN — Sık Kullanılanlar bölümünün hemen üstüne yerleştirildi === */}
+        <section className="container py-12 md:py-14" aria-labelledby="seo-bilgi-baslik">
+          <h2 id="seo-bilgi-baslik" className="sr-only">Sahneva SEO Bilgi</h2>
+          <div className="prose max-w-none">
+            <p className="text-neutral-700">
+              <strong>Sahneva</strong>, Türkiye genelinde{" "}
+              <a href="/sahne-kiralama" className="underline underline-offset-2">sahne kiralama</a>,{" "}
+              <a href="/podyum-kiralama" className="underline underline-offset-2">podyum kiralama</a>,{" "}
+              <a href="/led-ekran-kiralama" className="underline underline-offset-2">LED ekran kiralama</a> ve{" "}
+              <a href="/ses-isik-sistemleri" className="underline underline-offset-2">ses-ışık sistemleri</a>{" "}
+              hizmetleri sunar. Kurumsal lansman, festival, konser, düğün ve
+              açılış organizasyonlarında keşiften kuruluma, test ve teknik
+              operasyona kadar uçtan uca destek verir.
+            </p>
+            <p className="text-neutral-700 mt-4">
+              İhtiyacınıza göre iç mekân/dış mekân çözümleri,{" "}
+              truss ve rigging sistemleri, line array ses, robot ışık ve medya
+              sunucuları sağlanır. İstanbul merkezli ekibimizle, <em>hızlı keşif</em>,
+              <em>şeffaf fiyatlandırma</em> ve <em>garantili kurulum</em> prensibiyle çalışırız.
+            </p>
+            <ul className="list-disc pl-5 mt-4 text-neutral-700">
+              <li>Standart podyum panelleri: 1×2 m, 1×1 m, 2×1 m; kaymaz kaplama ve modüler kurulum.</li>
+              <li>LED ekran piksel aralıkları: P2–P6; iç/dış mekân, ground-stack veya rigging seçenekleri.</li>
+              <li>Ses-ışık: line array, mikser, DMX kontrollü ışıklar, sis/konfeti efektleri.</li>
+              <li>Türkiye geneli lojistik ve aynı gün kurulum opsiyonu.</li>
+            </ul>
+            <p className="text-neutral-700 mt-4">
+              Teklif almak için <a href="tel:+905453048671" className="underline underline-offset-2">hemen arayın</a> veya{" "}
+              <a
+                href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum."
+                rel="noopener noreferrer"
+                className="underline underline-offset-2"
+              >
+                WhatsApp
+              </a>{" "}
+              üzerinden yazın.
+            </p>
+          </div>
+        </section>
+        {/* === /SEO METİN === */}
+
+        {/* SIK KULLANILANLAR — bu bölüm zaten sende varsa olduğu gibi kalsın; yoksa örnek blok: */}
+        <section className="container pb-8" aria-labelledby="popular-title">
+          <h2 id="popular-title" className="text-xl md:text-2xl font-semibold mb-4">
+            Sık Kullanılanlar
+          </h2>
+          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              ["Podyum Kiralama", "/podyum-kiralama"],
+              ["LED Ekran Kiralama", "/led-ekran-kiralama"],
+              ["Ses & Işık Sistemleri", "/ses-isik-sistemleri"],
+              ["Sahne Kiralama", "/sahne-kiralama"],
+              ["Çadır Kiralama", "/cadir-kiralama"],
+              ["İletişim", "/iletisim"],
+            ].map(([label, href], i) => (
+              <li key={i}>
+                <a href={href} className="link">{label}</a>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        {/* Neden biz + kurumsal + SSS akışı korunuyor */}
         <section className="container py-16">
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-10">
             Bizi Neden Tercih Etmelisiniz?

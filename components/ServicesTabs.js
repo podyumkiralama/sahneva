@@ -1,7 +1,7 @@
 // components/ServicesTabs.js
 "use client";
 
-import { useId, useState, useRef, useCallback, useEffect } from "react";
+import { useId, useState, useRef, useCallback } from "react";
 import Image from "next/image";
 
 const HIZMET_SIZES =
@@ -74,8 +74,9 @@ export default function ServicesTabs() {
   const rid = useId();
   const [active, setActive] = useState(0);
   const tabsRef = useRef([]);
+  const liveRef = useRef(null);
 
-  // Ok tuşları ile sekmeler arası geçiş
+  // Ok tuşları + Enter/Space ile sekmeler arası geçiş
   const onKeyDown = useCallback(
     (e) => {
       const last = tabs.length - 1;
@@ -97,12 +98,16 @@ export default function ServicesTabs() {
         e.preventDefault();
         setActive(last);
         tabsRef.current[last]?.focus();
+      } else if (e.key === "Enter" || e.key === " ") {
+        // SR'lar için seçimi teyit etme (görsel olarak zaten seçiyoruz)
+        e.preventDefault();
+        setActive((v) => v);
       }
     },
     [active]
   );
 
-  // Burst efekti
+  // Burst efekti (dekoratif parçacıklar aria-hidden)
   const burst = useCallback((e) => {
     const btn = e.currentTarget;
     const rect = btn.getBoundingClientRect();
@@ -113,6 +118,8 @@ export default function ServicesTabs() {
     for (let i = 0; i < particleCount; i++) {
       const s = document.createElement("span");
       s.className = "burst-particle";
+      s.setAttribute("aria-hidden", "true");
+      s.setAttribute("role", "presentation");
       const size = Math.random() * 10 + 6;
       const angle = (Math.PI * 2 * i) / particleCount + Math.random() * 0.6;
       const distance = 28 + Math.random() * 14;
@@ -129,25 +136,27 @@ export default function ServicesTabs() {
       btn.appendChild(s);
       setTimeout(() => s.remove(), 700);
     }
-  }, []);
-
-  // SSR/CSR uyumu için güvenli odak
-  useEffect(() => {
-    if (tabsRef.current[0]) {
-      tabsRef.current[0].setAttribute("tabindex", "0");
+    // Aria-live ile kısa bilgi (opsiyonel, rahatsız etmeyecek düzeyde)
+    if (liveRef.current) {
+      liveRef.current.textContent = `${tabs[active].title} sekmesi açık.`;
+      setTimeout(() => {
+        if (liveRef.current) liveRef.current.textContent = "";
+      }, 800);
     }
-  }, []);
+  }, [active]);
+
+  const headingId = `${rid}-services-heading`;
 
   return (
-    <section className="container py-10 md:py-14">
-      <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
+    <section className="container py-10 md:py-14" aria-labelledby={headingId}>
+      <h2 id={headingId} className="text-2xl md:text-3xl font-bold text-center mb-8">
         Hizmetlerimiz
       </h2>
 
       {/* Sekme başlıkları */}
       <div
         role="tablist"
-        aria-label="Hizmetler"
+        aria-labelledby={headingId}
         aria-orientation="horizontal"
         className="no-scrollbar mb-6 flex gap-2 overflow-x-auto rounded-xl bg-neutral-50 p-2"
         onKeyDown={onKeyDown}
@@ -159,6 +168,7 @@ export default function ServicesTabs() {
               key={t.key}
               ref={(el) => (tabsRef.current[i] = el)}
               role="tab"
+              type="button"
               id={`${rid}-tab-${i}`}
               aria-selected={selected}
               aria-controls={`${rid}-panel-${i}`}
@@ -178,51 +188,61 @@ export default function ServicesTabs() {
         })}
       </div>
 
+      {/* Görünmez canlı bölge: tab değişimi kısa duyuru */}
+      <p
+        ref={liveRef}
+        aria-live="polite"
+        className="sr-only"
+      />
+
       {/* Paneller */}
-      {tabs.map((t, i) => (
-        <div
-          key={t.key}
-          role="tabpanel"
-          id={`${rid}-panel-${i}`}
-          aria-labelledby={`${rid}-tab-${i}`}
-          hidden={i !== active}
-          className="rounded-2xl border bg-white p-5 md:p-7 shadow-sm"
-        >
-          <div className="grid gap-6 md:grid-cols-2 md:items-center">
-            <div className="relative h-52 w-full md:h-72 rounded-xl overflow-hidden">
-              <Image
-                src={t.img}
-                alt={t.alt}
-                fill
-                sizes={HIZMET_SIZES}
-                /* preload yerine: */
-                loading={i === 0 ? "eager" : "lazy"}
-                fetchPriority="low"
-                decoding="async"
-                quality={70}
-                className="object-cover"
-              />
-            </div>
+      {tabs.map((t, i) => {
+        const isActive = i === active;
+        const eager = i === 0; // ilk panel görselini öncelikli yükle
+        return (
+          <div
+            key={t.key}
+            role="tabpanel"
+            id={`${rid}-panel-${i}`}
+            aria-labelledby={`${rid}-tab-${i}`}
+            hidden={!isActive}
+            className="rounded-2xl border bg-white p-5 md:p-7 shadow-sm"
+          >
+            <div className="grid gap-6 md:grid-cols-2 md:items-center">
+              <div className="relative h-52 w-full md:h-72 rounded-xl overflow-hidden">
+                <Image
+                  src={t.img}
+                  alt={t.alt}
+                  fill
+                  sizes={HIZMET_SIZES}
+                  loading={eager ? "eager" : "lazy"}
+                  fetchPriority={eager ? "high" : "low"}
+                  decoding="async"
+                  quality={70}
+                  className="object-cover"
+                />
+              </div>
 
-            <div>
-              <h3 className="text-xl md:text-2xl font-bold">{t.title}</h3>
-              <p className="mt-2 text-neutral-700">{t.desc}</p>
-              <p className="mt-3 text-sm text-neutral-600">{t.badge}</p>
+              <div>
+                <h3 className="text-xl md:text-2xl font-bold">{t.title}</h3>
+                <p className="mt-2 text-neutral-700">{t.desc}</p>
+                <p className="mt-3 text-sm text-neutral-600">{t.badge}</p>
 
-              <div className="mt-5 flex gap-3">
-                <a
-                  className="relative inline-flex items-center justify-center rounded-lg px-4 py-2 font-semibold text-white bg-[#6d28d9] hover:bg-[#5b21b6] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6d28d9]/40"
-                  href={t.href}
-                  onClick={burst}
-                  aria-label={`${t.title} – detaylı incele`}
-                >
-                  Detaylı İncele
-                </a>
+                <div className="mt-5 flex gap-3">
+                  <a
+                    className="relative inline-flex items-center justify-center rounded-lg px-4 py-2 font-semibold text-white bg-[#6d28d9] hover:bg-[#5b21b6] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6d28d9]/40"
+                    href={t.href}
+                    onClick={burst}
+                    aria-label={`${t.title} – detaylı incele`}
+                  >
+                    Detaylı İncele
+                  </a>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </section>
   );
 }

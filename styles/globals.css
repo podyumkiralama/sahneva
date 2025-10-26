@@ -131,3 +131,70 @@ html.hc a{ text-decoration:underline; }
 .hero-para { color:#ffffff; }
 /* 2) Avoid low-contrast grays on small text blocks */
 .text-muted-safe { color:#475569; } /* slate-600 */
+    /* === FAQ modern stil (WCAG-safe) === */
+
+.faqGlass{
+  /* mor+yeşil hafif vinyet + cam efekti */
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(99,102,241,.10), transparent),
+    radial-gradient(900px 500px at 110% 10%, rgba(16,185,129,.10), transparent),
+    rgba(255,255,255,.72);
+  -webkit-backdrop-filter: saturate(120%) blur(6px);
+  backdrop-filter: saturate(120%) blur(6px);
+  border:1px solid rgba(0,0,0,.06);
+  border-radius: 1rem; /* 16px */
+}
+
+/* küçük kategori/etiket butonları (opsiyonel) */
+.faqChip{
+  border:1px solid rgba(0,0,0,.08);
+  background:#fff;
+  color:#0f172a; /* slate-900 */
+  border-radius: 9999px;
+  padding:.375rem .75rem; /* 6px 12px */
+  font-weight:600;
+  transition: background .2s ease, transform .15s ease, box-shadow .2s ease;
+}
+.faqChip:hover{ background:#f8fafc; transform:translateY(-1px); }
+.faqChip:focus-visible{
+  outline:2px solid #6d28d9; outline-offset:2px;
+}
+
+/* her bir <details> kartı */
+.faqCard{
+  border:1px solid rgba(0,0,0,.08);
+  background:#fff;
+  border-radius:.75rem; /* 12px */
+  transition: border-color .2s ease, box-shadow .2s ease, transform .15s ease;
+}
+.faqCard[open]{
+  border-color:#6366f1;           /* indigo-500 */
+  box-shadow:0 10px 30px rgba(2,6,23,.08);
+  transform:translateY(-1px);
+}
+
+/* summary trigger'ı için net focus halkası */
+.faqSummary{
+  display:flex; align-items:center; justify-content:space-between; gap:.75rem;
+  font-weight:700; color:#0f172a;  /* slate-900 */
+  border-radius:.5rem;
+}
+.faqSummary:focus-visible{
+  outline:2px solid #6d28d9;             /* brand moru */
+  outline-offset:2px;
+}
+
+/* içerik görünür olurken animasyon */
+.faqAnim{ animation:faqFade .25s ease both; }
+@keyframes faqFade{
+  from{ opacity:0; transform:translateY(-4px); }
+  to  { opacity:1; transform:translateY(0); }
+}
+
+/* hareketi azalt tercihine saygı */
+@media (prefers-reduced-motion: reduce){
+  .faqCard[open]{ transform:none; }
+  .faqChip:hover{ transform:none; }
+  .faqAnim{ animation:none; }
+}
+

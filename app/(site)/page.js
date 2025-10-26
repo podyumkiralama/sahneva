@@ -65,7 +65,7 @@ export default function HomePage() {
           className="object-cover"
         />
         <div
-          className="absolute inset-0 bg-[#0b0f1a]/80"
+          className="absolute inset-0 bg-[#0b0f1a]/85"
           aria-hidden="true"
         />
 
@@ -210,7 +210,7 @@ export default function HomePage() {
                   {icon}
                 </div>
                 <h3 className="font-semibold text-lg mb-2">{title}</h3>
-                <p className="text-sm text-neutral-600">{desc}</p>
+                <p className="text-sm text-neutral-700">{desc}</p>
               </div>
             ))}
           </div>

@@ -4,17 +4,18 @@ import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
 // Ağır/etkileşimli bileşenleri dinamik yükle (Client dosyalarının başında "use client" olmalı)
-const ServicesTabs = dynamic(() => import("../../components/ServicesTabs"));
-const ProjectsGallery = dynamic(() => import("../../components/ProjectsGallery"));
-const ReviewBanner = dynamic(() => import("../../components/ReviewBanner"));
+const ServicesTabs   = dynamic(() => import("../../components/ServicesTabs"));
+const ProjectsGallery= dynamic(() => import("../../components/ProjectsGallery"));
+const ReviewBanner   = dynamic(() => import("../../components/ReviewBanner"));
 const HeroCtasClient = dynamic(() => import("../../components/HeroCtasClient"));
 
 import CorporateEvents from "../../components/CorporateEvents";
 import Faq from "../../components/Faq";
 
-// ✅ ISR burada geçerli (Server Component)
+// ✅ ISR (sadece Server Component'ta geçerli)
 export const revalidate = 3600;
 
+// Basit skeleton
 function SectionSkeleton({ label = "İçerik yükleniyor..." }) {
   return (
     <div className="container py-14 md:py-16" role="status" aria-live="polite">
@@ -43,6 +44,7 @@ export default function HomePage() {
             alt="Sahne, podyum, LED ekran ve ses-ışık ekipmanlarıyla kurulu etkinlik sahnesi"
             fill
             priority
+            fetchPriority="high"   // LCP önceliği
             sizes="100vw"
             className="object-cover will-change-transform"
             quality={62}
@@ -117,7 +119,7 @@ export default function HomePage() {
               operasyona kadar uçtan uca destek verir.
             </p>
             <p className="text-neutral-700 mt-4">
-              İhtiyacınıza göre iç mekân/dış mekân çözümleri, truss ve rigging,
+              İhtiyacınıza göre iç/dış mekân çözümleri, truss ve rigging,
               line array ses, robot ışık ve medya sunucuları sağlanır. İstanbul merkezli
               ekibimizle, <em>hızlı keşif</em>, <em>şeffaf fiyatlandırma</em> ve <em>garantili kurulum</em> prensibiyle çalışırız.
             </p>
@@ -128,19 +130,14 @@ export default function HomePage() {
               <li>Türkiye geneli lojistik ve aynı gün kurulum opsiyonu.</li>
             </ul>
             <p className="text-neutral-700 mt-4">
-              Teklif almak için <a href="tel:+905453048671" className="underline underline-offset-2">hemen arayın</a> veya{" "}
-              <a
-                href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum."
-                rel="noopener noreferrer"
-                className="underline underline-offset-2"
-              >
+              Teklif için <a href="tel:+905453048671" className="underline underline-offset-2">hemen arayın</a> veya{" "}
+              <a href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum." rel="noopener noreferrer" className="underline underline-offset-2">
                 WhatsApp
               </a>{" "}
               üzerinden yazın.
             </p>
           </div>
         </section>
-        {/* === /SEO METİN === */}
 
         {/* SIK KULLANILANLAR */}
         <section className="container pb-8" aria-labelledby="popular-title">
@@ -175,7 +172,7 @@ export default function HomePage() {
               ["🎤", "Güncel ve Güçlü Ekipmanlar", "LED ekran, ses-ışık sistemleri, çadır ve podyum çözümlerinde en yeni teknolojiler."],
               ["👷", "Deneyimli Teknik Ekip", "Güvenli, planlı ve sorunsuz kurulum için profesyonel ekibimiz her zaman yanınızda."],
               ["💰", "Uygun Fiyat Garantisi", "Türkiye genelinde rekabetçi fiyatlarla kaliteli hizmet sunuyoruz."],
-              ["🚚", "Türkiye Geneli Hizmet", "İstanbul’dan Adana’ya, Türkiye’nin her yerinde etkinlik kurulumu yapıyoruz."],
+              ["🚚", "Türkiye Geneli Hizmet", "Türkiye’nin her yerinde etkinlik kurulumu yapıyoruz."],
             ].map(([icon, title, desc], i) => (
               <div key={i} className="card">
                 <span className="text-3xl" aria-hidden="true">{icon}</span>

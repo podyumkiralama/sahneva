@@ -71,9 +71,30 @@ img, video, canvas, svg { max-width:100%; height:auto; }
 .btn-accent{ background:var(--accent); }
 .btn-accent:hover{ background:var(--accent-700); }
 
-/* Hero rozetleri */
+/* Linkler – yüksek kontrast, tutarlı */
+a:not(.btn):not(.badge){
+  color:#1d4ed8;              /* indigo-700 */
+}
+a:not(.btn):not(.badge):hover{
+  color:#1e40af;              /* indigo-800 */
+  text-decoration:underline;
+}
+/* Odak halkası tüm linklere net görünsün */
+a:focus-visible{
+  outline:2px solid #6d28d966;
+  outline-offset:2px;
+}
+
+/* Hero rozetleri / genel rozetler (yüksek kontrast) */
 .badge{
-  @apply flex items-center gap-2 px-4 py-2 rounded-full border backdrop-blur;
+  @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-full;
+  background:#111827;     /* neutral-900 */
+  color:#ffffff;
+  border:1px solid #0b1220;
+}
+/* Şeffaf cam isteyen yerlerde alternatif (isteğe bağlı) */
+.badge--glass{
+  @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-full border;
   background:rgba(255,255,255,.10);
   color:#fff;
   border-color:rgba(255,255,255,.20);

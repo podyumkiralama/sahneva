@@ -4,15 +4,14 @@ import dynamic from "next/dynamic";
 import { Suspense } from "react";
 import CorporateEvents from "../../components/CorporateEvents";
 import HeroCtasClient from "../../components/HeroCtasClient";
-import Script from "next/script";
-// gerekiyorsa kullan: import Faq from "../../components/Faq";
 import ReviewBanner from "../../components/ReviewBanner";
+import Script from "next/script";
 
-// Ağır client bileşenleri ("use client" olmalı)
+// Ağır client bileşenleri ("use client" bu dosyaların içinde olmalı)
 const ServicesTabsLazy = dynamic(() => import("../../components/ServicesTabs"));
 const ProjectsGalleryLazy = dynamic(() => import("../../components/ProjectsGallery"));
 
-// ISR (Server Component)
+// ISR (Server Component'ta geçerli)
 export const revalidate = 3600;
 
 // SSS verisi (görünür içerik + JSON-LD aynı)
@@ -44,7 +43,7 @@ export default function HomePage() {
         Ana içeriğe atla
       </a>
 
-      {/* FAQ JSON-LD */}
+      {/* FAQ JSON-LD (Rich Result) */}
       <Script
         id="faq-json-ld"
         type="application/ld+json"
@@ -70,7 +69,7 @@ export default function HomePage() {
             alt="Sahne, podyum, LED ekran ve ses-ışık ekipmanlarıyla kurulu etkinlik sahnesi"
             fill
             priority
-            fetchPriority="high"
+            fetchPriority="high"       // LCP önceliği
             sizes="100vw"
             placeholder="blur"
             blurDataURL="/img/hero-bg-low.webp"
@@ -125,7 +124,30 @@ export default function HomePage() {
           <CorporateEvents />
         </div>
 
-        {/* === SEO METİN — tam SSS'nin ÜSTÜNE alındı === */}
+        {/* ⭐ BİZİ NEDEN TERCİH ETMELİSİNİZ? — Kurumsalın HEMEN ALTINDA */}
+        <section className="container py-16" aria-labelledby="neden-title">
+          <h2 id="neden-title" className="text-2xl md:text-3xl font-bold text-center mb-10">
+            Bizi Neden Tercih Etmelisiniz?
+          </h2>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {[
+              ["⭐", "Yüksek Müşteri Memnuniyeti", "Her organizasyonda ortalama %100’e yakın müşteri memnuniyeti sağlıyoruz."],
+              ["⚡", "Hızlı ve Profesyonel Kurulum", "Aynı gün içinde sahne, podyum ve ekipmanlarınızı anahtar teslim kuruyoruz."],
+              ["🎤", "Güncel ve Güçlü Ekipmanlar", "LED ekran, ses-ışık sistemleri, çadır ve podyum çözümlerinde en yeni teknolojiler."],
+              ["👷", "Deneyimli Teknik Ekip", "Güvenli, planlı ve sorunsuz kurulum için profesyonel ekibimiz her zaman yanınızda."],
+              ["💰", "Uygun Fiyat Garantisi", "Türkiye genelinde rekabetçi fiyatlarla kaliteli hizmet sunuyoruz."],
+              ["🚚", "Türkiye Geneli Hizmet", "Türkiye’nin her yerinde etkinlik kurulumu yapıyoruz."],
+            ].map(([icon, title, desc], i) => (
+              <div key={i} className="card">
+                <span className="text-3xl" aria-hidden="true">{icon}</span>
+                <h3 className="font-semibold text-lg mt-2 mb-1">{title}</h3>
+                <p className="text-sm text-neutral-600">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* SEO METİN — Neden biz’in ALTINDA, SSS’nin ÜSTÜNDE */}
         <section className="section-lazy" aria-labelledby="seo-bilgi-baslik">
           <div className="container py-14 md:py-16">
             <h2 id="seo-bilgi-baslik" className="text-2xl md:text-3xl font-bold text-center mb-8">
@@ -172,7 +194,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* === SSS — SEO metninin hemen altında === */}
+        {/* SSS — SEO metninin HEMEN ALTINDA (JSON-LD ile eşleşir) */}
         <section className="container py-12 md:py-16" aria-labelledby="sss-title">
           <h2 id="sss-title" className="text-2xl md:text-3xl font-bold text-center mb-8">
             Sık Sorulan Sorular
@@ -190,7 +212,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* SIK KULLANILANLAR — en sona alındı */}
+        {/* SIK KULLANILANLAR — en sonda */}
         <section className="container pb-8" aria-labelledby="popular-title">
           <h2 id="popular-title" className="text-xl md:text-2xl font-semibold mb-4">
             Sık Kullanılanlar

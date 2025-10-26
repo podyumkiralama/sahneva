@@ -4,7 +4,17 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const CARD_SIZES = "(max-width: 768px) 100vw, 33vw";
+// Daha gerçekçi sizes: container (px-4 ≈ 2rem), gap-6 (=1.5rem)
+// <640px: tek sütun ~ 100vw - 2rem
+// 640–768px: yine tek sütun ~ 100vw - 2rem
+// 768–1024px: 3 sütun yerine sende 3 sütun md’de başlıyor ama mobilde 1; md<lg arası bazen 2 sütun kullanıyorsan buna uyacak şekilde /2; kullanmıyorsan yine çalışır.
+// ≥1280px: 3 sütun; yaklaşık (100vw - container padding - 2*gap)/3
+const CARD_SIZES =
+  "(max-width: 640px) calc(100vw - 2rem), " +
+  "(max-width: 768px) calc(100vw - 2rem), " +
+  "(max-width: 1024px) calc((100vw - 2rem - 1.5rem) / 2), " +
+  "(max-width: 1280px) calc((100vw - 2rem - 3rem) / 3), " +
+  "420px";
 
 // İçerik verisi — kolay bakım için tek yerde
 const CARDS = [
@@ -72,7 +82,8 @@ export default function CorporateEvents() {
             className="rounded-2xl border bg-white shadow-sm hover:shadow-md transition overflow-hidden focus-within:ring-2 focus-within:ring-primary/40"
             role="listitem"
           >
-            <div className="relative h-40">
+            {/* Sabit oran (CLS azaltır), görsel fill ile taşar; object-cover */}
+            <div className="relative aspect-[16/9] w-full">
               <Image
                 src={card.img}
                 alt={card.alt}
@@ -82,10 +93,11 @@ export default function CorporateEvents() {
                 loading="lazy"
                 decoding="async"
                 fetchPriority="low"
-                // quality parametresi opsiyoneldir; varsayılan genelde yeterlidir.
-                // quality={62}
+                // quality={60} // istersen aç
+                placeholder="empty"
               />
             </div>
+
             <div className="p-6">
               <h3 className="font-semibold text-lg mb-1">{card.title}</h3>
               <p className="text-sm text-neutral-600 mb-4">{card.text}</p>

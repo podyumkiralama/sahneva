@@ -35,14 +35,6 @@ function SectionSkeleton({ label = "İçerik yükleniyor..." }) {
 export default function HomePage() {
   return (
     <>
-      {/* Skip link */}
-      <a
-        href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[1000] focus:bg-white focus:text-black focus:px-3 focus:py-2 focus:rounded"
-      >
-        Ana içeriğe atla
-      </a>
-
       {/* FAQ JSON-LD (Rich Result) */}
       <Script
         id="faq-json-ld"
@@ -61,7 +53,8 @@ export default function HomePage() {
         }}
       />
 
-      <main id="main" className="overflow-x-hidden">
+      {/* DİKKAT: burada <main> YOK; layout.js'teki <main id="main"> tek ve benzersiz kalsın */}
+      <div className="overflow-x-hidden">
         {/* HERO */}
         <section className="relative w-full overflow-clip" style={{ backgroundColor: "#0b0f1a" }}>
           <Image
@@ -230,7 +223,7 @@ export default function HomePage() {
             ))}
           </ul>
         </section>
-      </main>
+      </div>
     </>
   );
 }

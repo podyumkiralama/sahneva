@@ -177,6 +177,8 @@ export default function Navbar() {
                 ref={dropdownRef}
                 onMouseEnter={openNow}
                 onMouseLeave={closeWithDelay}
+                onFocus={openNow}
+                onBlur={closeWithDelay}
               >
                 <button
                   id={servicesBtnId}
@@ -188,7 +190,7 @@ export default function Navbar() {
                   ].join(" ")}
                   aria-haspopup="menu"
                   aria-expanded={servicesOpen}
-                  aria-controls={servicesMenuId} // artık panel her zaman DOM’da
+                  aria-controls={servicesMenuId} // panel DOM'da mevcut
                   onClick={() => setServicesOpen((s) => !s)}
                 >
                   Hizmetler
@@ -200,7 +202,7 @@ export default function Navbar() {
                   onMouseEnter={openNow}
                 />
 
-                {/* ⬇️ PANEL HER ZAMAN DOM’DA; görünürlük hidden ile */}
+                {/* Panel her zaman DOM’da; görünürlük hidden ile yönetilir */}
                 <div
                   id={servicesMenuId}
                   role="menu"
@@ -245,7 +247,7 @@ export default function Navbar() {
                 href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum."
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="WhatsApp üzerinden teklif iste"
+                aria-label="WhatsApp Teklif – üzerinden teklif iste (yeni sekmede açılır)"
                 className="ml-2 inline-flex items-center gap-2 rounded-lg px-3 py-2 text-white text-sm font-semibold
                            bg-[#15803d] hover:bg-[#166534] transition-colors focus:outline-none
                            focus-visible:ring-2 focus-visible:ring-[#6d28d9]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
@@ -385,7 +387,7 @@ export default function Navbar() {
             href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum."
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="WhatsApp üzerinden teklif iste"
+            aria-label="WhatsApp Teklif – üzerinden teklif iste (yeni sekmede açılır)"
             className="block text-center mt-3 rounded-lg px-3 py-2 text-white text-sm font-semibold 
                        bg-[#15803d] hover:bg-[#166534] transition-colors focus:outline-none
                        focus-visible:ring-2 focus-visible:ring-[#6d28d9]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white"

@@ -16,6 +16,8 @@ export default function HeroCtasClient() {
       for (let i = 0; i < n; i++) {
         const el = document.createElement("span");
         el.className = "burst-particle";
+        el.setAttribute("aria-hidden", "true");
+        el.setAttribute("role", "presentation");
         const angle = (Math.PI * 2 * i) / n + Math.random() * 0.35;
         const dist = 36 + Math.random() * 34;
         el.style.setProperty("--dx", Math.cos(angle) * dist + "px");
@@ -40,13 +42,14 @@ export default function HeroCtasClient() {
     "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2";
 
   return (
-    <div className="flex justify-center gap-4">
+    <div className="flex justify-center gap-4" role="group" aria-label="Hızlı iletişim ve teklif alma seçenekleri">
       {/* Kontrastı artırılmış: indigo-700/800 + beyaz metin */}
       <a
         href="tel:+905453048671"
         className={`${baseBtn} bg-indigo-700 hover:bg-indigo-800 text-white focus-visible:ring-indigo-300`}
         onClick={burst}
-        aria-label="Telefonla hemen ara"
+        aria-label="Hemen Ara – Telefonla bize ulaşın (+90 545 304 8671)"
+        title="+90 545 304 8671"
       >
         Hemen Ara
       </a>
@@ -55,9 +58,9 @@ export default function HeroCtasClient() {
       <a
         href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum."
         target="_blank"
-        rel="noopener noreferrer"
+        rel="external noopener noreferrer"
         className={`${baseBtn} bg-emerald-700 hover:bg-emerald-800 text-white focus-visible:ring-emerald-300`}
-        aria-label="WhatsApp üzerinden teklif iste"
+        aria-label="WhatsApp Teklif – WhatsApp üzerinden teklif iste (yeni sekmede açılır)"
         onClick={burst}
       >
         WhatsApp Teklif

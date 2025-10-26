@@ -25,91 +25,90 @@ const GALLERIES = {
     "/img/galeri/podyum-kiralama-9.webp",
     "/img/galeri/podyum-kiralama-10.webp",
     "/img/galeri/podyum-kiralama-11.webp",
-"/img/galeri/podyum-kiralama-12.webp",
-"/img/galeri/podyum-kiralama-13.webp",
-"/img/galeri/podyum-kiralama-14.webp",
-"/img/galeri/podyum-kiralama-15.webp",
-"/img/galeri/podyum-kiralama-16.webp",
-"/img/galeri/podyum-kiralama-17.webp",
-"/img/galeri/podyum-kiralama-18.webp",
-"/img/galeri/podyum-kiralama-19.webp",
-"/img/galeri/podyum-kiralama-20.webp",
-"/img/galeri/podyum-kiralama-21.webp",
-"/img/galeri/podyum-kiralama-22.webp",
-"/img/galeri/podyum-kiralama-23.webp",
-"/img/galeri/podyum-kiralama-24.webp",
-"/img/galeri/podyum-kiralama-25.webp",
-"/img/galeri/podyum-kiralama-26.webp",
-"/img/galeri/podyum-kiralama-27.webp",
-"/img/galeri/podyum-kiralama-28.webp",
-"/img/galeri/podyum-kiralama-29.webp",
-"/img/galeri/podyum-kiralama-30.webp",
-"/img/galeri/podyum-kiralama-31.webp",
-"/img/galeri/podyum-kiralama-32.webp",
-"/img/galeri/podyum-kiralama-33.webp",
-"/img/galeri/podyum-kiralama-34.webp",
-"/img/galeri/podyum-kiralama-35.webp",
-"/img/galeri/podyum-kiralama-36.webp",
-
+    "/img/galeri/podyum-kiralama-12.webp",
+    "/img/galeri/podyum-kiralama-13.webp",
+    "/img/galeri/podyum-kiralama-14.webp",
+    "/img/galeri/podyum-kiralama-15.webp",
+    "/img/galeri/podyum-kiralama-16.webp",
+    "/img/galeri/podyum-kiralama-17.webp",
+    "/img/galeri/podyum-kiralama-18.webp",
+    "/img/galeri/podyum-kiralama-19.webp",
+    "/img/galeri/podyum-kiralama-20.webp",
+    "/img/galeri/podyum-kiralama-21.webp",
+    "/img/galeri/podyum-kiralama-22.webp",
+    "/img/galeri/podyum-kiralama-23.webp",
+    "/img/galeri/podyum-kiralama-24.webp",
+    "/img/galeri/podyum-kiralama-25.webp",
+    "/img/galeri/podyum-kiralama-26.webp",
+    "/img/galeri/podyum-kiralama-27.webp",
+    "/img/galeri/podyum-kiralama-28.webp",
+    "/img/galeri/podyum-kiralama-29.webp",
+    "/img/galeri/podyum-kiralama-30.webp",
+    "/img/galeri/podyum-kiralama-31.webp",
+    "/img/galeri/podyum-kiralama-32.webp",
+    "/img/galeri/podyum-kiralama-33.webp",
+    "/img/galeri/podyum-kiralama-34.webp",
+    "/img/galeri/podyum-kiralama-35.webp",
+    "/img/galeri/podyum-kiralama-36.webp",
   ],
   "LED Ekran Kiralama": [
-     "/img/galeri/led-ekran-kiralama-1.webp",
-  "/img/galeri/led-ekran-kiralama-2.webp",
-  "/img/galeri/led-ekran-kiralama-3.webp",
-  "/img/galeri/led-ekran-kiralama-4.webp",
-  "/img/galeri/led-ekran-kiralama-5.webp",
-  "/img/galeri/led-ekran-kiralama-6.webp",
-  "/img/galeri/led-ekran-kiralama-7.webp",
-  "/img/galeri/led-ekran-kiralama-8.webp",
-  "/img/galeri/led-ekran-kiralama-9.webp",
-  "/img/galeri/led-ekran-kiralama-10.webp",
-  "/img/galeri/led-ekran-kiralama-11.webp",
-  "/img/galeri/led-ekran-kiralama-12.webp",
-  "/img/galeri/led-ekran-kiralama-13.webp",
-  "/img/galeri/led-ekran-kiralama-14.webp",
-  "/img/galeri/led-ekran-kiralama-15.webp",
-  "/img/galeri/led-ekran-kiralama-16.webp",
-  "/img/galeri/led-ekran-kiralama-17.webp",
-  "/img/galeri/led-ekran-kiralama-18.webp",
-  "/img/galeri/led-ekran-kiralama-19.webp",
-  "/img/galeri/led-ekran-kiralama-20.webp",
-  "/img/galeri/led-ekran-kiralama-21.webp",
-  "/img/galeri/led-ekran-kiralama-22.webp",
-  "/img/galeri/led-ekran-kiralama-23.webp",
-  "/img/galeri/led-ekran-kiralama-24.webp",
-  "/img/galeri/led-ekran-kiralama-25.webp",
-  "/img/galeri/led-ekran-kiralama-26.webp",
-  "/img/galeri/led-ekran-kiralama-27.webp",
-  "/img/galeri/led-ekran-kiralama-28.webp",
-  "/img/galeri/led-ekran-kiralama-29.webp",
-  "/img/galeri/led-ekran-kiralama-30.webp",
-  "/img/galeri/led-ekran-kiralama-31.webp",
-  "/img/galeri/led-ekran-kiralama-32.webp",
-  "/img/galeri/led-ekran-kiralama-33.webp",
-  "/img/galeri/led-ekran-kiralama-34.webp",
-  "/img/galeri/led-ekran-kiralama-35.webp",
-  "/img/galeri/led-ekran-kiralama-36.webp",
+    "/img/galeri/led-ekran-kiralama-1.webp",
+    "/img/galeri/led-ekran-kiralama-2.webp",
+    "/img/galeri/led-ekran-kiralama-3.webp",
+    "/img/galeri/led-ekran-kiralama-4.webp",
+    "/img/galeri/led-ekran-kiralama-5.webp",
+    "/img/galeri/led-ekran-kiralama-6.webp",
+    "/img/galeri/led-ekran-kiralama-7.webp",
+    "/img/galeri/led-ekran-kiralama-8.webp",
+    "/img/galeri/led-ekran-kiralama-9.webp",
+    "/img/galeri/led-ekran-kiralama-10.webp",
+    "/img/galeri/led-ekran-kiralama-11.webp",
+    "/img/galeri/led-ekran-kiralama-12.webp",
+    "/img/galeri/led-ekran-kiralama-13.webp",
+    "/img/galeri/led-ekran-kiralama-14.webp",
+    "/img/galeri/led-ekran-kiralama-15.webp",
+    "/img/galeri/led-ekran-kiralama-16.webp",
+    "/img/galeri/led-ekran-kiralama-17.webp",
+    "/img/galeri/led-ekran-kiralama-18.webp",
+    "/img/galeri/led-ekran-kiralama-19.webp",
+    "/img/galeri/led-ekran-kiralama-20.webp",
+    "/img/galeri/led-ekran-kiralama-21.webp",
+    "/img/galeri/led-ekran-kiralama-22.webp",
+    "/img/galeri/led-ekran-kiralama-23.webp",
+    "/img/galeri/led-ekran-kiralama-24.webp",
+    "/img/galeri/led-ekran-kiralama-25.webp",
+    "/img/galeri/led-ekran-kiralama-26.webp",
+    "/img/galeri/led-ekran-kiralama-27.webp",
+    "/img/galeri/led-ekran-kiralama-28.webp",
+    "/img/galeri/led-ekran-kiralama-29.webp",
+    "/img/galeri/led-ekran-kiralama-30.webp",
+    "/img/galeri/led-ekran-kiralama-31.webp",
+    "/img/galeri/led-ekran-kiralama-32.webp",
+    "/img/galeri/led-ekran-kiralama-33.webp",
+    "/img/galeri/led-ekran-kiralama-34.webp",
+    "/img/galeri/led-ekran-kiralama-35.webp",
+    "/img/galeri/led-ekran-kiralama-36.webp",
   ],
   "Çadır Kiralama": [
     "/img/galeri/cadir-kiralama-1.webp",
-  "/img/galeri/cadir-kiralama-2.webp",
-  "/img/galeri/cadir-kiralama-3.webp",
-  "/img/galeri/cadir-kiralama-4.webp",
-  "/img/galeri/cadir-kiralama-5.webp",
-  "/img/galeri/cadir-kiralama-6.webp",
-  "/img/galeri/cadir-kiralama-7.webp",
-  "/img/galeri/cadir-kiralama-8.webp",
-  "/img/galeri/cadir-kiralama-9.webp",
-  "/img/galeri/cadir-kiralama-10.webp",
-  "/img/galeri/cadir-kiralama-11.webp",
-  "/img/galeri/cadir-kiralama-12.webp",
-  "/img/galeri/cadir-kiralama-13.webp",
-  "/img/galeri/cadir-kiralama-14.webp",
-  "/img/galeri/cadir-kiralama-15.webp",
-  "/img/galeri/cadir-kiralama-16.webp",
-  "/img/galeri/cadir-kiralama-17.webp",
-  "/img/galeri/cadir-kiralama-18.webp",
-  "/img/galeri/cadir-kiralama-19.webp",
+    "/img/galeri/cadir-kiralama-2.webp",
+    "/img/galeri/cadir-kiralama-3.webp",
+    "/img/galeri/cadir-kiralama-4.webp",
+    "/img/galeri/cadir-kiralama-5.webp",
+    "/img/galeri/cadir-kiralama-6.webp",
+    "/img/galeri/cadir-kiralama-7.webp",
+    "/img/galeri/cadir-kiralama-8.webp",
+    "/img/galeri/cadir-kiralama-9.webp",
+    "/img/galeri/cadir-kiralama-10.webp",
+    "/img/galeri/cadir-kiralama-11.webp",
+    "/img/galeri/cadir-kiralama-12.webp",
+    "/img/galeri/cadir-kiralama-13.webp",
+    "/img/galeri/cadir-kiralama-14.webp",
+    "/img/galeri/cadir-kiralama-15.webp",
+    "/img/galeri/cadir-kiralama-16.webp",
+    "/img/galeri/cadir-kiralama-17.webp",
+    "/img/galeri/cadir-kiralama-18.webp",
+    "/img/galeri/cadir-kiralama-19.webp",
   ],
 };
 
@@ -126,6 +125,8 @@ export default function ProjectsGallery() {
   const lastFocus = useRef(null);
   const closeBtnRef = useRef(null);
   const scrollYRef = useRef(0);
+  const liveRef = useRef(null);
+  const headingId = "projects-heading";
 
   const open = (groupTitle, images, startIndex = 0) => {
     lastFocus.current = document.activeElement;
@@ -134,6 +135,12 @@ export default function ProjectsGallery() {
     setIndex(startIndex);
     setIsOpen(true);
     requestAnimationFrame(() => setAnim(true));
+    if (liveRef.current) {
+      liveRef.current.textContent = `${groupTitle} galerisi açıldı.`;
+      setTimeout(() => {
+        if (liveRef.current) liveRef.current.textContent = "";
+      }, 1000);
+    }
   };
 
   const close = useCallback(() => {
@@ -278,24 +285,27 @@ export default function ProjectsGallery() {
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   return (
-    <section className="container py-14 md:py-16">
-      <h2 className="text-2xl md:text-3xl font-bold text-center mb-10">
+    <section className="container py-14 md:py-16" aria-labelledby={headingId}>
+      <h2 id={headingId} className="text-2xl md:text-3xl font-bold text-center mb-10">
         Yaptıklarımız
       </h2>
 
       {/* 1 / 2 / 3 sütun grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label="Proje galerileri">
         {Object.entries(GALLERIES).map(([groupTitle, images], i) => {
           const cover = images[0];
+          const labelId = `gallery-label-${i}`;
+          const metaId = `gallery-meta-${i}`;
           return (
-            <div key={groupTitle} className="space-y-3">
-              <h3 className="text-lg font-semibold">{groupTitle}</h3>
+            <div key={groupTitle} className="space-y-3" role="listitem">
+              <h3 id={labelId} className="text-lg font-semibold">{groupTitle}</h3>
 
               <button
                 type="button"
                 onClick={() => open(groupTitle, images, 0)}
                 className="group relative w-full h-44 md:h-56 overflow-hidden rounded-2xl border bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/60"
-                aria-label={`${groupTitle} galeriyi aç`}
+                aria-labelledby={labelId}
+                aria-describedby={metaId}
               >
                 <Image
                   src={cover}
@@ -310,14 +320,18 @@ export default function ProjectsGallery() {
                   quality={60}
                   decoding="async"
                   loading={i < 3 ? "eager" : "lazy"}
-                  fetchPriority="low"
+                  fetchPriority={i < 3 ? "high" : "low"}
                 />
                 <span
                   className={`absolute inset-0 ${
                     prefersReducedMotion ? "" : "transition-colors"
                   } bg-black/0 group-hover:bg-black/10`}
+                  aria-hidden="true"
                 />
-                <span className="absolute bottom-2 right-2 text-xs px-2 py-1 rounded bg-black/60 text-white">
+                <span
+                  id={metaId}
+                  className="absolute bottom-2 right-2 text-xs px-2 py-1 rounded bg-black/60 text-white"
+                >
                   {images.length} fotoğraf
                 </span>
               </button>
@@ -325,6 +339,9 @@ export default function ProjectsGallery() {
           );
         })}
       </div>
+
+      {/* Ekran okuyucuya kısa durum bildirimi */}
+      <p ref={liveRef} aria-live="polite" className="sr-only" />
 
       {/* LIGHTBOX */}
       {isOpen && (
@@ -363,6 +380,8 @@ export default function ProjectsGallery() {
             className="hidden md:flex absolute top-1/2 left-4 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white rounded-full w-12 h-12 md:w-16 md:h-16 items-center justify-center text-3xl md:text-5xl shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
             onClick={prev}
             aria-label="Önceki"
+            aria-disabled={items.length <= 1}
+            tabIndex={items.length <= 1 ? -1 : 0}
           >
             ‹
           </button>
@@ -372,6 +391,8 @@ export default function ProjectsGallery() {
             className="hidden md:flex absolute top-1/2 right-4 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white rounded-full w-12 h-12 md:w-16 md:h-16 items-center justify-center text-3xl md:text-5xl shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
             onClick={next}
             aria-label="Sonraki"
+            aria-disabled={items.length <= 1}
+            tabIndex={items.length <= 1 ? -1 : 0}
           >
             ›
           </button>
@@ -428,6 +449,7 @@ export default function ProjectsGallery() {
                 onClick={prev}
                 className="flex-1 rounded-lg bg-white/15 text-white py-2 font-semibold"
                 aria-label="Önceki"
+                aria-disabled={items.length <= 1}
               >
                 ‹ Önceki
               </button>
@@ -436,6 +458,7 @@ export default function ProjectsGallery() {
                 onClick={next}
                 className="flex-1 rounded-lg bg-white/15 text-white py-2 font-semibold"
                 aria-label="Sonraki"
+                aria-disabled={items.length <= 1}
               >
                 Sonraki ›
               </button>

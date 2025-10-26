@@ -112,7 +112,7 @@ export default function HomePage() {
             <h2 className="text-white text-2xl md:text-3xl font-semibold mb-2">
               Organizasyonunuz için Ücretsiz Danışmanlık
             </h2>
-            <p className="text-white/90 max-w-3xl mx-auto">
+            <p className="text-white max-w-3xl mx-auto">
               Etkinliğiniz için en doğru sahne, podyum, ses-ışık ve ekran
               çözümlerini ücretsiz danışmanlıkla planlayalım.
             </p>
@@ -169,7 +169,7 @@ export default function HomePage() {
             Bizi Neden Tercih Etmelisiniz?
           </h2>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {[
               [
                 "⭐",
@@ -296,6 +296,7 @@ export default function HomePage() {
                     className="underline hover:no-underline font-medium"
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="WhatsApp’tan yazın (yeni sekmede açılır)"
                   >
                     WhatsApp’tan yazın
                   </a>

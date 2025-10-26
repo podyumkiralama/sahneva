@@ -43,22 +43,22 @@ export default function Faq() {
         Sık Sorulan Sorular
       </h2>
 
-      <div className="mx-auto max-w-3xl space-y-4" role="list" aria-label="Sık sorulan sorular listesi">
-        {items.map(({ q, a, slug }, i) => {
-          const contentId = `${slug}-content`;
+      <div className="mx-auto max-w-3xl space-y-4">
+        {items.map(({ q, a, slug }) => {
           const summaryId = `${slug}-summary`;
+          const panelId = `${slug}-panel`;
           return (
             <details
               key={slug}
               id={slug}
               className="faq-card group border rounded-lg p-4 open:shadow-sm"
-              role="listitem"
             >
               <summary
                 id={summaryId}
+                aria-controls={panelId}
                 className="flex cursor-pointer items-center justify-between gap-3 font-semibold text-neutral-900
-                           focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6d28d9]/40 rounded-md"
-                aria-controls={contentId}
+                           rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6d28d9]
+                           focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               >
                 <span>{q}</span>
                 <svg
@@ -75,7 +75,7 @@ export default function Faq() {
                 </svg>
               </summary>
 
-              <div id={contentId} role="region" aria-labelledby={summaryId} className="mt-2 text-neutral-700">
+              <div id={panelId} className="mt-2 text-neutral-700">
                 <p>{a}</p>
               </div>
             </details>
@@ -87,8 +87,8 @@ export default function Faq() {
         <a
           href="/sss"
           className="inline-block rounded-lg bg-[#6d28d9] px-6 py-3 font-semibold text-white shadow
-                     transition hover:bg-[#5b21b6] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6d28d9]/40"
-          aria-label="Tüm Soruları Gör – SSS sayfasına git"
+                     transition hover:bg-[#5b21b6] focus:outline-none focus-visible:ring-2
+                     focus-visible:ring-[#6d28d9] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
         >
           Tüm Soruları Gör
         </a>

@@ -46,7 +46,7 @@ export default function Footer() {
             Sahneva Hakkında
           </h2>
           <div className="flex items-center gap-2 text-white font-semibold mb-3">
-            <span aria-hidden>⭐</span> <span>SAHNEVA</span>
+            <span aria-hidden="true">⭐</span> <span>SAHNEVA</span>
           </div>
           <p className="text-sm leading-6">
             Etkinlik prodüksiyon &amp; ekipman kiralama.
@@ -60,23 +60,23 @@ export default function Footer() {
               href="https://www.instagram.com/sahnevaorganizasyon"
               target="_blank"
               rel="noopener noreferrer me"
-              aria-label="Instagram"
+              aria-label="Instagram (yeni sekmede açılır)"
               title="Instagram"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 hover:border-white/30 hover:bg-white/5 transition"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 hover:border-white/30 hover:bg-white/5 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
               onClick={burst}
             >
-              <span aria-hidden>📷</span>
+              <span aria-hidden="true">📷</span>
             </a>
             <a
               href="https://www.youtube.com/@sahneva"
               target="_blank"
               rel="noopener noreferrer me"
-              aria-label="YouTube"
+              aria-label="YouTube (yeni sekmede açılır)"
               title="YouTube"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 hover:border-white/30 hover:bg-white/5 transition"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 hover:border-white/30 hover:bg-white/5 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
               onClick={burst}
             >
-              <span aria-hidden>▶</span>
+              <span aria-hidden="true">▶</span>
             </a>
           </div>
         </section>
@@ -88,27 +88,42 @@ export default function Footer() {
           </h2>
           <ul className="space-y-2 text-sm">
             <li>
-              <Link href="/podyum-kiralama" className="hover:text-white transition-colors">
+              <Link
+                href="/podyum-kiralama"
+                className="hover:text-white focus:underline hover:underline underline-offset-4 transition-colors"
+              >
                 Podyum Kiralama
               </Link>
             </li>
             <li>
-              <Link href="/led-ekran-kiralama" className="hover:text-white transition-colors">
+              <Link
+                href="/led-ekran-kiralama"
+                className="hover:text-white focus:underline hover:underline underline-offset-4 transition-colors"
+              >
                 LED Ekran Kiralama
               </Link>
             </li>
             <li>
-              <Link href="/ses-isik-sistemleri" className="hover:text-white transition-colors">
+              <Link
+                href="/ses-isik-sistemleri"
+                className="hover:text-white focus:underline hover:underline underline-offset-4 transition-colors"
+              >
                 Ses &amp; Işık Sistemleri
               </Link>
             </li>
             <li>
-              <Link href="/sahne-kiralama" className="hover:text-white transition-colors">
+              <Link
+                href="/sahne-kiralama"
+                className="hover:text-white focus:underline hover:underline underline-offset-4 transition-colors"
+              >
                 Sahne Kiralama
               </Link>
             </li>
             <li>
-              <Link href="/cadir-kiralama" className="hover:text-white transition-colors">
+              <Link
+                href="/cadir-kiralama"
+                className="hover:text-white focus:underline hover:underline underline-offset-4 transition-colors"
+              >
                 Çadır Kiralama
               </Link>
             </li>
@@ -122,22 +137,34 @@ export default function Footer() {
           </h2>
           <ul className="space-y-2 text-sm">
             <li>
-              <Link href="/hakkimizda" className="hover:text-white transition-colors">
+              <Link
+                href="/hakkimizda"
+                className="hover:text-white focus:underline hover:underline underline-offset-4 transition-colors"
+              >
                 Hakkımızda
               </Link>
             </li>
             <li>
-              <Link href="/hizmetler" className="hover:text-white transition-colors">
+              <Link
+                href="/hizmetler"
+                className="hover:text-white focus:underline hover:underline underline-offset-4 transition-colors"
+              >
                 Hizmetler
               </Link>
             </li>
             <li>
-              <Link href="/sss" className="hover:text-white transition-colors">
+              <Link
+                href="/sss"
+                className="hover:text-white focus:underline hover:underline underline-offset-4 transition-colors"
+              >
                 Sık Sorulan Sorular
               </Link>
             </li>
             <li>
-              <Link href="/kvkk" className="hover:text-white transition-colors">
+              <Link
+                href="/kvkk"
+                className="hover:text-white focus:underline hover:underline underline-offset-4 transition-colors"
+              >
                 KVKK / Gizlilik
               </Link>
             </li>
@@ -148,8 +175,8 @@ export default function Footer() {
                 href="https://g.page/r/CZhkMzkNOdgnEBI"
                 target="_blank"
                 rel="noopener noreferrer nofollow"
-                className="hover:text-white transition-colors"
-                aria-label="Google Haritalar'da Sahneva"
+                className="hover:text-white focus:underline hover:underline underline-offset-4 transition-colors"
+                aria-label="Google Haritalar’da Sahneva (yeni sekmede açılır)"
                 title="Google Haritalar"
               >
                 Google Haritalar’da bizi bulun
@@ -160,8 +187,8 @@ export default function Footer() {
                 href="https://g.page/r/CZhkMzkNOdgnEBI/review"
                 target="_blank"
                 rel="noopener noreferrer nofollow"
-                className="hover:text-white transition-colors"
-                aria-label="Google üzerinde Sahneva için yorum yazın"
+                className="hover:text-white focus:underline hover:underline underline-offset-4 transition-colors"
+                aria-label="Google’da Sahneva için yorum yazın (yeni sekmede açılır)"
                 title="Google Yorum"
               >
                 Google’da yorum yaz ⭐
@@ -179,32 +206,42 @@ export default function Footer() {
           <address className="not-italic">
             <ul className="mt-3 space-y-2 text-sm">
               <li className="flex items-center gap-2">
-                <span className="opacity-70" aria-hidden>
+                <span className="text-gray-400" aria-hidden="true">
                   📍
-                </span>{" "}
-                İstanbul / Türkiye
+                </span>
+                <span>İstanbul / Türkiye</span>
               </li>
               <li className="flex items-center gap-2">
-                <span className="opacity-70" aria-hidden>
+                <span className="text-gray-400" aria-hidden="true">
                   📞
                 </span>
-                <a href="tel:+905453048671" className="hover:text-white font-semibold" onClick={burst}>
+                <a
+                  href="tel:+905453048671"
+                  className="hover:text-white font-semibold focus:underline hover:underline underline-offset-4"
+                  onClick={burst}
+                  aria-label="Hemen Ara – Telefon: +90 545 304 8671"
+                >
                   +90 545 304 8671
                 </a>
               </li>
               <li className="flex items-center gap-2">
-                <span className="opacity-70" aria-hidden>
+                <span className="text-gray-400" aria-hidden="true">
                   ✉️
                 </span>
-                <a href="mailto:info@sahneva.com" className="hover:text-white" onClick={burst}>
+                <a
+                  href="mailto:info@sahneva.com"
+                  className="hover:text-white focus:underline hover:underline underline-offset-4"
+                  onClick={burst}
+                  aria-label="E-posta: info@sahneva.com"
+                >
                   info@sahneva.com
                 </a>
               </li>
               <li className="flex items-center gap-2">
-                <span className="opacity-70" aria-hidden>
+                <span className="text-gray-400" aria-hidden="true">
                   ⏰
-                </span>{" "}
-                Hafta içi 09:00–19:00
+                </span>
+                <span>Hafta içi 09:00–19:00</span>
               </li>
             </ul>
           </address>
@@ -215,26 +252,30 @@ export default function Footer() {
               href="tel:+905453048671"
               className="inline-flex items-center gap-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f1115]"
               onClick={burst}
+              aria-label="Hemen Ara – Telefon: +90 545 304 8671"
             >
-              📞 Hemen Ara
+              <span aria-hidden="true">📞</span>
+              <span>Hemen Ara</span>
             </a>
 
             <a
               href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum."
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="WhatsApp üzerinden teklif iste"
               className="inline-flex items-center gap-2 rounded-full bg-green-700 hover:bg-green-800 text-white text-sm font-semibold px-4 py-2 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f1115]"
               onClick={burst}
+              aria-label="WhatsApp Teklif – üzerinden teklif iste (yeni sekmede açılır)"
+              title="WhatsApp Teklif"
             >
-              💬 WhatsApp Teklif
+              <span aria-hidden="true">💬</span>
+              <span>WhatsApp Teklif</span>
             </a>
           </div>
         </section>
       </div>
 
       {/* Alt bar */}
-      <div className="border-t border-white/10 text-center text-xs text-gray-400 py-4">
+      <div className="border-top border-white/10 text-center text-xs text-gray-300 py-4">
         Türkiye genelinde sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri.
         <br className="sm:hidden" />
         <span className="ml-2" suppressHydrationWarning>

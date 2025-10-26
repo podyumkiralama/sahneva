@@ -43,37 +43,44 @@ export default function Faq() {
         Sık Sorulan Sorular
       </h2>
 
-      <div className="mx-auto max-w-3xl space-y-4">
-        {items.map(({ q, a, slug }, i) => (
-          <details
-            key={slug}
-            id={slug}
-            className="faq-card group border rounded-lg p-4 open:shadow-sm"
-          >
-            <summary
-              className="flex cursor-pointer items-center justify-between gap-3 font-semibold text-neutral-900
-                         focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6d28d9]/40 rounded-md"
+      <div className="mx-auto max-w-3xl space-y-4" role="list" aria-label="Sık sorulan sorular listesi">
+        {items.map(({ q, a, slug }, i) => {
+          const contentId = `${slug}-content`;
+          const summaryId = `${slug}-summary`;
+          return (
+            <details
+              key={slug}
+              id={slug}
+              className="faq-card group border rounded-lg p-4 open:shadow-sm"
+              role="listitem"
             >
-              <span>{q}</span>
-              <svg
-                className="ml-2 h-5 w-5 shrink-0 text-neutral-800 transition-transform group-open:rotate-90"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+              <summary
+                id={summaryId}
+                className="flex cursor-pointer items-center justify-between gap-3 font-semibold text-neutral-900
+                           focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6d28d9]/40 rounded-md"
+                aria-controls={contentId}
               >
-                <path d="M8 5l8 7-8 7" />
-              </svg>
-            </summary>
+                <span>{q}</span>
+                <svg
+                  className="ml-2 h-5 w-5 shrink-0 text-neutral-800 transition-transform group-open:rotate-90"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M8 5l8 7-8 7" />
+                </svg>
+              </summary>
 
-            <div className="mt-2 text-neutral-700">
-              <p>{a}</p>
-            </div>
-          </details>
-        ))}
+              <div id={contentId} role="region" aria-labelledby={summaryId} className="mt-2 text-neutral-700">
+                <p>{a}</p>
+              </div>
+            </details>
+          );
+        })}
       </div>
 
       <div className="mt-8 text-center">
@@ -81,6 +88,7 @@ export default function Faq() {
           href="/sss"
           className="inline-block rounded-lg bg-[#6d28d9] px-6 py-3 font-semibold text-white shadow
                      transition hover:bg-[#5b21b6] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6d28d9]/40"
+          aria-label="Tüm Soruları Gör – SSS sayfasına git"
         >
           Tüm Soruları Gör
         </a>

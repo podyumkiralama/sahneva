@@ -15,8 +15,8 @@ export const viewport = {
 
 const inter = Inter({
   subsets: ["latin"],
-  preload: true,          // ✅ Artık preload devrede
-  display: "swap",        // ✅ LCP için ideal
+  preload: false, // render-blocking yok
+  display: "optional", // FOIT yok, sistem fontu ile başla
   fallback: [
     "system-ui",
     "-apple-system",
@@ -67,9 +67,7 @@ export default function RootLayout({ children }) {
         <style id="critical-css">{`
           .pt-16{padding-top:4rem}
           @media (min-width:768px){.md\\:pt-20{padding-top:5rem}}
-          /* GÜNCELLENEN FULL-BLEED */
-          .full-bleed{position:relative;width:100%;min-height:60vh;overflow:clip}
-          @supports not (overflow: clip){.full-bleed{overflow:hidden}}
+          .full-bleed{position:relative;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);inline-size:100svw;width:100vw;min-height:60vh;overflow-x:clip}
           @media (min-width:768px){.full-bleed{min-height:70vh}}
           .object-cover{object-fit:cover}
           .container{max-width:1280px;margin-inline:auto;padding-inline:1rem}

@@ -154,6 +154,65 @@ export default function HomePage() {
         <CorporateEvents />
       </section>
 
+      {/* Bizi Neden Tercih Etmelisiniz */}
+      <section
+        className="container py-16"
+        aria-labelledby="neden-tercih-heading"
+      >
+        <h2
+          id="neden-tercih-heading"
+          className="text-2xl md:text-3xl font-bold text-center mb-10"
+        >
+          Bizi Neden Tercih Etmelisiniz?
+        </h2>
+
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {[
+            [
+              "⭐",
+              "Yüksek Müşteri Memnuniyeti",
+              "Her organizasyonda ortalama %100’e yakın müşteri memnuniyeti sağlıyoruz.",
+            ],
+            [
+              "⚡",
+              "Hızlı ve Profesyonel Kurulum",
+              "Aynı gün içinde sahne, podyum ve ekipmanlarınızı anahtar teslim kuruyoruz.",
+            ],
+            [
+              "🎤",
+              "Güncel ve Güçlü Ekipmanlar",
+              "LED ekran, ses-ışık sistemleri, çadır ve podyum çözümlerinde en yeni teknolojiler.",
+            ],
+            [
+              "👷",
+              "Deneyimli Teknik Ekip",
+              "Güvenli, planlı ve sorunsuz kurulum için profesyonel ekibimiz her zaman yanınızda.",
+            ],
+            [
+              "💰",
+              "Uygun Fiyat Garantisi",
+              "Türkiye genelinde rekabetçi fiyatlarla kaliteli hizmet sunuyoruz.",
+            ],
+            [
+              "🚚",
+              "Türkiye Geneli Hizmet",
+              "Türkiye’nin her yerinde etkinlik kurulumu yapıyoruz.",
+            ],
+          ].map(([icon, title, desc], i) => (
+            <div
+              key={i}
+              className="rounded-xl border bg-white shadow-sm p-6 hover:shadow-md transition"
+            >
+              <div className="text-4xl mb-4" aria-hidden="true">
+                {icon}
+              </div>
+              <h3 className="font-semibold text-lg mb-2">{title}</h3>
+              <p className="text-sm text-neutral-600">{desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* SEO METİN BLOĞU */}
       <section className="section-lazy" aria-labelledby="seo-title">
         <div className="container py-14 md:py-16">

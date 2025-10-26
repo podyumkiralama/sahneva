@@ -218,7 +218,7 @@ export default function HomePage() {
               id="seo-title"
               className="text-2xl md:text-3xl font-bold text-center mb-8"
             >
-              Uçtan Uca Etkinlik Prodüksiyon – Türkiye Genelinde Kurumsal Çözüm Ortağınız
+              Etkinlik Prodüksiyon &amp; Organizasyon – Türkiye Geneli Teknik Çözüm Ortağınız
             </h2>
 
             <div className="grid gap-6 md:grid-cols-2">

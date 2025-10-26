@@ -128,12 +128,7 @@ export default function HomePage() {
 
         {/* Hizmetler sekmeleri */}
         <section className="section-lazy" aria-labelledby="hizmetler-title">
-          <h2
-            id="hizmetler-title"
-            className="container text-2xl md:text-3xl font-bold mb-6"
-          >
-            Etkinlik Prodüksiyon &amp; Organizasyon – Türkiye Geneli Teknik Çözüm Ortağınız
-          </h2>
+        
           <Suspense fallback={<SectionSkeleton label="Hizmetler yükleniyor" />}>
             <ServicesTabsLazy />
           </Suspense>

@@ -4,8 +4,10 @@
 import Image from "next/image";
 import Link from "next/link";
 
-// Grid: <768px 1 sütun, >=768px 3 sütun -> sizes buna göre
-const CARD_SIZES = "(max-width: 768px) 100vw, 33vw";
+const CARD_SIZES =
+  "(max-width: 640px) 100vw, " +       // tek sütun
+  "(max-width: 1024px) 50vw, " +       // iki sütun
+  "33vw";                              // üç sütun
 
 export default function CorporateEvents() {
   return (
@@ -33,7 +35,7 @@ export default function CorporateEvents() {
               loading="lazy"
               decoding="async"
               fetchPriority="low"
-              quality={62}
+              quality={70}
             />
           </div>
           <div className="p-6">
@@ -41,7 +43,11 @@ export default function CorporateEvents() {
             <p className="text-sm text-neutral-600 mb-4">
               LED ekran kurgu, sahne tasarımı, ışık şovları ve canlı yayın altyapısıyla etkileyici sunumlar.
             </p>
-            <Link href="/iletisim" prefetch={false} className="text-primary font-semibold hover:underline">
+            <Link
+              href="/iletisim"
+              prefetch={false}
+              className="text-primary font-semibold hover:underline"
+            >
               Teklif Al
             </Link>
           </div>
@@ -59,7 +65,7 @@ export default function CorporateEvents() {
               loading="lazy"
               decoding="async"
               fetchPriority="low"
-              quality={62}
+              quality={70}
             />
           </div>
           <div className="p-6">
@@ -67,7 +73,11 @@ export default function CorporateEvents() {
             <p className="text-sm text-neutral-600 mb-4">
               Çoklu mikrofon, simultane çeviri, sunum yönetimi ve kayıt çözümleriyle kusursuz akış.
             </p>
-            <Link href="/iletisim" prefetch={false} className="text-primary font-semibold hover:underline">
+            <Link
+              href="/iletisim"
+              prefetch={false}
+              className="text-primary font-semibold hover:underline"
+            >
               Teklif Al
             </Link>
           </div>
@@ -85,7 +95,7 @@ export default function CorporateEvents() {
               loading="lazy"
               decoding="async"
               fetchPriority="low"
-              quality={62}
+              quality={70}
             />
           </div>
           <div className="p-6">
@@ -93,7 +103,11 @@ export default function CorporateEvents() {
             <p className="text-sm text-neutral-600 mb-4">
               Kurumsal kimliğe uygun sahne–dekor, çoklu ekran, video–ses yönetimi ve teknik ekip.
             </p>
-            <Link href="/iletisim" prefetch={false} className="text-primary font-semibold hover:underline">
+            <Link
+              href="/iletisim"
+              prefetch={false}
+              className="text-primary font-semibold hover:underline"
+            >
               Teklif Al
             </Link>
           </div>
@@ -122,7 +136,9 @@ export default function CorporateEvents() {
 
       {/* CTA bandı */}
       <div className="mt-10 rounded-2xl bg-primary/5 border p-6 text-center">
-        <h3 className="text-xl md:text-2xl font-semibold mb-2">Kurumsal etkinliğinizi anahtar teslim planlayalım</h3>
+        <h3 className="text-xl md:text-2xl font-semibold mb-2">
+          Kurumsal etkinliğinizi anahtar teslim planlayalım
+        </h3>
         <p className="text-neutral-700 mb-4">
           Sahne, podyum, LED ekran, ses–ışık ve yayın çözümleri için hemen iletişime geçin.
         </p>

@@ -511,59 +511,62 @@ function SchemaBlocks({ packages: pkgs, unitPrices }) {
     },
   ];
 
-const SITE = "https://www.sahneva.com";
-const LB_ID = `${SITE}/#localbusiness`;
-const SERVICE_ID = `${SITE}/podyum-kiralama#service`;
-const FAQ_ID = `${SITE}/podyum-kiralama#faq`;
-const BREAD_ID = `${SITE}/podyum-kiralama#breadcrumbs`;
+  const ldService = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    serviceType: "Podyum Kiralama",
+    name: "Podyum Kiralama",
+    description:
+      "Modüler 1×1 ve 2×1 panellerle podyum kiralama; kaymaz kaplama, rampa/korkuluk ve profesyonel kurulum.",
+    areaServed: [
+      { "@type": "Country", name: "TR" },
+      { "@type": "City", name: "İstanbul" },
+    ],
+    provider: {
+      "@type": "LocalBusiness",
+      name: "Sahneva",
+      url: "https://www.sahneva.com",
+      telephone: "+90 545 304 8671",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "İstanbul",
+        addressCountry: "TR",
+      },
+    },
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Podyum Paketleri (Haftalık)",
+      itemListElement: offers,
+    },
+  };
 
-const ldService = {
-  "@context": "https://schema.org",
-  "@type": "Service",
-  "@id": SERVICE_ID,
-  serviceType: "Podyum Kiralama",
-  name: "Podyum Kiralama",
-  description:
-    "Modüler 1×1 ve 2×1 panellerle podyum kiralama; kaymaz kaplama, rampa/korkuluk ve profesyonel kurulum.",
-  areaServed: [{ "@type": "Country", name: "TR" }, { "@type": "City", name: "İstanbul" }],
-  // ❗️Burada LocalBusiness tanımlamak YOK — sadece @id ile layout'taki varlığa bağlanıyoruz
-  provider: { "@id": LB_ID },
-  hasOfferCatalog: {
-    "@type": "OfferCatalog",
-    name: "Podyum Paketleri (Haftalık)",
-    itemListElement: offers,
-  },
-};
+  const ldFAQ = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faq.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  };
 
-const ldFAQ = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "@id": FAQ_ID,
-  mainEntity: faq.map((f) => ({
-    "@type": "Question",
-    name: f.q,
-    acceptedAnswer: { "@type": "Answer", text: f.a },
-  })),
-};
+  const ldBreadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Anasayfa", item: "https://www.sahneva.com" },
+      { "@type": "ListItem", position: 2, name: "Podyum Kiralama", item: "https://www.sahneva.com/podyum-kiralama" },
+    ],
+  };
 
-const ldBreadcrumb = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "@id": BREAD_ID,
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Anasayfa", item: SITE },
-    { "@type": "ListItem", position: 2, name: "Podyum Kiralama", item: `${SITE}/podyum-kiralama` },
-  ],
-};
-
-// ---- Script etiketleri
-return (
-  <>
-    <Script id="ld-service" type="application/ld+json" strategy="afterInteractive"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(ldService) }} />
-    <Script id="ld-faq" type="application/ld+json" strategy="afterInteractive"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(ldFAQ) }} />
-    <Script id="ld-breadcrumb" type="application/ld+json" strategy="afterInteractive"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(ldBreadcrumb) }} />
-  </>
-);
+  return (
+    <>
+      <Script id="ld-service" type="application/ld+json" strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ldService) }} />
+      <Script id="ld-faq" type="application/ld+json" strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ldFAQ) }} />
+      <Script id="ld-breadcrumb" type="application/ld+json" strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ldBreadcrumb) }} />
+    </>
+  );
+}

@@ -1,0 +1,1 @@
+self.__NEXT_FONT_MANIFEST='{"pages":{},"app":{"/workspaces/sahneva/app/layout":[]},"appUsingSizeAdjust":true,"pagesUsingSizeAdjust":false}';

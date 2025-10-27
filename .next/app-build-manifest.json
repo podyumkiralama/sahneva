@@ -1,0 +1,142 @@
+{
+  "pages": {
+    "/_not-found/page": [
+      "static/chunks/webpack-26c7461a6686b918.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-dd5654b67824d1e6.js",
+      "static/chunks/main-app-0f9b8a0364c3f87f.js",
+      "static/chunks/app/_not-found/page-24ad992fd58077e6.js"
+    ],
+    "/api/quote/route": [
+      "static/chunks/webpack-26c7461a6686b918.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-dd5654b67824d1e6.js",
+      "static/chunks/main-app-0f9b8a0364c3f87f.js",
+      "static/chunks/app/api/quote/route-bd131fc380cdd0a8.js"
+    ],
+    "/layout": [
+      "static/chunks/webpack-26c7461a6686b918.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-dd5654b67824d1e6.js",
+      "static/chunks/main-app-0f9b8a0364c3f87f.js",
+      "static/css/acb2e4b257d0acff.css",
+      "static/chunks/850-450e35344533a9dd.js",
+      "static/chunks/app/layout-7860741400e947d2.js"
+    ],
+    "/robots.txt/route": [
+      "static/chunks/webpack-26c7461a6686b918.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-dd5654b67824d1e6.js",
+      "static/chunks/main-app-0f9b8a0364c3f87f.js",
+      "static/chunks/app/robots.txt/route-bd131fc380cdd0a8.js"
+    ],
+    "/sitemap.xml/route": [
+      "static/chunks/webpack-26c7461a6686b918.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-dd5654b67824d1e6.js",
+      "static/chunks/main-app-0f9b8a0364c3f87f.js",
+      "static/chunks/app/sitemap.xml/route-bd131fc380cdd0a8.js"
+    ],
+    "/(site)/iletisim/page": [
+      "static/chunks/webpack-26c7461a6686b918.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-dd5654b67824d1e6.js",
+      "static/chunks/main-app-0f9b8a0364c3f87f.js",
+      "static/chunks/app/(site)/iletisim/page-bd131fc380cdd0a8.js"
+    ],
+    "/(site)/hizmetler/page": [
+      "static/chunks/webpack-26c7461a6686b918.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-dd5654b67824d1e6.js",
+      "static/chunks/main-app-0f9b8a0364c3f87f.js",
+      "static/chunks/850-450e35344533a9dd.js",
+      "static/chunks/app/(site)/hizmetler/page-4a90085cfea5ebdc.js"
+    ],
+    "/kvkk/page": [
+      "static/chunks/webpack-26c7461a6686b918.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-dd5654b67824d1e6.js",
+      "static/chunks/main-app-0f9b8a0364c3f87f.js",
+      "static/chunks/app/kvkk/page-bd131fc380cdd0a8.js"
+    ],
+    "/(site)/hakkimizda/page": [
+      "static/chunks/webpack-26c7461a6686b918.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-dd5654b67824d1e6.js",
+      "static/chunks/main-app-0f9b8a0364c3f87f.js",
+      "static/chunks/850-450e35344533a9dd.js",
+      "static/chunks/app/(site)/hakkimizda/page-cf7e26dd6ac11e4e.js"
+    ],
+    "/(site)/page": [
+      "static/chunks/webpack-26c7461a6686b918.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-dd5654b67824d1e6.js",
+      "static/chunks/main-app-0f9b8a0364c3f87f.js",
+      "static/chunks/850-450e35344533a9dd.js",
+      "static/chunks/app/(site)/page-150f219e79725d0a.js"
+    ],
+    "/cadir-kiralama/page": [
+      "static/chunks/webpack-26c7461a6686b918.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-dd5654b67824d1e6.js",
+      "static/chunks/main-app-0f9b8a0364c3f87f.js",
+      "static/chunks/850-450e35344533a9dd.js",
+      "static/chunks/app/cadir-kiralama/page-cf7e26dd6ac11e4e.js"
+    ],
+    "/projeler/kapali-alan-led-sahne-kurulumu/page": [
+      "static/chunks/webpack-26c7461a6686b918.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-dd5654b67824d1e6.js",
+      "static/chunks/main-app-0f9b8a0364c3f87f.js",
+      "static/chunks/850-450e35344533a9dd.js",
+      "static/chunks/app/projeler/kapali-alan-led-sahne-kurulumu/page-c199bb56d2ac7483.js"
+    ],
+    "/masa-sandalye-kiralama/page": [
+      "static/chunks/webpack-26c7461a6686b918.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-dd5654b67824d1e6.js",
+      "static/chunks/main-app-0f9b8a0364c3f87f.js",
+      "static/chunks/850-450e35344533a9dd.js",
+      "static/chunks/app/masa-sandalye-kiralama/page-cf7e26dd6ac11e4e.js"
+    ],
+    "/led-ekran-kiralama/page": [
+      "static/chunks/webpack-26c7461a6686b918.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-dd5654b67824d1e6.js",
+      "static/chunks/main-app-0f9b8a0364c3f87f.js",
+      "static/chunks/850-450e35344533a9dd.js",
+      "static/chunks/app/led-ekran-kiralama/page-cf7e26dd6ac11e4e.js"
+    ],
+    "/sahne-kiralama/page": [
+      "static/chunks/webpack-26c7461a6686b918.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-dd5654b67824d1e6.js",
+      "static/chunks/main-app-0f9b8a0364c3f87f.js",
+      "static/chunks/850-450e35344533a9dd.js",
+      "static/chunks/app/sahne-kiralama/page-829853796dd000af.js"
+    ],
+    "/sss/page": [
+      "static/chunks/webpack-26c7461a6686b918.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-dd5654b67824d1e6.js",
+      "static/chunks/main-app-0f9b8a0364c3f87f.js",
+      "static/chunks/app/sss/page-7a2fa3ec2288f660.js"
+    ],
+    "/ses-isik-sistemleri/page": [
+      "static/chunks/webpack-26c7461a6686b918.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-dd5654b67824d1e6.js",
+      "static/chunks/main-app-0f9b8a0364c3f87f.js",
+      "static/chunks/850-450e35344533a9dd.js",
+      "static/chunks/app/ses-isik-sistemleri/page-cf7e26dd6ac11e4e.js"
+    ],
+    "/podyum-kiralama/page": [
+      "static/chunks/webpack-26c7461a6686b918.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-dd5654b67824d1e6.js",
+      "static/chunks/main-app-0f9b8a0364c3f87f.js",
+      "static/chunks/850-450e35344533a9dd.js",
+      "static/chunks/app/podyum-kiralama/page-1337cb3b811fd4bd.js"
+    ]
+  }
+}

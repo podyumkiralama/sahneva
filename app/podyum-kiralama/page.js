@@ -2,15 +2,26 @@
 import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
+import dynamic from "next/dynamic";
 import { getService } from "@/lib/data";
 
 const svc = getService("podyum");
 
+// Haftalık birim fiyatlar (gerçek)
+const UNIT_PRICES = {
+  platform_m2_week: 300,  // TL/m²/hafta
+  carpet_m2_week: 120,    // TL/m²/hafta
+  skirt_ml_week: 90,      // TL/mtül/hafta
+};
+
+// Paket (varsayılan dizilimler)
 const CONTENT = {
   gallery: ["/img/podyum/1.webp", "/img/podyum/2.webp", "/img/podyum/3.webp"],
   packages: [
     {
+      key: "mini",
       name: "Mini Podyum — 12 m²",
+      layout: { width: 3, depth: 4, area: 12, perimeter: 14 },
       includes: [
         "6 × (1×2 m) panel – toplam 12 m²",
         "Yükseklik: 40 cm",
@@ -20,7 +31,9 @@ const CONTENT = {
       note: "İç mekân konuşma/mini performanslar için ideal.",
     },
     {
+      key: "orta",
       name: "Orta Podyum — 24 m²",
+      layout: { width: 4, depth: 6, area: 24, perimeter: 20 },
       includes: [
         "12 × (1×2 m) panel – toplam 24 m²",
         "Yükseklik: 60 cm",
@@ -30,7 +43,9 @@ const CONTENT = {
       note: "Kurumsal sahneler ve canlı performanslar için.",
     },
     {
+      key: "pro",
       name: "Pro Podyum — 48 m²",
+      layout: { width: 6, depth: 8, area: 48, perimeter: 28 },
       includes: [
         "24 × (1×2 m) panel – toplam 48 m²",
         "Yükseklik: 80–100 cm",
@@ -42,12 +57,33 @@ const CONTENT = {
   ],
 };
 
-/**
- * NOT:
- * Eğer root layout'ta title template kullanıyorsan (`%s | Sahneva`),
- * aşağıdaki başlık markasız kalmalı: "Podyum Kiralama".
- * Template yoksa `" | Sahneva"` ekleyebilirsin.
- */
+// Dinamik (client) bileşen — Server Component temiz kalsın
+const PriceEstimator = dynamic(() => import("@/components/PriceEstimatorPodyum"), {
+  ssr: false,
+});
+
+// Yardımcılar
+function priceBase(area) {
+  return area * UNIT_PRICES.platform_m2_week;
+}
+function priceCarpet(area) {
+  return area * UNIT_PRICES.carpet_m2_week;
+}
+function priceSkirt(perimeter) {
+  return perimeter * UNIT_PRICES.skirt_ml_week;
+}
+function formatTRY(n) {
+  try {
+    return new Intl.NumberFormat("tr-TR", {
+      style: "currency",
+      currency: "TRY",
+      maximumFractionDigits: 0,
+    }).format(n);
+  } catch {
+    return `${n} TL`;
+  }
+}
+
 export const metadata = {
   title: svc?.title ?? "Podyum Kiralama",
   description:
@@ -59,7 +95,7 @@ export const metadata = {
     "podyum sahne kiralama",
     "modüler podyum",
     "sahne podyum platform",
-    "podyum kurulumu",
+    "podyum fiyatları",
     "İstanbul podyum kiralama",
   ],
   openGraph: {
@@ -78,8 +114,14 @@ export default function Page() {
   const desc =
     svc?.desc ??
     "Podyum sahne kiralama: 1×1 ve 2×1 panellerle modüler kurulum, kaymaz kaplama ve profesyonel ekip.";
-
   const heroSrc = svc?.img ?? CONTENT.gallery[0];
+
+  const enrichedPkgs = CONTENT.packages.map((p) => {
+    const base = priceBase(p.layout.area);
+    const carpet = priceCarpet(p.layout.area);
+    const skirt = priceSkirt(p.layout.perimeter);
+    return { ...p, price: { base, withCarpetAndSkirt: base + carpet + skirt, carpet, skirt } };
+  });
 
   return (
     <>
@@ -108,17 +150,52 @@ export default function Page() {
         <p className="text-neutral-700 leading-relaxed text-lg">{desc}</p>
       </section>
 
-      {/* Uzun makale */}
-      <LongArticlePodyum />
+      {/* Hızlı hesaplayıcı */}
+      <section className="container max-w-4xl mx-auto py-6">
+        <h2 className="text-2xl font-bold mb-3">Hızlı Fiyat Hesaplama (Haftalık)</h2>
+        <PriceEstimator unitPrices={UNIT_PRICES} />
+        <p className="mt-2 text-sm text-neutral-500">
+          *Halı fiyatı m², skört kumaş fiyatı çevre (metre) bazlıdır. Plan/dizilime göre değişebilir.
+        </p>
+      </section>
 
-      {/* Paketler */}
-      {!!CONTENT.packages.length && (
+      {/* 1×1 vs 2×1 Karşılaştırma */}
+      <section className="container max-w-5xl mx-auto py-8">
+        <h2 className="text-2xl font-bold mb-4">1×1 mı, 2×1 mi? Hangi panel nerede daha iyi?</h2>
+        <div className="grid md:grid-cols-2 gap-4">
+          <div className="rounded-2xl border bg-white p-5">
+            <h3 className="font-semibold text-lg">1×1 m Paneller</h3>
+            <ul className="mt-2 space-y-1 text-neutral-800">
+              <li>• <strong>Avantaj:</strong> Düzensiz/çadır zeminde hassas dengeleme kolay</li>
+              <li>• <strong>Kullanım:</strong> Düğün, çadır içi, dar alan genişletme</li>
+              <li>• <strong>Not:</strong> Karmaşık planlarda modülerlik avantajlı</li>
+            </ul>
+          </div>
+          <div className="rounded-2xl border bg-white p-5">
+            <h3 className="font-semibold text-lg">2×1 m Paneller</h3>
+            <ul className="mt-2 space-y-1 text-neutral-800">
+              <li>• <strong>Avantaj:</strong> Hızlı kurulum + ana sahnede geniş yüzey</li>
+              <li>• <strong>Kullanım:</strong> Konser, kurumsal lansman, büyük yüzey</li>
+              <li>• <strong>Not:</strong> Kamera/LED ile birlikte ideal kombinasyon</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* Paketler + fiyatlar */}
+      {!!enrichedPkgs.length && (
         <section className="container py-8">
-          <h2 className="text-2xl font-bold mb-6">Paket Örnekleri</h2>
+          <h2 className="text-2xl font-bold mb-6">Paket Örnekleri ve Fiyatları (Haftalık)</h2>
           <div className="grid gap-6 md:grid-cols-3">
-            {CONTENT.packages.map((p, i) => (
-              <article key={`pkg-${i}`} className="rounded-2xl border bg-white p-5">
+            {enrichedPkgs.map((p, i) => (
+              <article key={`pkg-${p.key}-${i}`} className="rounded-2xl border bg-white p-5">
                 <h3 className="text-lg font-semibold">{p.name}</h3>
+
+                <div className="mt-2 text-sm text-neutral-600">
+                  <div>Ölçü (varsayılan dizilim): <strong>{p.layout.width}×{p.layout.depth} m</strong> ({p.layout.area} m²)</div>
+                  <div>Çevre (skört hesabı): <strong>{p.layout.perimeter} m</strong></div>
+                </div>
+
                 <ul className="mt-3 space-y-1 text-neutral-700">
                   {p.includes.map((inc, ii) => (
                     <li key={`pkgi-${i}-${ii}`} className="flex gap-2">
@@ -126,12 +203,151 @@ export default function Page() {
                     </li>
                   ))}
                 </ul>
+
+                <div className="mt-4 rounded-xl bg-neutral-50 p-3 text-sm">
+                  <div><span className="font-semibold">Başlangıç (sadece platform):</span> {formatTRY(p.price.base)}</div>
+                  <div><span className="font-semibold">Halı + Skört dahil (önerilen):</span> {formatTRY(p.price.withCarpetAndSkirt)}</div>
+                  <div className="text-xs text-neutral-500 mt-1">
+                    (Halı: {formatTRY(p.price.carpet)} • Skört: {formatTRY(p.price.skirt)})
+                  </div>
+                </div>
+
                 {p.note && <p className="mt-3 text-sm text-neutral-500">{p.note}</p>}
               </article>
             ))}
           </div>
+          <p className="mt-4 text-sm text-neutral-500">
+            *Fiyatlar haftalıktır; etkinlik süresi, nakliye ve saha koşullarına göre değişebilir.
+          </p>
         </section>
       )}
+
+      {/* Standart ölçüler fiyat matrisi */}
+      <section className="container max-w-5xl mx-auto py-8">
+        <h2 className="text-2xl font-bold mb-4">Popüler Ölçüler için Hızlı Fiyatlar</h2>
+        <PriceMatrix unitPrices={UNIT_PRICES} />
+      </section>
+
+      {/* Kurulum akışı */}
+      <section className="container max-w-4xl mx-auto py-8">
+        <h2 className="text-2xl font-bold mb-3">Kurulum Akışı</h2>
+        <ol className="list-decimal ml-5 space-y-1 text-neutral-800">
+          <li>Keşif/plan paylaşımı: ölçü, yükseklik, aksesuar, tarih/konum</li>
+          <li>Lojistik & erişim: araç girişi, asansör/kat bilgisi, gece çalışma</li>
+          <li>Kurulum: karkas + panel + dengeleme + güvenlik</li>
+          <li>Kaplama & markalama: halı, skört, brandalama</li>
+          <li>Test & teslim: sahne üstü prova, kablo kanalları işaretleri</li>
+        </ol>
+      </section>
+
+      {/* Erişilebilirlik & Güvenlik */}
+      <section className="container max-w-4xl mx-auto py-8">
+        <h2 className="text-2xl font-bold mb-3">Erişilebilirlik & Güvenlik</h2>
+        <ul className="space-y-1 text-neutral-800">
+          <li>• Engelli erişimi için rampa opsiyonu</li>
+          <li>• Kenar korkuluk, merdiven ve kaymaz kaplama standartları</li>
+          <li>• Kablo kanalı ve sahne kenar işaretlemeleri</li>
+        </ul>
+      </section>
+
+      {/* --- EKLENEN 3 BLOK: Defile, Kullanım Senaryoları, İstanbul İlçeleri --- */}
+
+      {/* Defile Podyumu – Alt Servis */}
+      <section className="container max-w-5xl mx-auto py-8">
+        <h2 className="text-2xl font-bold mb-3">Defile Podyumu (I/U/Y Koşu Yolu)</h2>
+        <div className="grid md:grid-cols-2 gap-4 text-neutral-800">
+          <div className="rounded-2xl border bg-white p-5">
+            <p>
+              Moda gösterileri, ürün lansmanları ve yürüyüş gerektiren etkinliklerde{" "}
+              <strong>defile podyumu</strong> kurulumu yapıyoruz. <strong>Kaymaz kaplama</strong>, 
+              ışık ve ses ile <strong>akışa uygun</strong> entegrasyon; I/U/Y koşu yolu planları.
+            </p>
+            <ul className="mt-3 space-y-1">
+              <li>• I/U/Y şema seçenekleri, prova-akışına uygun düzen</li>
+              <li>• Çevre skört/brandalama ve estetik kaplama</li>
+              <li>• Işık köprüsü & sahne arkası perdesi ile entegrasyon</li>
+            </ul>
+            <p className="mt-3 text-sm text-neutral-600">
+              Detaylı örnekler ve ölçülendirme için alt sayfamıza göz atın.
+            </p>
+            <Link href="/defile-podyum-kiralama" className="inline-block mt-4 rounded-lg border px-4 py-2 hover:bg-neutral-50">
+              Defile Podyumu Detayları →
+            </Link>
+          </div>
+          <div className="rounded-2xl border bg-white p-5">
+            <h3 className="font-semibold">Neden Sahneva?</h3>
+            <ul className="mt-2 space-y-1">
+              <li>• <strong>Zamanında teslim</strong>: prova ve çekim saatlerine uyum</li>
+              <li>• <strong>Deneyimli ekip</strong>: akış yönetimi tecrübesi</li>
+              <li>• <strong>Görsel bütünlük</strong>: kaplama/brandalama ile premium görünüm</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* Kullanım Senaryoları – Sahne & Podyum */}
+      <section className="container max-w-5xl mx-auto py-8">
+        <h2 className="text-2xl font-bold mb-3">Kullanım Senaryoları</h2>
+        <div className="grid md:grid-cols-3 gap-4">
+          <article className="rounded-2xl border bg-white p-5">
+            <h3 className="font-semibold">Kurumsal Lansman</h3>
+            <p className="mt-2 text-neutral-800">
+              Sunum, demo ve foto/video çekimleri düşünülerek; <strong>2×1 paneller</strong>le geniş yüzey,
+              <strong> 40–60 cm</strong> yükseklik ve <strong>kablo yönetimi</strong>yle güvenli akış.
+            </p>
+          </article>
+          <article className="rounded-2xl border bg-white p-5">
+            <h3 className="font-semibold">Düğün & Davet</h3>
+            <p className="mt-2 text-neutral-800">
+              <strong>30–50 cm</strong> yükseklik, orkestra/DJ alanı ve dans pisti uyumu.
+              Kaymaz kaplama, <strong>ön etek/skört</strong> ve estetik halı ile bütünlük.
+            </p>
+          </article>
+          <article className="rounded-2xl border bg-white p-5">
+            <h3 className="font-semibold">Konser & Tören</h3>
+            <p className="mt-2 text-neutral-800">
+              Büyük yüzeylerde <strong>2×1 paneller</strong> hızlı kurulum sağlar; <strong>rampa/korkuluk</strong> ve
+              <strong> yan platformlar</strong> ile sahne önü/arka akış konforu.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      {/* İstanbul İlçeleri – Hizmet Bölgeleri */}
+      <section className="container max-w-5xl mx-auto py-8">
+        <h2 className="text-2xl font-bold mb-3">İstanbul’da Hizmet Bölgeleri</h2>
+        <p className="text-neutral-700">
+          İstanbul genelinde aynı gün keşif ve hızlı kurulum yapıyoruz. Aşağıdaki ilçeler sık çalıştığımız bölgelerdendir:
+        </p>
+
+        <div className="mt-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[
+            { name: "Beşiktaş",   text: "oteller, kongre merkezleri ve Boğaz hattı etkinlikleri" },
+            { name: "Şişli",      text: "lansman/sunuma uygun salonlar ve AVM etkinlik alanları" },
+            { name: "Kadıköy",    text: "açık hava/park içi organizasyonlar ve sahne performansları" },
+            { name: "Üsküdar",    text: "kamu/kurumsal törenler, sahil etkinlikleri" },
+            { name: "Ataşehir",   text: "plaza/kurumsal lansmanlar, bayi toplantıları" },
+            { name: "Bakırköy",   text: "AVM etkinlikleri ve fuaye alan kurulumları" },
+            { name: "Beylikdüzü", text: "fuar alanları ve geniş açık hava etkinlikleri" },
+            { name: "Başakşehir", text: "spor turnuvaları ve protokol sahneleri" },
+            { name: "Sarıyer",    text: "doğa/koru içi davetler ve kurumsal piknik alanları" },
+            { name: "Pendik",     text: "festival/konser sahneleri ve sahil etkinlikleri" },
+            { name: "Küçükçekmece", text: "kamu etkinlikleri ve meydan sahneleri" },
+            { name: "Ümraniye",   text: "AVM lansmanları ve kurumsal etkinlikler" },
+          ].map((d, i) => (
+            <article key={i} className="rounded-xl border bg-white p-4">
+              <h3 className="font-semibold">{d.name}</h3>
+              <p className="text-sm text-neutral-700 mt-1">
+                {d.name} ve çevresinde {d.text} için podyum kurulumları yapıyoruz.
+              </p>
+            </article>
+          ))}
+        </div>
+
+        <p className="mt-3 text-sm text-neutral-500">
+          *İstanbul dışı projeler için lütfen tarih ve konumu ileterek keşif/termin planı talep edin.
+        </p>
+      </section>
 
       {/* Galeri */}
       {!!CONTENT.gallery.length && (
@@ -154,42 +370,37 @@ export default function Page() {
         </section>
       )}
 
-      {/* İLGİLİ HİZMETLER (internal linking) */}
+      {/* FAQ (görünür) */}
+      <section className="container max-w-4xl mx-auto py-8">
+        <h2 className="text-2xl font-bold mb-3">Sık Sorulan Sorular</h2>
+        <div className="space-y-4 text-neutral-800">
+          <div>
+            <h3 className="font-semibold">Podyum kiralama fiyatları nasıl hesaplanır?</h3>
+            <p>Alan (m²), yükseklik, aksesuarlar (korkuluk, rampa, skört, halı) ve nakliye esas alınır. Halı m², skört çevre metre üzerinden hesaplanır.</p>
+          </div>
+          <div>
+            <h3 className="font-semibold">Hangi panelleri kullanıyorsunuz?</h3>
+            <p>1×1 m ve 2×1 m modüler paneller. Düzensiz zeminde 1×1, ana sahnede 2×1 paneller önerilir.</p>
+          </div>
+          <div>
+            <h3 className="font-semibold">Kurulum ne kadar sürer?</h3>
+            <p>Standart 24–48 m² podyumlar çoğu mekânda aynı gün kurulur. Geniş alanlar ve gece mesaisi ek süre gerektirebilir.</p>
+          </div>
+          <div>
+            <h3 className="font-semibold">Halı ve skört zorunlu mu?</h3>
+            <p>Zorunlu değildir; görsel bütünlük ve güvenlik için önerilir. Fiyatlar opsiyon olarak ayrı hesaplanır.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* İLGİLİ HİZMETLER */}
       <section className="container py-8">
         <h2 className="text-2xl font-bold mb-4">İlgili Hizmetler</h2>
         <ul className="flex flex-wrap gap-3 text-sm">
-          <li>
-            <Link
-              href="/sahne-kiralama"
-              className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50"
-            >
-              Sahne Kiralama
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/led-ekran-kiralama"
-              className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50"
-            >
-              LED Ekran Kiralama
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/ses-isik-sistemleri"
-              className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50"
-            >
-              Ses &amp; Işık Sistemleri
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/cadir-kiralama"
-              className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50"
-            >
-              Çadır Kiralama
-            </Link>
-          </li>
+          <li><Link href="/sahne-kiralama" className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50">Sahne Kiralama</Link></li>
+          <li><Link href="/led-ekran-kiralama" className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50">LED Ekran Kiralama</Link></li>
+          <li><Link href="/ses-isik-sistemleri" className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50">Ses &amp; Işık Sistemleri</Link></li>
+          <li><Link href="/cadir-kiralama" className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50">Çadır Kiralama</Link></li>
         </ul>
       </section>
 
@@ -200,18 +411,10 @@ export default function Page() {
             {title} hakkında teklif almak ister misiniz?
           </h2>
           <div className="flex justify-center gap-3 md:justify-end">
-            <Link
-              href="/iletisim"
-              className="rounded-lg bg-white px-4 py-2 font-semibold text-primary hover:opacity-90"
-            >
-              İletişime Geç
-            </Link>
+            <Link href="/iletisim" className="rounded-lg bg-white px-4 py-2 font-semibold text-primary hover:opacity-90">İletişime Geç</Link>
             <a
-              href={`https://wa.me/905453048671?text=Merhaba%20Sahneva%2C%20${encodeURIComponent(
-                title
-              )}%20hizmeti%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum.`}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={`https://wa.me/905453048671?text=Merhaba%20Sahneva%2C%20${encodeURIComponent(title)}%20hizmeti%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum.`}
+              target="_blank" rel="noopener noreferrer"
               className="rounded-lg border border-white px-4 py-2 font-semibold hover:bg-white/20"
             >
               WhatsApp
@@ -220,245 +423,157 @@ export default function Page() {
         </div>
       </section>
 
-      {/* JSON-LD: Service + Breadcrumb */}
-      <Script
-        id="ld-service"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Service",
-            serviceType: "Podyum Kiralama",
-            name: "Podyum Kiralama",
-            description:
-              "Modüler 1×1 ve 2×1 panellerle podyum kiralama; kaymaz kaplama, rampa/korkuluk ve profesyonel kurulum.",
-            areaServed: { "@type": "Country", name: "TR" },
-            provider: {
-              "@type": "LocalBusiness",
-              name: "Sahneva",
-              url: "https://www.sahneva.com",
-              telephone: "+90 545 304 8671",
-              address: {
-                "@type": "PostalAddress",
-                addressLocality: "İstanbul",
-                addressCountry: "TR",
-              },
-            },
-            hasOfferCatalog: {
-              "@type": "OfferCatalog",
-              name: "Podyum Paketleri",
-              itemListElement: [
-                {
-                  "@type": "Offer",
-                  name: "Mini Podyum — 12 m²",
-                  description:
-                    "6× (1×2 m) panel, 40 cm yükseklik, kaymaz kaplama, kurulum+söküm.",
-                  priceSpecification: {
-                    "@type": "PriceSpecification",
-                    priceCurrency: "TRY",
-                  },
-                  availability: "https://schema.org/InStock",
-                },
-                {
-                  "@type": "Offer",
-                  name: "Orta Podyum — 24 m²",
-                  description:
-                    "12× (1×2 m) panel, 60 cm yükseklik, merdiven, dengeleme, kurulum+söküm.",
-                  priceSpecification: {
-                    "@type": "PriceSpecification",
-                    priceCurrency: "TRY",
-                  },
-                  availability: "https://schema.org/InStock",
-                },
-                {
-                  "@type": "Offer",
-                  name: "Pro Podyum — 48 m²",
-                  description:
-                    "24× (1×2 m) panel, 80–100 cm yükseklik, rampa/korkuluk, etek/brandalama.",
-                  priceSpecification: {
-                    "@type": "PriceSpecification",
-                    priceCurrency: "TRY",
-                  },
-                  availability: "https://schema.org/InStock",
-                },
-              ],
-            },
-          }),
-        }}
-      />
-      <Script
-        id="ld-breadcrumb"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              {
-                "@type": "ListItem",
-                position: 1,
-                name: "Anasayfa",
-                item: "https://www.sahneva.com",
-              },
-              {
-                "@type": "ListItem",
-                position: 2,
-                name: "Podyum Kiralama",
-                item: "https://www.sahneva.com/podyum-kiralama",
-              },
-            ],
-          }),
-        }}
-      />
+      {/* JSON-LD: Service + Offers + FAQ + Breadcrumb */}
+      <SchemaBlocks packages={CONTENT.packages} unitPrices={UNIT_PRICES} />
     </>
   );
 }
 
-/* ------------------------- ALTTA MAKALE KOMPONENTİ ------------------------ */
-function LongArticlePodyum() {
+/* ---------- Alt Bileşenler (Server) ---------- */
+function PriceMatrix({ unitPrices }) {
+  // Popüler ölçü setleri (genişlik × derinlik)
+  const PRESETS = [
+    { w: 2, d: 5 },  // 10 m²
+    { w: 3, d: 5 },  // 15 m²
+    { w: 4, d: 5 },  // 20 m²
+    { w: 4, d: 6 },  // 24 m²
+    { w: 5, d: 6 },  // 30 m²
+    { w: 5, d: 8 },  // 40 m²
+    { w: 6, d: 10 }, // 60 m²
+    { w: 8, d: 10 }, // 80 m²
+  ];
+  const rows = PRESETS.map(({ w, d }) => {
+    const area = w * d;
+    const perimeter = 2 * (w + d);
+    const base = area * unitPrices.platform_m2_week;
+    const carpet = area * unitPrices.carpet_m2_week;
+    const skirt = perimeter * unitPrices.skirt_ml_week;
+    return { w, d, area, perimeter, base, total: base + carpet + skirt, carpet, skirt };
+  });
+
   return (
-    <section className="container max-w-4xl mx-auto py-10 md:py-14 space-y-10">
-      {/* Podyum Kiralama Nedir? */}
-      <article className="space-y-4 text-neutral-800 leading-relaxed">
-        <h2 className="text-2xl md:text-3xl font-extrabold">Podyum Kiralama Nedir?</h2>
-        <p>
-          Podyum; konuşmacıların, sanatçıların ya da sergilenecek ürünlerin izleyiciler tarafından
-          rahatça görülebilmesi için oluşturulan yükseltilmiş ve <strong>güvenli</strong> platformdur.
-          <strong> Sahneva</strong> olarak konser, lansman, tören, düğün ve fuar gibi etkinliklerde
-          hızlı kurulan, dayanıklı ve estetik podyum çözümleri sunarız.
-        </p>
-        <p>
-          Sistemlerimiz hem <strong>1×1 m</strong> hem de <strong>2×1 m</strong> panellerle
-          kurulabilir. 1×1 paneller özellikle <strong>çadır zeminleri</strong> ve düzensiz alanlarda
-          hassas dengeleme için idealdir; 2×1 paneller ise ana sahne yüzeylerinde hızlı kurulum ve
-          geniş açıklık avantajı sağlar. Ayrıca orkestralar ve koro düzenleri için{" "}
-          <strong>tekerlekli rizer</strong> platformlar da kurabiliyoruz.
-        </p>
-      </article>
+    <div className="overflow-x-auto rounded-2xl border bg-white">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="text-left text-neutral-500 [&>th]:p-3">
+            <th>Ölçü</th><th>Alan</th><th>Çevre</th><th>Platform</th><th>Halı</th><th>Skört</th><th>Önerilen Toplam</th>
+          </tr>
+        </thead>
+        <tbody className="[&>tr>*]:p-3 [&>tr]:border-t">
+          {rows.map((r, i) => (
+            <tr key={i}>
+              <td>{r.w}×{r.d} m</td>
+              <td>{r.area} m²</td>
+              <td>{r.perimeter} m</td>
+              <td>{formatTRY(r.base)}</td>
+              <td>{formatTRY(r.carpet)}</td>
+              <td>{formatTRY(r.skirt)}</td>
+              <td className="font-semibold">{formatTRY(r.total)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p className="p-3 text-xs text-neutral-500">
+        *Fiyatlar haftalıktır ve nakliye/mesai/özel koşullar hariçtir.
+      </p>
+    </div>
+  );
+}
 
-      {/* Fiyatlar */}
-      <article className="rounded-2xl border bg-white p-6">
-        <h2 className="text-2xl md:text-3xl font-extrabold">Podyum & Sahne Kiralama Fiyatları</h2>
-        <p className="mt-3 text-neutral-700 leading-relaxed">
-          Fiyatlar proje bazlıdır; alan keşfi ve ihtiyaca göre şekillenir. Aşağıdaki başlıklar
-          maliyeti belirleyen ana kalemlerdir:
-        </p>
-        <ul className="mt-4 grid gap-2 md:grid-cols-2 text-neutral-800">
-          <li className="flex gap-2">
-            <span className="mt-2 h-2 w-2 rounded-full bg-primary" />
-            Kurulum alanı (m²) ve <strong>panel tipi</strong> (1×1 / 2×1)
-          </li>
-          <li className="flex gap-2">
-            <span className="mt-2 h-2 w-2 rounded-full bg-primary" />
-            <strong>Yükseklik</strong> (20–100 cm) ve dengeleme gereksinimi
-          </li>
-          <li className="flex gap-2">
-            <span className="mt-2 h-2 w-2 rounded-full bg-primary" />
-            <strong>Aksesuarlar</strong> (korkuluk, merdiven, rampa, ön etek/brandalama)
-          </li>
-          <li className="flex gap-2">
-            <span className="mt-2 h-2 w-2 rounded-full bg-primary" />
-            <strong>Nakliye</strong> mesafesi, erişim/kat koşulları, gece vardiyası
-          </li>
-          <li className="flex gap-2">
-            <span className="mt-2 h-2 w-2 rounded-full bg-primary" />
-            <strong>Kurulum süresi</strong> (tek gün / çok gün) ve saha güvenlik şartları
-          </li>
-          <li className="flex gap-2">
-            <span className="mt-2 h-2 w-2 rounded-full bg-primary" />
-            <strong>İç/dış mekân</strong> ve zemin yapısı (çadır, çim, parke vb.)
-          </li>
-        </ul>
-        <div className="mt-5 rounded-xl bg-neutral-50 p-4 text-neutral-700">
-          <p>
-            <strong>Hızlı teklif</strong> için: alan ölçüleri, istenen yükseklik, aksesuar
-            ihtiyacı ve etkinlik tarih/konum bilgilerini iletmeniz yeterlidir.
-          </p>
-        </div>
-      </article>
+function SchemaBlocks({ packages: pkgs, unitPrices }) {
+  const offers = pkgs.map((p) => {
+    const area = p.layout.area;
+    const perimeter = p.layout.perimeter;
+    const price =
+      area * unitPrices.platform_m2_week +
+      area * unitPrices.carpet_m2_week +
+      perimeter * unitPrices.skirt_ml_week;
 
-      {/* Nerelerde Kullanılır */}
-      <article className="rounded-2xl border bg-white p-6">
-        <h2 className="text-2xl md:text-3xl font-extrabold">Podyum Nerelerde Kullanılır?</h2>
-        <div className="grid md:grid-cols-2 gap-2 mt-3 text-neutral-800">
-          <ul className="space-y-1">
-            <li>• Konser ve festival sahneleri</li>
-            <li>• Kurumsal lansmanlar, basın toplantıları</li>
-            <li>• Ödül törenleri, protokol podyumları</li>
-            <li>• AVM etkinlikleri, roadshow ve tanıtım sahneleri</li>
-          </ul>
-          <ul className="space-y-1">
-            <li>• Düğün &amp; özel davet sahneleri</li>
-            <li>• Mezuniyet törenleri, okul etkinlikleri</li>
-            <li>• Spor organizasyonları ve seremoni alanları</li>
-            <li>• Çadır içi zemin düzleştirme ve geçici yürüyüş yolları</li>
-          </ul>
-        </div>
-      </article>
+    return {
+      "@type": "Offer",
+      name: p.name,
+      description: `${p.layout.width}×${p.layout.depth} m (${p.layout.area} m²), çevre ${p.layout.perimeter} m.`,
+      priceCurrency: "TRY",
+      price,
+      availability: "https://schema.org/InStock",
+    };
+  });
 
-      {/* Düğün & Kurumsal Kurulum İpuçları */}
-      <article className="rounded-2xl border bg-white p-6">
-        <h2 className="text-2xl md:text-3xl font-extrabold">
-          Düğün &amp; Kurumsal Etkinliklerde Podyum Nasıl Kurulmalı?
-        </h2>
+  const faq = [
+    {
+      q: "Podyum kiralama fiyatları nasıl hesaplanır?",
+      a: "Alan (m²), yükseklik, aksesuarlar (korkuluk, rampa, skört, halı) ve nakliye esas alınır. Halı m², skört çevre metre üzerinden hesaplanır.",
+    },
+    {
+      q: "Hangi panelleri kullanıyorsunuz?",
+      a: "1×1 m ve 2×1 m modüler paneller. Düzensiz zeminde 1×1, ana sahnede 2×1 paneller önerilir.",
+    },
+    {
+      q: "Kurulum ne kadar sürer?",
+      a: "Standart 24–48 m² podyumlar çoğu mekânda aynı gün kurulur. Geniş alanlar ve gece mesaisi ek süre gerektirebilir.",
+    },
+    {
+      q: "Halı ve skört zorunlu mu?",
+      a: "Zorunlu değildir; görsel bütünlük ve güvenlik için önerilir. Fiyatlar opsiyon olarak ayrı hesaplanır.",
+    },
+  ];
 
-        <div className="mt-4 grid gap-6 md:grid-cols-2">
-          <div>
-            <h3 className="text-xl font-bold">Düğün / Davet</h3>
-            <ul className="mt-2 space-y-1 text-neutral-800">
-              <li>• <strong>Yükseklik:</strong> 30–50 cm genelde yeterlidir; görüş açısı iyileşir.</li>
-              <li>• <strong>Genişlik:</strong> Orkestra/DJ ve dans sahası planına göre belirleyin.</li>
-              <li>• <strong>Zemin:</strong> Çadır/çim ise 1×1 panellerle dengeli yüzey oluşturun.</li>
-              <li>• <strong>Aksesuar:</strong> Merdiven ve ön etek; güvenlik için kenarlarda korkuluk.</li>
-              <li>• <strong>Estetik:</strong> Halı/kaplama ve brandalama ile bütünlük sağlayın.</li>
-            </ul>
-          </div>
+  const ldService = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    serviceType: "Podyum Kiralama",
+    name: "Podyum Kiralama",
+    description:
+      "Modüler 1×1 ve 2×1 panellerle podyum kiralama; kaymaz kaplama, rampa/korkuluk ve profesyonel kurulum.",
+    areaServed: [
+      { "@type": "Country", name: "TR" },
+      { "@type": "City", name: "İstanbul" },
+    ],
+    provider: {
+      "@type": "LocalBusiness",
+      name: "Sahneva",
+      url: "https://www.sahneva.com",
+      telephone: "+90 545 304 8671",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "İstanbul",
+        addressCountry: "TR",
+      },
+    },
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Podyum Paketleri (Haftalık)",
+      itemListElement: offers,
+    },
+  };
 
-          <div>
-            <h3 className="text-xl font-bold">Kurumsal / Lansman</h3>
-            <ul className="mt-2 space-y-1 text-neutral-800">
-              <li>• <strong>Yükseklik:</strong> 40–60 cm; LED ekran ve kamera için ideal.</li>
-              <li>• <strong>Modülerlik:</strong> 2×1 panellerle ana yüzey; yan uzatmalar 1×1 ile tamamlanabilir.</li>
-              <li>• <strong>Güvenlik:</strong> Kablo kanalları/kenar işaretleri; erişim için rampa.</li>
-              <li>• <strong>Akış:</strong> Sunucu/konuşmacı/demo alanları için ayrı platformlar.</li>
-              <li>• <strong>Markalama:</strong> Ön etek ve sahne yüzünde kurumsal kimlik.</li>
-            </ul>
-          </div>
-        </div>
+  const ldFAQ = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faq.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  };
 
-        <div className="mt-5 rounded-xl bg-neutral-50 p-4 text-neutral-700">
-          <p>
-            <strong>Not:</strong> Büyük sahnelerde 2×1 paneller önerilir; çadır altı/düzensiz
-            zeminlerde 1×1 panellerle hassas dengeleme sağlanır. Hareketli senaryolarda
-            <strong> tekerlekli rizer</strong> operasyonu hızlandırır.
-          </p>
-        </div>
-      </article>
+  const ldBreadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Anasayfa", item: "https://www.sahneva.com" },
+      { "@type": "ListItem", position: 2, name: "Podyum Kiralama", item: "https://www.sahneva.com/podyum-kiralama" },
+    ],
+  };
 
-      {/* Teknik Tablo */}
-      <article className="rounded-2xl border bg-white p-6">
-        <h3 className="text-xl font-bold mb-3">Teknik Özellikler (Özet)</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="text-left text-neutral-500">
-                <th className="p-2">Özellik</th>
-                <th className="p-2">Açıklama</th>
-              </tr>
-            </thead>
-            <tbody className="[&>tr>*]:p-2 [&>tr]:border-b">
-              <tr><td>Panel Ölçüleri</td><td>1×1 m (çadır zemini) ve 2×1 m (ana sahne)</td></tr>
-              <tr><td>Yükseklik</td><td>20 – 100 cm (10 cm kademelerle)</td></tr>
-              <tr><td>Taşıyıcı Sistem</td><td>Alüminyum/çelik modüler karkas</td></tr>
-              <tr><td>Kaplama</td><td>Kaymaz yüzey; opsiyonel halı/dekoratif kaplama</td></tr>
-              <tr><td>Aksesuarlar</td><td>Korkuluk, merdiven, rampa, ön etek/brandalama</td></tr>
-              <tr><td>Opsiyonlar</td><td>Tekerlekli rizer, modüler yan platformlar, kablo kanalı</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </article>
-    </section>
+  return (
+    <>
+      <Script id="ld-service" type="application/ld+json" strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ldService) }} />
+      <Script id="ld-faq" type="application/ld+json" strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ldFAQ) }} />
+      <Script id="ld-breadcrumb" type="application/ld+json" strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ldBreadcrumb) }} />
+    </>
   );
 }

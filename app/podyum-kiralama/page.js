@@ -518,55 +518,109 @@ const SERVICE_ID = `${SITE}/podyum-kiralama#service`;
 const FAQ_ID = `${SITE}/podyum-kiralama#faq`;
 const BREAD_ID = `${SITE}/podyum-kiralama#breadcrumbs`;
 
-// ---- JSON-LD'ler (Kuruluş/LocalBusiness TANIMLAMAYIP referanslıyoruz) ----
-const ldService = {
-  "@context": "https://schema.org",
-  "@type": "Service",
-  "@id": SERVICE_ID,
-  serviceType: "Podyum Kiralama",
-  name: "Podyum Kiralama",
-  description:
-    "Modüler 1×1 ve 2×1 panellerle podyum kiralama; kaymaz kaplama, rampa/korkuluk ve profesyonel kurulum.",
-  areaServed: [{ "@type": "Country", name: "TR" }, { "@type": "City", name: "İstanbul" }],
-  // ❗️Burada LocalBusiness tanımlamak YOK — sadece @id ile layout'taki varlığa bağlanıyoruz
-  provider: { "@id": LB_ID },
-  hasOfferCatalog: {
-    "@type": "OfferCatalog",
-    name: "Podyum Paketleri (Haftalık)",
-    itemListElement: offers,
-  },
-};
+// 🔗 JSON-LD blokları — LocalBusiness'a @id ile bağlanmış tekil yapı
+function SchemaBlocks({ packages: pkgs, unitPrices }) {
+  const SITE = "https://www.sahneva.com";
+  const PAGE = `${SITE}/podyum-kiralama`;
+  const LB_ID = `${SITE}/#localbusiness`;                 // layout.js'te yayımlanan tekil LocalBusiness
+  const SERVICE_ID = `${PAGE}#service`;
+  const FAQ_ID = `${PAGE}#faq`;
+  const BREAD_ID = `${PAGE}#breadcrumbs`;
 
-const ldFAQ = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "@id": FAQ_ID,
-  mainEntity: faq.map((f) => ({
-    "@type": "Question",
-    name: f.q,
-    acceptedAnswer: { "@type": "Answer", text: f.a },
-  })),
-};
+  // Paketleri Offer'a çevir (fiyatlar örnek amaçlı; istersen kaldırabilirsin)
+  const offers = (pkgs || []).map((p) => {
+    const area = p.layout.area;
+    const perimeter = p.layout.perimeter;
+    const price =
+      area * unitPrices.platform_m2_week +
+      area * unitPrices.carpet_m2_week +
+      perimeter * unitPrices.skirt_ml_week;
+    return {
+      "@type": "Offer",
+      name: p.name,
+      description: `${p.layout.width}×${p.layout.depth} m (${p.layout.area} m²), çevre ${p.layout.perimeter} m.`,
+      priceCurrency: "TRY",
+      price,
+      availability: "https://schema.org/InStock",
+      url: PAGE
+    };
+  });
 
-const ldBreadcrumb = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "@id": BREAD_ID,
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Anasayfa", item: SITE },
-    { "@type": "ListItem", position: 2, name: "Podyum Kiralama", item: `${SITE}/podyum-kiralama` },
-  ],
-};
+  // --- SERVICE ---
+  const ldService = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": SERVICE_ID,
+    serviceType: "Podyum Kiralama",
+    name: "Podyum Kiralama",
+    description:
+      "Modüler 1×1 ve 2×1 panellerle podyum kiralama; kaymaz kaplama, rampa/korkuluk ve profesyonel kurulum.",
+    url: PAGE,
+    isPartOf: { "@id": PAGE },                // sayfanın kendisine referans
+    areaServed: [
+      { "@type": "Country", name: "TR" },
+      { "@type": "City", name: "İstanbul" }
+    ],
+    provider: { "@id": LB_ID },               // 🔗 LocalBusiness'a bağlandık
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Podyum Paketleri (Haftalık)",
+      itemListElement: offers
+    }
+  };
 
-// ---- Script etiketleri
-return (
-  <>
-    <Script id="ld-service" type="application/ld+json" strategy="afterInteractive"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(ldService) }} />
-    <Script id="ld-faq" type="application/ld+json" strategy="afterInteractive"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(ldFAQ) }} />
-    <Script id="ld-breadcrumb" type="application/ld+json" strategy="afterInteractive"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(ldBreadcrumb) }} />
-  </>
-);
+  // --- FAQ ---
+  const faq = [
+    {
+      q: "Podyum kiralama fiyatları nasıl hesaplanır?",
+      a: "Alan (m²), yükseklik, aksesuarlar (korkuluk, rampa, skört, halı) ve nakliye temel alınır. Halı m², skört çevre metre üzerinden hesaplanır."
+    },
+    {
+      q: "Hangi panelleri kullanıyorsunuz?",
+      a: "1×1 m ve 2×1 m modüler paneller. Düzensiz zeminde 1×1, ana sahnede 2×1 paneller önerilir."
+    },
+    {
+      q: "Kurulum ne kadar sürer?",
+      a: "Standart 24–48 m² podyumlar çoğu mekânda aynı gün kurulur. Geniş alanlar ve gece mesaisi ek süre gerektirebilir."
+    },
+    {
+      q: "Halı ve skört zorunlu mu?",
+      a: "Zorunlu değildir; görsel bütünlük ve güvenlik için önerilir. Fiyatlar opsiyon olarak ayrı hesaplanır."
+    }
+  ];
+
+  const ldFAQ = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": FAQ_ID,
+    about: { "@id": SERVICE_ID },            // 🔗 FAQ → Service
+    mainEntityOfPage: PAGE,
+    mainEntity: faq.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a }
+    }))
+  };
+
+  // --- BREADCRUMB ---
+  const ldBreadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "@id": BREAD_ID,
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Anasayfa", item: SITE },
+      { "@type": "ListItem", position: 2, name: "Podyum Kiralama", item: PAGE }
+    ]
+  };
+
+  return (
+    <>
+      <Script id="ld-service" type="application/ld+json" strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ldService) }} />
+      <Script id="ld-faq" type="application/ld+json" strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ldFAQ) }} />
+      <Script id="ld-breadcrumb" type="application/ld+json" strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ldBreadcrumb) }} />
+    </>
+  );
 }

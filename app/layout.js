@@ -1,11 +1,11 @@
 // app/layout.js
-import { SpeedInsights } from "@vercel/speed-insights/next"
 import "../styles/globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import UtilityBar from "../components/UtilityBar";
 import { Inter } from "next/font/google";
 import Script from "next/script";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const viewport = {
   width: "device-width",
@@ -119,7 +119,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="tr" suppressHydrationWarning>
       <head>
-        {/* Kritik CSS */}
+        {/* 🔧 Kritik CSS (LCP ve FOUT için küçük optimizasyonlar) */}
         <style id="critical-css">{`
           .pt-16{padding-top:4rem}
           @media (min-width:768px){.md\\:pt-20{padding-top:5rem}}
@@ -131,6 +131,7 @@ export default function RootLayout({ children }) {
       </head>
 
       <body className={`${inter.className} scroll-smooth`}>
+        {/* 🧭 Skip link (erişilebilirlik için) */}
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:z-[100] focus:top-3 focus:left-3 focus:px-3 focus:py-2 focus:rounded-lg focus:bg-white focus:shadow"
@@ -145,7 +146,10 @@ export default function RootLayout({ children }) {
         <UtilityBar />
         <Footer />
 
-        {/* ✅ Tek LocalBusiness (Organization & FAQ kaldırıldı) */}
+        {/* ✅ Speed Insights (Vercel ölçümleri) */}
+        <SpeedInsights />
+
+        {/* ✅ JSON-LD: LocalBusiness */}
         <Script
           id="ld-localbusiness"
           type="application/ld+json"

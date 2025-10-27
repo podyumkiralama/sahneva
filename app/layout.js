@@ -14,10 +14,13 @@ export const viewport = {
   themeColor: "#6d28d9",
 };
 
+// Font: preload + swap (FOIT yok, render-blocking minimum)
+// Kullandığın ağırlıkları ekle; gereksiz ağırlık ekleme
 const inter = Inter({
   subsets: ["latin"],
-  preload: false,
-  display: "optional",
+  weight: ["400", "600", "800"],
+  preload: true,     // ✅ Preload aktif
+  display: "swap",   // ✅ FOIT yerine FOUT
   fallback: ["system-ui", "-apple-system", "Segoe UI", "Roboto", "Arial", "sans-serif"],
   adjustFontFallback: true,
 });
@@ -66,12 +69,7 @@ export default function RootLayout({ children }) {
     image: `${SITE}/img/og.jpg`,
     telephone: "+90 545 304 8671",
     priceRange: "₺₺",
-    logo: {
-      "@type": "ImageObject",
-      url: `${SITE}/img/logo.png`,
-      width: 512,
-      height: 512,
-    },
+    logo: { "@type": "ImageObject", url: `${SITE}/img/logo.png`, width: 512, height: 512 },
     address: {
       "@type": "PostalAddress",
       streetAddress: "Anadolu Cd. 61/A, Hamidiye",
@@ -80,46 +78,31 @@ export default function RootLayout({ children }) {
       postalCode: "34400",
       addressCountry: "TR",
     },
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: 41.0961692,
-      longitude: 28.9792127,
-    },
-    openingHoursSpecification: [
-      {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-        ],
-        opens: "09:00",
-        closes: "19:00",
-      },
-    ],
+    geo: { "@type": "GeoCoordinates", latitude: 41.0961692, longitude: 28.9792127 },
+    openingHoursSpecification: [{
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+      opens: "09:00",
+      closes: "19:00",
+    }],
     sameAs: [
       "https://www.instagram.com/sahnevaorganizasyon",
       "https://www.youtube.com/@sahneva",
       "https://g.page/r/CZhkMzkNOdgnEBI",
     ],
-    contactPoint: [
-      {
-        "@type": "ContactPoint",
-        telephone: "+90 545 304 8671",
-        contactType: "customer service",
-        areaServed: "TR",
-        availableLanguage: ["Turkish"],
-      },
-    ],
+    contactPoint: [{
+      "@type": "ContactPoint",
+      telephone: "+90 545 304 8671",
+      contactType: "customer service",
+      areaServed: "TR",
+      availableLanguage: ["Turkish"],
+    }],
   };
 
   return (
     <html lang="tr" suppressHydrationWarning>
       <head>
-        {/* 🔧 Kritik CSS (LCP ve FOUT için küçük optimizasyonlar) */}
+        {/* Minik kritik CSS */}
         <style id="critical-css">{`
           .pt-16{padding-top:4rem}
           @media (min-width:768px){.md\\:pt-20{padding-top:5rem}}
@@ -129,9 +112,8 @@ export default function RootLayout({ children }) {
           .container{max-width:1280px;margin-inline:auto;padding-inline:1rem}
         `}</style>
       </head>
-
       <body className={`${inter.className} scroll-smooth`}>
-        {/* 🧭 Skip link (erişilebilirlik için) */}
+        {/* Skip Link */}
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:z-[100] focus:top-3 focus:left-3 focus:px-3 focus:py-2 focus:rounded-lg focus:bg-white focus:shadow"
@@ -146,18 +128,16 @@ export default function RootLayout({ children }) {
         <UtilityBar />
         <Footer />
 
-        {/* ✅ Speed Insights (Vercel ölçümleri) */}
-        <SpeedInsights />
-
-        {/* ✅ JSON-LD: LocalBusiness */}
+        {/* JSON-LD: Tekil LocalBusiness */}
         <Script
           id="ld-localbusiness"
           type="application/ld+json"
           strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(ldLocalBusiness),
-          }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(ldLocalBusiness) }}
         />
+
+        {/* Vercel Speed Insights */}
+        <SpeedInsights />
       </body>
     </html>
   );

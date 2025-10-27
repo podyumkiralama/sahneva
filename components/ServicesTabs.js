@@ -4,8 +4,13 @@
 import { useId, useState, useRef, useCallback } from "react";
 import Image from "next/image";
 
+// Panel grid'i: <768px tek sütun; >=768px 2 sütun (gap-6 = 1.5rem)
+// Container padding ≈ 2rem
+// ≥1280px'de container sabit 1280px; görsel sütun genişliği ≈ (1280 - 2rem - 1.5rem)/2 ≈ 612px
 const HIZMET_SIZES =
-  "(max-width: 640px) 320px, (max-width: 1024px) 480px, 414px";
+  "(max-width: 768px) calc(100vw - 2rem), " +
+  "(max-width: 1280px) calc((100vw - 2rem - 1.5rem) / 2), " +
+  "612px";
 
 const tabs = [
   {
@@ -76,7 +81,6 @@ export default function ServicesTabs() {
   const tabsRef = useRef([]);
   const liveRef = useRef(null);
 
-  // Ok tuşları + Enter/Space ile sekmeler arası geçiş
   const onKeyDown = useCallback(
     (e) => {
       const last = tabs.length - 1;
@@ -99,7 +103,6 @@ export default function ServicesTabs() {
         setActive(last);
         tabsRef.current[last]?.focus();
       } else if (e.key === "Enter" || e.key === " ") {
-        // SR'lar için seçimi teyit etme (görsel olarak zaten seçiyoruz)
         e.preventDefault();
         setActive((v) => v);
       }
@@ -107,7 +110,6 @@ export default function ServicesTabs() {
     [active]
   );
 
-  // Burst efekti (dekoratif parçacıklar aria-hidden)
   const burst = useCallback((e) => {
     const btn = e.currentTarget;
     const rect = btn.getBoundingClientRect();
@@ -136,7 +138,6 @@ export default function ServicesTabs() {
       btn.appendChild(s);
       setTimeout(() => s.remove(), 700);
     }
-    // Aria-live ile kısa bilgi (opsiyonel, rahatsız etmeyecek düzeyde)
     if (liveRef.current) {
       liveRef.current.textContent = `${tabs[active].title} sekmesi açık.`;
       setTimeout(() => {
@@ -153,7 +154,6 @@ export default function ServicesTabs() {
         Hizmetlerimiz
       </h2>
 
-      {/* Sekme başlıkları */}
       <div
         role="tablist"
         aria-labelledby={headingId}
@@ -188,17 +188,11 @@ export default function ServicesTabs() {
         })}
       </div>
 
-      {/* Görünmez canlı bölge: tab değişimi kısa duyuru */}
-      <p
-        ref={liveRef}
-        aria-live="polite"
-        className="sr-only"
-      />
+      <p ref={liveRef} aria-live="polite" className="sr-only" />
 
-      {/* Paneller */}
       {tabs.map((t, i) => {
         const isActive = i === active;
-        const eager = i === 0; // ilk panel görselini öncelikli yükle
+        const eager = i === 0;
         return (
           <div
             key={t.key}

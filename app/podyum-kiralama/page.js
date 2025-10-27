@@ -120,18 +120,17 @@ export default function Page() {
 
   return (
     <>
-      {/* HERO */}
+      {/* HERO (LCP optimize) */}
       <section className="relative h-[300px] md:h-[400px] w-full overflow-hidden rounded-b-3xl">
-        {heroSrc && (
-          <Image
-            src={heroSrc}
-            alt={title}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center"
-          />
-        )}
+        <Image
+          src={heroSrc}
+          alt={title}
+          fill
+          priority
+          fetchPriority="high"
+          sizes="100vw"
+          className="object-cover object-center"
+        />
         <div className="absolute inset-0 bg-black/45" aria-hidden="true" />
         <div className="absolute inset-0 flex items-center justify-center text-center text-white px-4">
           <h1 className="relative z-10 text-3xl md:text-5xl font-extrabold drop-shadow-lg">
@@ -150,7 +149,8 @@ export default function Page() {
         <h2 className="text-2xl font-bold mb-3">Hızlı Fiyat Hesaplama (Haftalık)</h2>
         <PriceEstimator unitPrices={UNIT_PRICES} />
         <p className="mt-2 text-sm text-neutral-500">
-          *Halı fiyatı m², skört kumaş fiyatı çevre (metre) bazlıdır. Plan/dizilime göre değişebilir.
+          *Halı m², skört kumaş çevre (metre) bazlıdır. Plan/dizilime göre değişebilir.{" "}
+          <strong>İstanbul içi kurulum-söküm ve nakliye (≈200 m²’ye kadar) ortalama 8.000 TL</strong> — şehir dışı değişkendir.
         </p>
       </section>
 
@@ -278,7 +278,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* Kullanım Senaryoları – Sahne & Podyum */}
+      {/* Kullanım Senaryoları */}
       <section className="container max-w-5xl mx-auto py-8">
         <h2 className="text-2xl font-bold mb-3">Kullanım Senaryoları</h2>
         <div className="grid md:grid-cols-3 gap-4">
@@ -473,15 +473,15 @@ function PriceMatrix({ unitPrices }) {
   );
 }
 
+/* ---------- Tekil SchemaBlocks (yinelenmeden) ---------- */
 function SchemaBlocks({ packages: pkgs, unitPrices }) {
   const SITE = "https://www.sahneva.com";
   const PAGE = `${SITE}/podyum-kiralama`;
-  const LB_ID = `${SITE}/#localbusiness`; // layout.js'te yayımlanan tekil LocalBusiness
+  const LB_ID = `${SITE}/#localbusiness`;                 // layout.js'te yayımlanan tekil LocalBusiness
   const SERVICE_ID = `${PAGE}#service`;
   const FAQ_ID = `${PAGE}#faq`;
   const BREAD_ID = `${PAGE}#breadcrumbs`;
 
-  // Paketleri Offer'a çevir
   const offers = (pkgs || []).map((p) => {
     const area = p.layout.area;
     const perimeter = p.layout.perimeter;
@@ -489,7 +489,6 @@ function SchemaBlocks({ packages: pkgs, unitPrices }) {
       area * unitPrices.platform_m2_week +
       area * unitPrices.carpet_m2_week +
       perimeter * unitPrices.skirt_ml_week;
-
     return {
       "@type": "Offer",
       name: p.name,
@@ -497,31 +496,29 @@ function SchemaBlocks({ packages: pkgs, unitPrices }) {
       priceCurrency: "TRY",
       price,
       availability: "https://schema.org/InStock",
-      url: PAGE,
+      url: PAGE
     };
   });
 
-  // FAQ içerikleri (görünürdekiyle uyumlu)
   const faq = [
     {
       q: "Podyum kiralama fiyatları nasıl hesaplanır?",
-      a: "Alan (m²), yükseklik, aksesuarlar (korkuluk, rampa, skört, halı) ve nakliye esas alınır. Halı m², skört çevre metre üzerinden hesaplanır.",
+      a: "Alan (m²), yükseklik, aksesuarlar (korkuluk, rampa, skört, halı) ve nakliye temel alınır. Halı m², skört çevre metre üzerinden hesaplanır."
     },
     {
       q: "Hangi panelleri kullanıyorsunuz?",
-      a: "1×1 m ve 2×1 m modüler paneller. Düzensiz zeminde 1×1, ana sahnede 2×1 paneller önerilir.",
+      a: "1×1 m ve 2×1 m modüler paneller. Düzensiz zeminde 1×1, ana sahnede 2×1 paneller önerilir."
     },
     {
       q: "Kurulum ne kadar sürer?",
-      a: "Standart 24–48 m² podyumlar çoğu mekânda aynı gün kurulur. Geniş alanlar ve gece mesaisi ek süre gerektirebilir.",
+      a: "Standart 24–48 m² podyumlar çoğu mekânda aynı gün kurulur. Geniş alanlar ve gece mesaisi ek süre gerektirebilir."
     },
     {
       q: "Halı ve skört zorunlu mu?",
-      a: "Zorunlu değildir; görsel bütünlük ve güvenlik için önerilir. Fiyatlar opsiyon olarak ayrı hesaplanır.",
-    },
+      a: "Zorunlu değildir; görsel bütünlük ve güvenlik için önerilir. Fiyatlar opsiyon olarak ayrı hesaplanır."
+    }
   ];
 
-  // --- SERVICE ---
   const ldService = {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -532,61 +529,49 @@ function SchemaBlocks({ packages: pkgs, unitPrices }) {
       "Modüler 1×1 ve 2×1 panellerle podyum kiralama; kaymaz kaplama, rampa/korkuluk ve profesyonel kurulum.",
     url: PAGE,
     isPartOf: { "@id": PAGE },
-    areaServed: [{ "@type": "Country", name: "TR" }, { "@type": "City", name: "İstanbul" }],
-    provider: { "@id": LB_ID }, // LocalBusiness'a bağla
+    areaServed: [
+      { "@type": "Country", name: "TR" },
+      { "@type": "City", name: "İstanbul" }
+    ],
+    provider: { "@id": LB_ID },
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "Podyum Paketleri (Haftalık)",
-      itemListElement: offers,
-    },
+      itemListElement: offers
+    }
   };
 
-  // --- FAQ ---
   const ldFAQ = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "@id": FAQ_ID,
-    about: { "@id": SERVICE_ID },     // FAQ → Service
+    about: { "@id": SERVICE_ID },
     mainEntityOfPage: PAGE,
     mainEntity: faq.map((f) => ({
       "@type": "Question",
       name: f.q,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
-    })),
+      acceptedAnswer: { "@type": "Answer", text: f.a }
+    }))
   };
 
-  // --- BREADCRUMB ---
   const ldBreadcrumb = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "@id": BREAD_ID,
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Anasayfa", item: SITE },
-      { "@type": "ListItem", position: 2, name: "Podyum Kiralama", item: PAGE },
-    ],
+      { "@type": "ListItem", position: 2, name: "Podyum Kiralama", item: PAGE }
+    ]
   };
 
   return (
     <>
-      <Script
-        id="ld-service"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(ldService) }}
-      />
-      <Script
-        id="ld-faq"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(ldFAQ) }}
-      />
-      <Script
-        id="ld-breadcrumb"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(ldBreadcrumb) }}
-      />
+      <Script id="ld-service" type="application/ld+json" strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ldService) }} />
+      <Script id="ld-faq" type="application/ld+json" strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ldFAQ) }} />
+      <Script id="ld-breadcrumb" type="application/ld+json" strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ldBreadcrumb) }} />
     </>
   );
 }
-

@@ -4,19 +4,13 @@
 import Image from "next/image";
 import Link from "next/link";
 
-// Daha gerçekçi sizes: container (px-4 ≈ 2rem), gap-6 (=1.5rem)
-// <640px: tek sütun ~ 100vw - 2rem
-// 640–768px: yine tek sütun ~ 100vw - 2rem
-// 768–1024px: 3 sütun yerine sende 3 sütun md’de başlıyor ama mobilde 1; md<lg arası bazen 2 sütun kullanıyorsan buna uyacak şekilde /2; kullanmıyorsan yine çalışır.
-// ≥1280px: 3 sütun; yaklaşık (100vw - container padding - 2*gap)/3
+// Grid: <768px tek sütun; >=768px 3 sütun (md:grid-cols-3)
+// Container iç boşluk ~ 2rem, sütunlar arası gap-6 = 1.5rem (satırda 2 gap => 3rem)
 const CARD_SIZES =
-  "(max-width: 640px) calc(100vw - 2rem), " +
-  "(max-width: 768px) calc(100vw - 2rem), " +
-  "(max-width: 1024px) calc((100vw - 2rem - 1.5rem) / 2), " +
-  "(max-width: 1280px) calc((100vw - 2rem - 3rem) / 3), " +
-  "420px";
+  "(max-width: 768px) calc(100vw - 2rem), " +                // tek sütun
+  "(max-width: 1280px) calc((100vw - 2rem - 3rem) / 3), " +  // 3 sütun
+  "400px";                                                   // ≥1280px: ~ (1280px - 2rem - 3rem)/3 ≈ 400px
 
-// İçerik verisi — kolay bakım için tek yerde
 const CARDS = [
   {
     slug: "lansman",
@@ -82,7 +76,7 @@ export default function CorporateEvents() {
             className="rounded-2xl border bg-white shadow-sm hover:shadow-md transition overflow-hidden focus-within:ring-2 focus-within:ring-primary/40"
             role="listitem"
           >
-            {/* Sabit oran (CLS azaltır), görsel fill ile taşar; object-cover */}
+            {/* Sabit oran (CLS azaltır) */}
             <div className="relative aspect-[16/9] w-full">
               <Image
                 src={card.img}
@@ -93,8 +87,6 @@ export default function CorporateEvents() {
                 loading="lazy"
                 decoding="async"
                 fetchPriority="low"
-                // quality={60} // istersen aç
-                placeholder="empty"
               />
             </div>
 

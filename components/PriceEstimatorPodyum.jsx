@@ -3,7 +3,7 @@
 
 import { useMemo, useState } from "react";
 
-export default function PriceEstimatorPodyum({ unitPrices }) {
+export default function PriceEstimatorPodyum({ unitPrices, className = "" }) {
   const [w, setW] = useState(4);
   const [d, setD] = useState(6);
 
@@ -24,92 +24,95 @@ export default function PriceEstimatorPodyum({ unitPrices }) {
 
   return (
     <div
-      className="
-        mx-auto max-w-md rounded-2xl border bg-white/80 shadow-sm
-        ring-1 ring-black/5 backdrop-blur px-4 py-4 sm:px-5 sm:py-5
-      "
+      className={[
+        "mx-auto w-full max-w-2xl rounded-2xl border bg-white/90 shadow-sm ring-1 ring-black/5 backdrop-blur",
+        className,
+      ].join(" ")}
       aria-labelledby="podyum-fiyat-hesaplayici"
     >
-      {/* Preset çipleri */}
-      <div className="mb-3 flex flex-wrap gap-2">
-        {presets.map((p) => {
-          const isActive = p.w === w && p.d === d;
-          return (
-            <button
-              key={p.label}
-              type="button"
-              onClick={() => {
-                setW(p.w);
-                setD(p.d);
-              }}
-              className={[
-                "inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium",
-                "transition-[background,transform] active:scale-[.98]",
-                isActive
-                  ? "border-primary/20 bg-primary/10 text-primary"
-                  : "border-neutral-200 hover:bg-neutral-50 text-neutral-700",
-              ].join(" ")}
-              aria-pressed={isActive}
-            >
-              {p.label}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Girişler */}
-      <div className="grid grid-cols-2 gap-3">
-        <Field
-          label="Genişlik (m)"
-          value={w}
-          onChange={(v) => setW(sanitizeNum(v))}
-          inputProps={{ min: 1, step: 0.5, "aria-label": "Podyum genişlik metre" }}
-        />
-        <Field
-          label="Derinlik (m)"
-          value={d}
-          onChange={(v) => setD(sanitizeNum(v))}
-          inputProps={{ min: 1, step: 0.5, "aria-label": "Podyum derinlik metre" }}
-        />
-      </div>
-
-      {/* Özet kutuları */}
-      <div className="mt-3 grid grid-cols-3 gap-2 text-sm">
-        <Info label="Alan" value={`${area} m²`} />
-        <Info label="Çevre" value={`${perimeter} m`} />
-        <Info label="Platform" value={formatTRY(base)} />
-      </div>
-
-      {/* Ayrıntı + Toplam */}
-      <div className="mt-3 rounded-xl bg-neutral-50/70 p-3 text-sm">
-        <div className="flex items-center justify-between">
-          <span>Halı (ops.)</span>
-          <span className="font-medium">{formatTRY(carpet)}</span>
-        </div>
-        <div className="mt-1 flex items-center justify-between">
-          <span>Skört (ops.)</span>
-          <span className="font-medium">{formatTRY(skirt)}</span>
-        </div>
-        <div className="mt-2 h-px w-full bg-neutral-200" />
-        <div className="mt-2 flex items-baseline justify-between">
-          <span className="text-[13px] text-neutral-600">Önerilen Paket (Halı + Skört)</span>
-          <span className="text-base font-semibold tracking-tight">
-            {formatTRY(total)}
-          </span>
+      {/* Üst şerit */}
+      <div className="rounded-t-2xl bg-gradient-to-r from-primary/10 via-primary/5 to-transparent px-4 py-3 sm:px-6">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h3 id="podyum-fiyat-hesaplayici" className="text-sm font-semibold text-neutral-800">
+            Hızlı Fiyat Hesaplama
+          </h3>
+          <div className="flex flex-wrap gap-1.5">
+            {presets.map((p) => {
+              const isActive = p.w === w && p.d === d;
+              return (
+                <button
+                  key={p.label}
+                  type="button"
+                  onClick={() => {
+                    setW(p.w);
+                    setD(p.d);
+                  }}
+                  className={[
+                    "inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium transition-[background,transform] active:scale-[.98]",
+                    isActive
+                      ? "border-primary/30 bg-primary/15 text-primary"
+                      : "border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-700",
+                  ].join(" ")}
+                  aria-pressed={isActive}
+                >
+                  {p.label}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
-      {/* İnce satır CTA */}
-      <div className="mt-3 flex items-center justify-between text-xs text-neutral-500">
-        <span>Fiyatlar haftalıktır.</span>
-        <a
-          href="https://wa.me/905453048671?text=Merhaba%20Sahneva%2C%20Podyum%20fiyat%20hesaplay%C4%B1c%C4%B1s%C4%B1ndan%20yaz%C4%B1yorum."
-          className="rounded-lg border border-neutral-200 px-2 py-1 hover:bg-neutral-50"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          WhatsApp’tan Sor
-        </a>
+      {/* Gövde */}
+      <div className="px-4 py-4 sm:px-6 sm:py-6">
+        {/* Girişler */}
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field
+            label="Genişlik (m)"
+            value={w}
+            onChange={(v) => setW(sanitizeNum(v))}
+            inputProps={{ min: 1, step: 0.5, "aria-label": "Podyum genişlik (metre)" }}
+          />
+          <Field
+            label="Derinlik (m)"
+            value={d}
+            onChange={(v) => setD(sanitizeNum(v))}
+            inputProps={{ min: 1, step: 0.5, "aria-label": "Podyum derinlik (metre)" }}
+          />
+        </div>
+
+        {/* Özet kartları */}
+        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+          <Info label="Alan" value={`${area} m²`} />
+          <Info label="Çevre" value={`${perimeter} m`} />
+          <Info label="Platform" value={formatTRY(base)} emphasize />
+        </div>
+
+        {/* Ayrıntı + Toplam */}
+        <div className="mt-4 rounded-xl border border-primary/10 bg-primary/5 p-4">
+          <Row left="Halı (ops.)" right={formatTRY(carpet)} />
+          <Row left="Skört (ops.)" right={formatTRY(skirt)} />
+          <div className="my-3 h-px w-full bg-primary/10" />
+          <div className="flex items-baseline justify-between">
+            <span className="text-[13px] text-neutral-700">Önerilen Paket (Halı + Skört)</span>
+            <span className="text-lg font-semibold tracking-tight text-primary">
+              {formatTRY(total)}
+            </span>
+          </div>
+        </div>
+
+        {/* Alt satır */}
+        <div className="mt-4 flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-center">
+          <span className="text-xs text-neutral-500">Fiyatlar haftalıktır. Plan/dizilime göre değişebilir.</span>
+          <a
+            href="https://wa.me/905453048671?text=Merhaba%20Sahneva%2C%20Podyum%20fiyat%20hesaplay%C4%B1c%C4%B1s%C4%B1ndan%20yaz%C4%B1yorum."
+            className="inline-flex items-center rounded-lg border border-primary/30 bg-white px-3 py-1.5 text-xs font-medium text-primary hover:bg-primary/10"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            WhatsApp’tan Sor
+          </a>
+        </div>
       </div>
     </div>
   );
@@ -126,9 +129,9 @@ function Field({ label, value, onChange, inputProps = {} }) {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="
-          mt-1 w-full rounded-xl border border-neutral-200
-          bg-white px-3 py-2 text-sm
-          outline-none ring-0 focus:border-primary/40 focus:bg-white
+          mt-1 w-full rounded-xl border border-neutral-200 bg-white
+          px-3 py-2 text-sm outline-none ring-2 ring-transparent
+          focus:border-primary/30 focus:ring-primary/30
         "
         {...inputProps}
       />
@@ -136,11 +139,20 @@ function Field({ label, value, onChange, inputProps = {} }) {
   );
 }
 
-function Info({ label, value }) {
+function Info({ label, value, emphasize = false }) {
   return (
-    <div className="rounded-lg border border-neutral-200 bg-white p-2">
+    <div className="rounded-xl border border-neutral-200 bg-white p-3">
       <div className="text-[11px] text-neutral-500">{label}</div>
-      <div className="font-semibold">{value}</div>
+      <div className={["font-semibold", emphasize ? "text-primary" : ""].join(" ")}>{value}</div>
+    </div>
+  );
+}
+
+function Row({ left, right }) {
+  return (
+    <div className="flex items-center justify-between text-sm">
+      <span className="text-neutral-700">{left}</span>
+      <span className="font-medium">{right}</span>
     </div>
   );
 }

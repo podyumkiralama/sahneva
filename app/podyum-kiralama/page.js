@@ -2,8 +2,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
-import dynamic from "next/dynamic";
 import { getService } from "@/lib/data";
+import PriceEstimator from "@/components/PriceEstimatorPodyum";
 
 const svc = getService("podyum");
 
@@ -56,11 +56,6 @@ const CONTENT = {
     },
   ],
 };
-
-// Dinamik (client) bileşen — Server Component temiz kalsın
-const PriceEstimator = dynamic(() => import("@/components/PriceEstimatorPodyum"), {
-  ssr: false,
-});
 
 // Yardımcılar
 function priceBase(area) {
@@ -249,8 +244,6 @@ export default function Page() {
           <li>• Kablo kanalı ve sahne kenar işaretlemeleri</li>
         </ul>
       </section>
-
-      {/* --- EKLENEN 3 BLOK: Defile, Kullanım Senaryoları, İstanbul İlçeleri --- */}
 
       {/* Defile Podyumu – Alt Servis */}
       <section className="container max-w-5xl mx-auto py-8">

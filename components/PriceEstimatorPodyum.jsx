@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 export default function PriceEstimatorPodyum({ unitPrices, className = "" }) {
   const [w, setW] = useState(4);
   const [d, setD] = useState(6);
+  const [loc, setLoc] = useState("istanbul"); // istanbul | sehir-disi
 
   const presets = [
     { w: 3, d: 4, label: "3×4" },
@@ -13,14 +14,24 @@ export default function PriceEstimatorPodyum({ unitPrices, className = "" }) {
     { w: 6, d: 8, label: "6×8" },
   ];
 
-  const { area, perimeter, base, carpet, skirt, total } = useMemo(() => {
+  const { area, perimeter, base, carpet, skirt, paketToplam, lojistikTL, genelToplam } = useMemo(() => {
     const area = Math.max(1, Math.round(Number(w) * Number(d)));
     const perimeter = 2 * (Number(w) + Number(d));
     const base = area * unitPrices.platform_m2_week;
     const carpet = area * unitPrices.carpet_m2_week;
     const skirt = perimeter * unitPrices.skirt_ml_week;
-    return { area, perimeter, base, carpet, skirt, total: base + carpet + skirt };
-  }, [w, d, unitPrices]);
+    const paketToplam = base + carpet + skirt;
+
+    // İstanbul içi ≤200 m² sabit 8.000 TL; aksi durumda teklife göre (dahil edilmez)
+    const lojistikTL =
+      loc === "istanbul" && area <= 200
+        ? 8000
+        : null;
+
+    const genelToplam = paketToplam + (lojistikTL ?? 0);
+
+    return { area, perimeter, base, carpet, skirt, paketToplam, lojistikTL, genelToplam };
+  }, [w, d, loc, unitPrices]);
 
   return (
     <div
@@ -65,8 +76,17 @@ export default function PriceEstimatorPodyum({ unitPrices, className = "" }) {
 
       {/* Gövde */}
       <div className="px-4 py-4 sm:px-6 sm:py-6">
-        {/* Girişler */}
-        <div className="grid gap-4 sm:grid-cols-2">
+        {/* Konum seçimi */}
+        <div className="mb-4 grid gap-3 sm:grid-cols-3">
+          <SelectField
+            label="Konum"
+            value={loc}
+            onChange={setLoc}
+            options={[
+              { value: "istanbul", label: "İstanbul içi" },
+              { value: "sehir-disi", label: "Şehir dışı" },
+            ]}
+          />
           <Field
             label="Genişlik (m)"
             value={w}
@@ -82,7 +102,7 @@ export default function PriceEstimatorPodyum({ unitPrices, className = "" }) {
         </div>
 
         {/* Özet kartları */}
-        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+        <div className="grid gap-3 sm:grid-cols-3">
           <Info label="Alan" value={`${area} m²`} />
           <Info label="Çevre" value={`${perimeter} m`} />
           <Info label="Platform" value={formatTRY(base)} emphasize />
@@ -92,18 +112,32 @@ export default function PriceEstimatorPodyum({ unitPrices, className = "" }) {
         <div className="mt-4 rounded-xl border border-primary/10 bg-primary/5 p-4">
           <Row left="Halı (ops.)" right={formatTRY(carpet)} />
           <Row left="Skört (ops.)" right={formatTRY(skirt)} />
+          <Row
+            left="Nakliye + Kurulum/Söküm"
+            right={
+              loc === "istanbul"
+                ? (area <= 200 ? formatTRY(lojistikTL ?? 0) : "200 m² üzeri: Teklife göre")
+                : "Şehir dışı: Teklife göre"
+            }
+          />
           <div className="my-3 h-px w-full bg-primary/10" />
           <div className="flex items-baseline justify-between">
             <span className="text-[13px] text-neutral-700">Önerilen Paket (Halı + Skört)</span>
+            <span className="text-base font-semibold tracking-tight">{formatTRY(paketToplam)}</span>
+          </div>
+          <div className="mt-1 flex items-baseline justify-between">
+            <span className="text-[13px] text-neutral-700">Genel Toplam (Paket + Nakliye/Kurulum)</span>
             <span className="text-lg font-semibold tracking-tight text-primary">
-              {formatTRY(total)}
+              {lojistikTL ? formatTRY(genelToplam) : "—"}
             </span>
           </div>
         </div>
 
         {/* Alt satır */}
         <div className="mt-4 flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-center">
-          <span className="text-xs text-neutral-500">Fiyatlar haftalıktır. Plan/dizilime göre değişebilir.</span>
+          <span className="text-xs text-neutral-500">
+            *İstanbul içi ≤200 m² projelerde sabit ₺8.000 uygulanır. Üzeri ve şehir dışı projelerde keşfe/rota ve vardiyaya göre hesaplanır.
+          </span>
           <a
             href="https://wa.me/905453048671?text=Merhaba%20Sahneva%2C%20Podyum%20fiyat%20hesaplay%C4%B1c%C4%B1s%C4%B1ndan%20yaz%C4%B1yorum."
             className="inline-flex items-center rounded-lg border border-primary/30 bg-white px-3 py-1.5 text-xs font-medium text-primary hover:bg-primary/10"
@@ -135,6 +169,30 @@ function Field({ label, value, onChange, inputProps = {} }) {
         "
         {...inputProps}
       />
+    </label>
+  );
+}
+
+function SelectField({ label, value, onChange, options }) {
+  return (
+    <label className="text-xs">
+      <span className="block text-neutral-600">{label}</span>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="
+          mt-1 w-full rounded-xl border border-neutral-200 bg-white
+          px-3 py-2 text-sm outline-none ring-2 ring-transparent
+          focus:border-primary/30 focus:ring-primary/30
+        "
+        aria-label={label}
+      >
+        {options.map((o) => (
+          <option key={o.value} value={o.value}>
+            {o.label}
+          </option>
+        ))}
+      </select>
     </label>
   );
 }

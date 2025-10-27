@@ -48,7 +48,7 @@ const nextConfig = {
               "base-uri 'self'",
               "object-src 'none'",
               "frame-ancestors 'self'",
-              "frame-src https://www.google.com https://static.cloudflareinsights.com https://maps.google.com https://www.google.com.tr",
+              "frame-src https://www.google.com https://maps.google.com https://www.google.com.tr",
               "img-src 'self' data: blob: https:",
               "font-src 'self' data:",
               // JSON-LD ve Next'in küçük inline scriptleri için 'unsafe-inline' gerekli

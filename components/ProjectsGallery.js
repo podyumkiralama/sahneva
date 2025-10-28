@@ -1,7 +1,7 @@
 // components/ProjectsGallery.js
 "use client";
 
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback, useRef, useId } from "react";
 import Image from "next/image";
 
 // Kart kapakları (resim liste grid)
@@ -112,13 +112,14 @@ const GALLERIES = {
   ],
 };
 
-export default function ProjectsGallery() {
+export default function ProjectsGallery({ headingId: providedHeadingId, heading = "Yaptıklarımız" }) {
   const [isOpen, setIsOpen] = useState(false);
   const [anim, setAnim] = useState(false);
   const [title, setTitle] = useState("");
   const [items, setItems] = useState([]);
   const [index, setIndex] = useState(0);
   const [failed, setFailed] = useState(() => new Set()); // 404 verenleri işaretle
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
@@ -126,7 +127,8 @@ export default function ProjectsGallery() {
   const closeBtnRef = useRef(null);
   const scrollYRef = useRef(0);
   const liveRef = useRef(null);
-  const headingId = "projects-heading";
+  const generatedHeadingId = useId();
+  const headingId = providedHeadingId ?? `${generatedHeadingId}-projects-heading`;
 
   const open = (groupTitle, images, startIndex = 0) => {
     lastFocus.current = document.activeElement;
@@ -134,7 +136,11 @@ export default function ProjectsGallery() {
     setItems(images);
     setIndex(startIndex);
     setIsOpen(true);
-    requestAnimationFrame(() => setAnim(true));
+    if (prefersReducedMotion) {
+      setAnim(true);
+    } else {
+      requestAnimationFrame(() => setAnim(true));
+    }
     if (liveRef.current) {
       liveRef.current.textContent = `${groupTitle} galerisi açıldı.`;
       setTimeout(() => {
@@ -145,12 +151,36 @@ export default function ProjectsGallery() {
 
   const close = useCallback(() => {
     setAnim(false);
-    setTimeout(() => {
+    const finalize = () => {
       setIsOpen(false);
       if (lastFocus.current && typeof lastFocus.current.focus === "function") {
         lastFocus.current.focus();
       }
-    }, 180);
+    };
+    if (prefersReducedMotion) {
+      finalize();
+    } else {
+      setTimeout(finalize, 180);
+    }
+  }, [prefersReducedMotion]);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updatePreference = () => setPrefersReducedMotion(mediaQuery.matches);
+    updatePreference();
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener("change", updatePreference);
+    } else {
+      mediaQuery.addListener(updatePreference);
+    }
+    return () => {
+      if (mediaQuery.removeEventListener) {
+        mediaQuery.removeEventListener("change", updatePreference);
+      } else {
+        mediaQuery.removeListener(updatePreference);
+      }
+    };
   }, []);
 
   const findNextValid = useCallback(
@@ -279,15 +309,10 @@ export default function ProjectsGallery() {
     b.src = items[prevIdx];
   }, [isOpen, index, items]);
 
-  const prefersReducedMotion =
-    typeof window !== "undefined" &&
-    window.matchMedia &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
   return (
     <section className="container py-14 md:py-16" aria-labelledby={headingId}>
       <h2 id={headingId} className="text-2xl md:text-3xl font-bold text-center mb-10">
-        Yaptıklarımız
+        {heading}
       </h2>
 
       {/* 1 / 2 / 3 sütun grid */}

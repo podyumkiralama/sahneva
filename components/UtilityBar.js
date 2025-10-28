@@ -97,10 +97,10 @@ export default function UtilityBar() {
               }}
               aria-haspopup="dialog"
               aria-expanded={openSearch}
-              /* ⬇️ HATA DÜZELTME: Modal kapalıyken aria-controls verme */
               aria-controls={openSearch ? "site-search-dialog" : undefined}
               title="Sitede ara"
             >
+              {/* Modal kapalıyken aria-controls verme */}
               Ara
             </button>
 

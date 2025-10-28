@@ -276,105 +276,106 @@ export default function Navbar() {
         />
       )}
 
-      <div
-        id="mobile-menu"
-        role="dialog"
-        aria-modal="true"
-        aria-label="Mobil menü"
-        onClick={(e) => {
-          if (e.target === e.currentTarget) setMobileOpen(false);
-        }}
-        className={[
-          "md:hidden fixed z-50 left-0 right-0 top-16",
-          "bg-white border-t border-neutral-200 rounded-b-2xl shadow-lg",
-          "transition-all duration-300 will-change-transform",
-          mobileOpen ? "max-h-[70vh]" : "max-h-0 overflow-hidden",
-        ].join(" ")}
-      >
-        <div className="px-4 py-3 space-y-3 max-h-[70vh] overflow-y-auto">
-          <Link
-            href="/hakkimizda"
-            prefetch={false}
-            onClick={() => setMobileOpen(false)}
-            className="block py-3 border-b text-neutral-800 font-medium"
-            aria-current={active("/hakkimizda") ? "page" : undefined}
-          >
-            Hakkımızda
-          </Link>
-
-          <div className="py-2">
-            <button
-              type="button"
-              onClick={() => setMobileServicesOpen((s) => !s)}
-              aria-expanded={mobileServicesOpen}
-              aria-controls="mobile-services-list"
-              className="w-full flex items-center justify-between gap-3 py-3 text-base font-semibold text-neutral-900"
+      {mobileOpen && (
+        <div
+          id="mobile-menu"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Mobil menü"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setMobileOpen(false);
+          }}
+          className={[
+            "md:hidden fixed z-50 left-0 right-0 top-16",
+            "bg-white border-t border-neutral-200 rounded-b-2xl shadow-lg",
+            "transition-all duration-300 will-change-transform max-h-[70vh]",
+          ].join(" ")}
+        >
+          <div className="px-4 py-3 space-y-3 max-h-[70vh] overflow-y-auto">
+            <Link
+              href="/hakkimizda"
+              prefetch={false}
+              onClick={() => setMobileOpen(false)}
+              className="block py-3 border-b text-neutral-800 font-medium"
+              aria-current={active("/hakkimizda") ? "page" : undefined}
             >
-              <span>Hizmetler</span>
-              <svg
-                className={`h-5 w-5 shrink-0 text-neutral-700 transition-transform ${
-                  mobileServicesOpen ? "rotate-90" : ""
-                }`}
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
+              Hakkımızda
+            </Link>
+
+            <div className="py-2">
+              <button
+                type="button"
+                onClick={() => setMobileServicesOpen((s) => !s)}
+                aria-expanded={mobileServicesOpen}
+                aria-controls="mobile-services-list"
+                className="w-full flex items-center justify-between gap-3 py-3 text-base font-semibold text-neutral-900"
               >
-                <path d="M8 5l8 7-8 7" />
-              </svg>
-            </button>
+                <span>Hizmetler</span>
+                <svg
+                  className={`h-5 w-5 shrink-0 text-neutral-700 transition-transform ${
+                    mobileServicesOpen ? "rotate-90" : ""
+                  }`}
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M8 5l8 7-8 7" />
+                </svg>
+              </button>
 
-            <div
-              id="mobile-services-list"
-              className={`overflow-hidden transition-[max-height] duration-300 ${
-                mobileServicesOpen ? "max-h-96" : "max-h-0"
-              }`}
-            >
-              <ul className="mt-1 rounded-lg border border-neutral-200 bg-neutral-50">
-                {serviceLinks.map(({ href, label }) => (
-                  <li key={href} className="border-b last:border-b-0 border-neutral-200">
-                    <Link
-                      href={href}
-                      prefetch={false}
-                      onClick={() => setMobileOpen(false)}
-                      className="block px-3 py-2 text-sm text-neutral-800 hover:bg-[#f3f0ff] hover:text-[#6d28d9]"
-                      aria-current={active(href) ? "page" : undefined}
-                    >
-                      {label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              <div
+                id="mobile-services-list"
+                className={`overflow-hidden transition-[max-height] duration-300 ${
+                  mobileServicesOpen ? "max-h-96" : "max-h-0"
+                }`}
+              >
+                <ul className="mt-1 rounded-lg border border-neutral-200 bg-neutral-50">
+                  {serviceLinks.map(({ href, label }) => (
+                    <li key={href} className="border-b last:border-b-0 border-neutral-200">
+                      <Link
+                        href={href}
+                        prefetch={false}
+                        onClick={() => setMobileOpen(false)}
+                        className="block px-3 py-2 text-sm text-neutral-800 hover:bg-[#f3f0ff] hover:text-[#6d28d9]"
+                        aria-current={active(href) ? "page" : undefined}
+                      >
+                        {label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
+
+            <Link
+              href="/iletisim"
+              prefetch={false}
+              onClick={() => setMobileOpen(false)}
+              className="block py-3 border-t text-neutral-800 font-medium"
+              aria-current={active("/iletisim") ? "page" : undefined}
+            >
+              İletişim
+            </Link>
+
+            <a
+              href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum."
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="WhatsApp Teklif – üzerinden teklif iste (yeni sekmede açılır)"
+              className="block text-center mt-3 rounded-lg px-3 py-2 text-white text-sm font-semibold
+                         bg-[#15803d] hover:bg-[#166534] transition-colors focus:outline-none
+                         focus-visible:ring-2 focus-visible:ring-[#6d28d9]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+              onClick={() => setMobileOpen(false)}
+            >
+              WhatsApp Teklif
+            </a>
           </div>
-
-          <Link
-            href="/iletisim"
-            prefetch={false}
-            onClick={() => setMobileOpen(false)}
-            className="block py-3 border-t text-neutral-800 font-medium"
-            aria-current={active("/iletisim") ? "page" : undefined}
-          >
-            İletişim
-          </Link>
-
-          <a
-            href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum."
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="WhatsApp Teklif – üzerinden teklif iste (yeni sekmede açılır)"
-            className="block text-center mt-3 rounded-lg px-3 py-2 text-white text-sm font-semibold 
-                       bg-[#15803d] hover:bg-[#166534] transition-colors focus:outline-none
-                       focus-visible:ring-2 focus-visible:ring-[#6d28d9]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-            onClick={() => setMobileOpen(false)}
-          >
-            WhatsApp Teklif
-          </a>
         </div>
-      </div>
+      )}
     </>
   );
 }

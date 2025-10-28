@@ -246,7 +246,7 @@ export default function Footer() {
       </div>
 
       {/* Alt bar */}
-      <div className="border-top border-white/10 text-center text-xs text-gray-300 py-4">
+      <div className="border-t border-white/10 text-center text-xs text-gray-300 py-4">
         Türkiye genelinde sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri.
         <br className="sm:hidden" />
         <span className="ml-2" suppressHydrationWarning>

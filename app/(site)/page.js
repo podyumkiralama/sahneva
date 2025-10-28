@@ -117,7 +117,7 @@ export default function HomePage() {
           decoding="async"
           sizes="100vw"
           placeholder="blur"
-          blurDataURL="/img/hero-bg-low.webp"
+          blurDataURL="data:image/webp;base64,UklGRp4AAABXRUJQVlA4IJIAAABQBgCdASowABsAPo08lUg1pqenNVgMAKARiWRg60YZQI3+QgDv2INC0Nc6BIo+izsJB6swIhg7Nm8IkAD+/EbKxBB4dhHx41NSA7OjjbjWPuehTPNLdCqzAPMQkP86SbpYsoYSifpIhEZMQYF7EcKdLTZ9RYL8a28zC/W80sLJERgj2Jqa+NCFqVAnuBdSKgAAAA=="
           className="object-cover"
         />
         <div

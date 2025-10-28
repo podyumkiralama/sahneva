@@ -147,6 +147,10 @@ export default function ServicesTabs({ headingId: providedHeadingId, heading = "
     }
   }, [active]);
 
+  const panelId = `${rid}-panel`;
+  const activeTab = tabs[active];
+  const activeTabId = `${rid}-tab-${active}`;
+
   return (
     <section className="container py-10 md:py-14" aria-labelledby={headingId}>
       <h2 id={headingId} className="text-2xl md:text-3xl font-bold text-center mb-8">
@@ -170,7 +174,7 @@ export default function ServicesTabs({ headingId: providedHeadingId, heading = "
               type="button"
               id={`${rid}-tab-${i}`}
               aria-selected={selected}
-              aria-controls={`${rid}-panel-${i}`}
+              aria-controls={panelId}
               tabIndex={selected ? 0 : -1}
               onClick={() => setActive(i)}
               className={[
@@ -189,53 +193,46 @@ export default function ServicesTabs({ headingId: providedHeadingId, heading = "
 
       <p ref={liveRef} aria-live="polite" className="sr-only" />
 
-      {tabs.map((t, i) => {
-        const isActive = i === active;
-        const eager = i === 0;
-        return (
-          <div
-            key={t.key}
-            role="tabpanel"
-            id={`${rid}-panel-${i}`}
-            aria-labelledby={`${rid}-tab-${i}`}
-            hidden={!isActive}
-            className="rounded-2xl border bg-white p-5 md:p-7 shadow-sm"
-          >
-            <div className="grid gap-6 md:grid-cols-2 md:items-center">
-              <div className="relative h-52 w-full md:h-72 rounded-xl overflow-hidden">
-                <Image
-                  src={t.img}
-                  alt={t.alt}
-                  fill
-                  sizes={HIZMET_SIZES}
-                  loading={eager ? "eager" : "lazy"}
-                  fetchPriority={eager ? "high" : "low"}
-                  decoding="async"
-                  quality={70}
-                  className="object-cover"
-                />
-              </div>
+      <div
+        role="tabpanel"
+        id={panelId}
+        aria-labelledby={activeTabId}
+        className="rounded-2xl border bg-white p-5 md:p-7 shadow-sm"
+      >
+        <div className="grid gap-6 md:grid-cols-2 md:items-center">
+          <div className="relative h-52 w-full md:h-72 rounded-xl overflow-hidden">
+            <Image
+              key={activeTab.key}
+              src={activeTab.img}
+              alt={activeTab.alt}
+              fill
+              sizes={HIZMET_SIZES}
+              loading={active === 0 ? "eager" : "lazy"}
+              fetchPriority={active === 0 ? "high" : "low"}
+              decoding="async"
+              quality={70}
+              className="object-cover"
+            />
+          </div>
 
-              <div>
-                <h3 className="text-xl md:text-2xl font-bold">{t.title}</h3>
-                <p className="mt-2 text-neutral-700">{t.desc}</p>
-                <p className="mt-3 text-sm text-neutral-600">{t.badge}</p>
+          <div>
+            <h3 className="text-xl md:text-2xl font-bold">{activeTab.title}</h3>
+            <p className="mt-2 text-neutral-700">{activeTab.desc}</p>
+            <p className="mt-3 text-sm text-neutral-600">{activeTab.badge}</p>
 
-                <div className="mt-5 flex gap-3">
-                  <a
-                    className="relative inline-flex items-center justify-center rounded-lg px-4 py-2 font-semibold text-white bg-[#6d28d9] hover:bg-[#5b21b6] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6d28d9]/40"
-                    href={t.href}
-                    onClick={burst}
-                    aria-label={`${t.title} – detaylı incele`}
-                  >
-                    Detaylı İncele
-                  </a>
-                </div>
-              </div>
+            <div className="mt-5 flex gap-3">
+              <a
+                className="relative inline-flex items-center justify-center rounded-lg px-4 py-2 font-semibold text-white bg-[#6d28d9] hover:bg-[#5b21b6] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6d28d9]/40"
+                href={activeTab.href}
+                onClick={burst}
+                aria-label={`${activeTab.title} – detaylı incele`}
+              >
+                Detaylı İncele
+              </a>
             </div>
           </div>
-        );
-      })}
+        </div>
+      </div>
     </section>
   );
 }

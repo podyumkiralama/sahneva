@@ -75,8 +75,9 @@ const tabs = [
   },
 ];
 
-export default function ServicesTabs() {
+export default function ServicesTabs({ headingId: providedHeadingId, heading = "Hizmetlerimiz" }) {
   const rid = useId();
+  const headingId = providedHeadingId ?? `${rid}-services-heading`;
   const [active, setActive] = useState(0);
   const tabsRef = useRef([]);
   const liveRef = useRef(null);
@@ -146,12 +147,10 @@ export default function ServicesTabs() {
     }
   }, [active]);
 
-  const headingId = `${rid}-services-heading`;
-
   return (
     <section className="container py-10 md:py-14" aria-labelledby={headingId}>
       <h2 id={headingId} className="text-2xl md:text-3xl font-bold text-center mb-8">
-        Hizmetlerimiz
+        {heading}
       </h2>
 
       <div

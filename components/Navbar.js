@@ -152,7 +152,7 @@ export default function Navbar() {
                 alt="Sahneva"
                 width={160}
                 height={40}
-                fetchPriority={pathname === "/" ? "low" : "auto"}
+                priority={pathname === "/"}
                 sizes="(max-width: 768px) 120px, 160px"
                 className="h-10 w-auto"
               />

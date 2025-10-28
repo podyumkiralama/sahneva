@@ -3,6 +3,9 @@ import Image from "next/image";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
+import heroBg from "@/public/img/hero-bg.webp";
+import heroBgBlur from "@/public/img/hero-bg-blur.webp";
+
 import CorporateEvents from "../../components/CorporateEvents";
 import Faq from "../../components/Faq";
 import HeroCtasClient from "../../components/HeroCtasClient";
@@ -109,7 +112,7 @@ export default function HomePage() {
         role="region"
       >
         <Image
-          src="/img/hero-bg.webp"
+          src={heroBg}
           alt="Sahne, podyum, LED ekran ve ses-ışık ekipmanlarıyla kurulu etkinlik alanı"
           fill
           priority
@@ -117,7 +120,7 @@ export default function HomePage() {
           decoding="async"
           sizes="100vw"
           placeholder="blur"
-          blurDataURL="data:image/webp;base64,UklGRp4AAABXRUJQVlA4IJIAAABQBgCdASowABsAPo08lUg1pqenNVgMAKARiWRg60YZQI3+QgDv2INC0Nc6BIo+izsJB6swIhg7Nm8IkAD+/EbKxBB4dhHx41NSA7OjjbjWPuehTPNLdCqzAPMQkP86SbpYsoYSifpIhEZMQYF7EcKdLTZ9RYL8a28zC/W80sLJERgj2Jqa+NCFqVAnuBdSKgAAAA=="
+          blurDataURL={heroBgBlur.src}
           className="object-cover"
         />
         <div

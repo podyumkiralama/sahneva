@@ -20,7 +20,7 @@ const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "600", "800"],
   preload: true,     // ✅ Preload aktif
-  display: "swap",   // ✅ FOIT yerine FOUT
+  display: "optional", // ✅ LCP bloklanmadan render et
   fallback: ["system-ui", "-apple-system", "Segoe UI", "Roboto", "Arial", "sans-serif"],
   adjustFontFallback: true,
 });

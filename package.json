@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
+    "prebuild": "npm dedupe",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -23,6 +24,13 @@
     "eslint-config-next": "15.5.2",
     "postcss": "8.4.38",
     "tailwindcss": "3.4.8"
+  },
+  "overrides": {
+    "array.prototype.flat": "npm:@empty@0.0.1-security",
+    "array.prototype.flatmap": "npm:@empty@0.0.1-security",
+    "object.fromentries": "npm:@empty@0.0.1-security",
+    "string.prototype.trimend": "npm:@empty@0.0.1-security",
+    "string.prototype.trimstart": "npm:@empty@0.0.1-security"
   },
   "browserslist": [
     "defaults and supports es6-module",

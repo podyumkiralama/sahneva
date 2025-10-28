@@ -1,7 +1,7 @@
 // components/ProjectsGallery.js
 "use client";
 
-import { useEffect, useState, useCallback, useRef, useId } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import Image from "next/image";
 
 // Kart kapakları (resim liste grid)
@@ -112,14 +112,13 @@ const GALLERIES = {
   ],
 };
 
-export default function ProjectsGallery({ headingId: providedHeadingId, heading = "Yaptıklarımız" }) {
+export default function ProjectsGallery() {
   const [isOpen, setIsOpen] = useState(false);
   const [anim, setAnim] = useState(false);
   const [title, setTitle] = useState("");
   const [items, setItems] = useState([]);
   const [index, setIndex] = useState(0);
   const [failed, setFailed] = useState(() => new Set()); // 404 verenleri işaretle
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
@@ -127,8 +126,7 @@ export default function ProjectsGallery({ headingId: providedHeadingId, heading 
   const closeBtnRef = useRef(null);
   const scrollYRef = useRef(0);
   const liveRef = useRef(null);
-  const generatedHeadingId = useId();
-  const headingId = providedHeadingId ?? `${generatedHeadingId}-projects-heading`;
+  const headingId = "projects-heading";
 
   const open = (groupTitle, images, startIndex = 0) => {
     lastFocus.current = document.activeElement;
@@ -136,11 +134,7 @@ export default function ProjectsGallery({ headingId: providedHeadingId, heading 
     setItems(images);
     setIndex(startIndex);
     setIsOpen(true);
-    if (prefersReducedMotion) {
-      setAnim(true);
-    } else {
-      requestAnimationFrame(() => setAnim(true));
-    }
+    requestAnimationFrame(() => setAnim(true));
     if (liveRef.current) {
       liveRef.current.textContent = `${groupTitle} galerisi açıldı.`;
       setTimeout(() => {
@@ -151,36 +145,12 @@ export default function ProjectsGallery({ headingId: providedHeadingId, heading 
 
   const close = useCallback(() => {
     setAnim(false);
-    const finalize = () => {
+    setTimeout(() => {
       setIsOpen(false);
       if (lastFocus.current && typeof lastFocus.current.focus === "function") {
         lastFocus.current.focus();
       }
-    };
-    if (prefersReducedMotion) {
-      finalize();
-    } else {
-      setTimeout(finalize, 180);
-    }
-  }, [prefersReducedMotion]);
-
-  useEffect(() => {
-    if (typeof window === "undefined" || !window.matchMedia) return;
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const updatePreference = () => setPrefersReducedMotion(mediaQuery.matches);
-    updatePreference();
-    if (mediaQuery.addEventListener) {
-      mediaQuery.addEventListener("change", updatePreference);
-    } else {
-      mediaQuery.addListener(updatePreference);
-    }
-    return () => {
-      if (mediaQuery.removeEventListener) {
-        mediaQuery.removeEventListener("change", updatePreference);
-      } else {
-        mediaQuery.removeListener(updatePreference);
-      }
-    };
+    }, 180);
   }, []);
 
   const findNextValid = useCallback(
@@ -218,6 +188,8 @@ export default function ProjectsGallery({ headingId: providedHeadingId, heading 
     if (!isOpen) return;
 
     scrollYRef.current = window.scrollY || window.pageYOffset || 0;
+    const scrollbarW =
+      window.innerWidth - document.documentElement.clientWidth;
     const body = document.body;
     const html = document.documentElement;
 
@@ -225,6 +197,7 @@ export default function ProjectsGallery({ headingId: providedHeadingId, heading 
       position: body.style.position,
       top: body.style.top,
       width: body.style.width,
+      paddingRight: body.style.paddingRight,
       overflow: body.style.overflow,
       overscrollBehavior: body.style.overscrollBehavior,
     };
@@ -234,6 +207,7 @@ export default function ProjectsGallery({ headingId: providedHeadingId, heading 
       body.style.position = "fixed";
       body.style.top = `-${scrollYRef.current}px`;
       body.style.width = "100%";
+      if (scrollbarW > 0) body.style.paddingRight = `${scrollbarW}px`;
       body.style.overflow = "hidden";
       body.style.overscrollBehavior = "contain";
       html.style.scrollBehavior = "auto";
@@ -271,6 +245,7 @@ export default function ProjectsGallery({ headingId: providedHeadingId, heading 
         body.style.position = restore.position || "";
         body.style.top = restore.top || "";
         body.style.width = restore.width || "";
+        body.style.paddingRight = restore.paddingRight || "";
         body.style.overflow = restore.overflow || "";
         body.style.overscrollBehavior = restore.overscrollBehavior || "";
         window.scrollTo(0, y);
@@ -304,10 +279,15 @@ export default function ProjectsGallery({ headingId: providedHeadingId, heading 
     b.src = items[prevIdx];
   }, [isOpen, index, items]);
 
+  const prefersReducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   return (
     <section className="container py-14 md:py-16" aria-labelledby={headingId}>
       <h2 id={headingId} className="text-2xl md:text-3xl font-bold text-center mb-10">
-        {heading}
+        Yaptıklarımız
       </h2>
 
       {/* 1 / 2 / 3 sütun grid */}

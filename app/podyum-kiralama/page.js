@@ -5,6 +5,9 @@ import Script from "next/script";
 import { getService } from "@/lib/data";
 import PriceEstimator from "@/components/PriceEstimatorPodyum";
 
+// ⏱️ Saatlik yeniden üretim (statik + ISR)
+export const revalidate = 3600;
+
 const svc = getService("podyum");
 
 // Haftalık birim fiyatlar (gerçek)
@@ -84,7 +87,8 @@ export const metadata = {
   description:
     svc?.excerpt ||
     "Podyum sahne kiralama: 1×1 ve 2×1 panellerle modüler kurulum, kaymaz kaplama, rampa/korkuluk ve profesyonel montaj.",
-  alternates: { canonical: "https://sahneva.com/podyum-kiralama" },
+  // ✅ Kanonik ve OG URL’leri tek alan adına sabitledik (www’siz)
+  alternates: { canonical: "https://www.sahneva.com/podyum-kiralama" },
   keywords: [
     "podyum kiralama",
     "podyum sahne kiralama",
@@ -98,9 +102,17 @@ export const metadata = {
     description:
       svc?.desc ||
       "Konser, lansman ve düğünler için podyum sahne kiralama. Modüler 1×1 & 2×1 paneller, kaymaz kaplama.",
-    url: "https://sahneva.com/podyum-kiralama",
+    url: "https://www.sahneva.com/podyum-kiralama",
     type: "article",
-    images: [{ url: svc?.img ?? "/img/podyum/1.webp" }],
+    // ✅ width/height ekledik (en sık kullanılan paylaşım boyutları)
+    images: [
+      {
+        url: svc?.img ?? "/img/podyum/1.webp",
+        width: 1200,
+        height: 630,
+        alt: "Podyum kiralama – Sahneva kurulum görseli",
+      },
+    ],
   },
 };
 
@@ -400,19 +412,19 @@ export default function Page() {
       {/* CTA */}
       <section className="container pb-14">
         <div className="flex flex-col items-center justify-between gap-4 rounded-2xl bg-gradient-to-r from-primary to-primary/80 p-6 text-center text-white md:flex-row md:p-8 md:text-left">
-          <h2 className="text-xl font-bold md:text-2xl">
-            {title} hakkında teklif almak ister misiniz?
-          </h2>
-          <div className="flex justify-center gap-3 md:justify-end">
-            <Link href="/iletisim" className="rounded-lg bg-white px-4 py-2 font-semibold text-primary hover:opacity-90">İletişime Geç</Link>
-            <a
-              href={`https://wa.me/905453048671?text=Merhaba%20Sahneva%2C%20${encodeURIComponent(title)}%20hizmeti%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum.`}
-              target="_blank" rel="noopener noreferrer"
-              className="rounded-lg border border-white px-4 py-2 font-semibold hover:bg-white/20"
-            >
-              WhatsApp
-            </a>
-          </div>
+            <h2 className="text-xl font-bold md:text-2xl">
+              {title} hakkında teklif almak ister misiniz?
+            </h2>
+            <div className="flex justify-center gap-3 md:justify-end">
+              <Link href="/iletisim" className="rounded-lg bg-white px-4 py-2 font-semibold text-primary hover:opacity-90">İletişime Geç</Link>
+              <a
+                href={`https://wa.me/905453048671?text=Merhaba%20Sahneva%2C%20${encodeURIComponent(title)}%20hizmeti%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum.`}
+                target="_blank" rel="noopener noreferrer"
+                className="rounded-lg border border-white px-4 py-2 font-semibold hover:bg-white/20"
+              >
+                WhatsApp
+              </a>
+            </div>
         </div>
       </section>
 
@@ -475,9 +487,10 @@ function PriceMatrix({ unitPrices }) {
 
 /* ---------- Tekil SchemaBlocks (yinelenmeden) ---------- */
 function SchemaBlocks({ packages: pkgs, unitPrices }) {
+  // ✅ www’siz tek alan adıyla sabit
   const SITE = "https://www.sahneva.com";
   const PAGE = `${SITE}/podyum-kiralama`;
-  const LB_ID = `${SITE}/#localbusiness`;                 // layout.js'te yayımlanan tekil LocalBusiness
+  const LB_ID = `${SITE}/#localbusiness`; // layout.js’te bununla eşleştiğinden emin ol
   const SERVICE_ID = `${PAGE}#service`;
   const FAQ_ID = `${PAGE}#faq`;
   const BREAD_ID = `${PAGE}#breadcrumbs`;
@@ -485,16 +498,18 @@ function SchemaBlocks({ packages: pkgs, unitPrices }) {
   const offers = (pkgs || []).map((p) => {
     const area = p.layout.area;
     const perimeter = p.layout.perimeter;
-    const price =
+    const priceNumber =
       area * unitPrices.platform_m2_week +
       area * unitPrices.carpet_m2_week +
       perimeter * unitPrices.skirt_ml_week;
+
     return {
       "@type": "Offer",
       name: p.name,
       description: `${p.layout.width}×${p.layout.depth} m (${p.layout.area} m²), çevre ${p.layout.perimeter} m.`,
       priceCurrency: "TRY",
-      price,
+      // ✅ fiyat string verildi
+      price: String(priceNumber),
       availability: "https://schema.org/InStock",
       url: PAGE
     };

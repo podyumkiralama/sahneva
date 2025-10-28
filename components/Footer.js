@@ -2,37 +2,23 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback } from "react";
+import useBurst from "@/lib/useBurst";
 
 export default function Footer() {
   // Mini burst efekti (globals.css'teki .burst-particle ile uyumlu)
-  const burst = useCallback((e) => {
-    try {
-      const x = e?.clientX ?? window.innerWidth / 2;
-      const y = e?.clientY ?? window.innerHeight - 80;
-      const n = 10;
-      const life = 600;
-
-      for (let i = 0; i < n; i++) {
-        const el = document.createElement("span");
-        el.className = "burst-particle";
-        const angle = (Math.PI * 2 * i) / n + Math.random() * 0.3;
-        const dist = 36 + Math.random() * 36;
-        el.style.setProperty("--dx", Math.cos(angle) * dist + "px");
-        el.style.setProperty("--dy", Math.sin(angle) * dist + "px");
-        el.style.setProperty("--dr", `${(Math.random() * 60 - 30).toFixed(1)}deg`);
-        el.style.setProperty("--life", `${life}ms`);
-        el.style.setProperty("--burst-c1", i % 2 === 0 ? "#6d28d9" : "#22c55e");
-        el.style.setProperty("--burst-c2", i % 2 === 0 ? "#22c55e" : "#6d28d9");
-        const s = 6 + Math.random() * 6;
-        el.style.width = el.style.height = `${s}px`;
-        el.style.left = `${x}px`;
-        el.style.top = `${y}px`;
-        document.body.appendChild(el);
-        setTimeout(() => el.remove(), life + 60);
-      }
-    } catch {}
-  }, []);
+  const burst = useBurst({
+    mode: "body",
+    radius: 34,
+    spread: 36,
+    life: 600,
+    lifeJitter: 160,
+    size: [6, 12],
+    colors: ["#6d28d9", "#22c55e"],
+    fallback: () => ({
+      x: window.innerWidth / 2,
+      y: window.innerHeight - 80,
+    }),
+  });
 
   return (
     <footer

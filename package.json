@@ -25,10 +25,18 @@
     "eslint": "8.57.0",
     "eslint-config-next": "15.5.2"
   },
-  "browserslist": [
-    "defaults and supports es6-module",
-    "not ie <= 11",
-    "not dead",
-    "not op_mini all"
-  ]
+  "browserslist": {
+    "production": [
+      "Chrome >= 114",
+      "Firefox >= 113",
+      "Safari >= 16.4",
+      "iOS >= 16.4",
+      "Edge >= 114"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }

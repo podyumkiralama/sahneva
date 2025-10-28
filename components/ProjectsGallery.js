@@ -218,8 +218,6 @@ export default function ProjectsGallery({ headingId: providedHeadingId, heading 
     if (!isOpen) return;
 
     scrollYRef.current = window.scrollY || window.pageYOffset || 0;
-    const scrollbarW =
-      window.innerWidth - document.documentElement.clientWidth;
     const body = document.body;
     const html = document.documentElement;
 
@@ -227,7 +225,6 @@ export default function ProjectsGallery({ headingId: providedHeadingId, heading 
       position: body.style.position,
       top: body.style.top,
       width: body.style.width,
-      paddingRight: body.style.paddingRight,
       overflow: body.style.overflow,
       overscrollBehavior: body.style.overscrollBehavior,
     };
@@ -237,7 +234,6 @@ export default function ProjectsGallery({ headingId: providedHeadingId, heading 
       body.style.position = "fixed";
       body.style.top = `-${scrollYRef.current}px`;
       body.style.width = "100%";
-      if (scrollbarW > 0) body.style.paddingRight = `${scrollbarW}px`;
       body.style.overflow = "hidden";
       body.style.overscrollBehavior = "contain";
       html.style.scrollBehavior = "auto";
@@ -275,7 +271,6 @@ export default function ProjectsGallery({ headingId: providedHeadingId, heading 
         body.style.position = restore.position || "";
         body.style.top = restore.top || "";
         body.style.width = restore.width || "";
-        body.style.paddingRight = restore.paddingRight || "";
         body.style.overflow = restore.overflow || "";
         body.style.overscrollBehavior = restore.overscrollBehavior || "";
         window.scrollTo(0, y);

@@ -22,21 +22,6 @@ const nextConfig = {
       process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
   },
 
-  // ⬇️ ESKİ JS POLYFILL'LERİNİ TAMAMEN DEVRE DIŞI BIRAK
-  webpack(config) {
-    config.resolve = config.resolve || {};
-    config.resolve.alias = {
-      ...(config.resolve.alias || {}),
-      // Lighthouse "Eski JavaScript"te listelenen polyfill paketleri:
-      "array.prototype.flat": false,
-      "array.prototype.flatmap": false,
-      "object.fromentries": false,
-      "string.prototype.trimend": false,
-      "string.prototype.trimstart": false,
-    };
-    return config;
-  },
-
   async headers() {
     return [
       // 1) HTML & dinamik rotalar — güvenlik + 10 dk cache

@@ -108,9 +108,9 @@ const nextConfig = {
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
       },
 
-      // 6) robots/sitemap/favicon — 1 gün
+      // 6) robots/sitemap/favicon/manifest — 1 gün
       {
-        source: "/:file(robots.txt|sitemap.xml|favicon.ico)",
+        source: "/:file(robots.txt|sitemap.xml|favicon.ico|site.webmanifest)",
         headers: [{ key: "Cache-Control", value: "public, max-age=86400" }],
       },
     ];

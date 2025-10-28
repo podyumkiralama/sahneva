@@ -1,9 +1,10 @@
 // components/Faq.jsx
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
+import { FAQ_ITEMS } from "../lib/faqData";
 
-function FaqRow({ q, a, slug }) {
+function FaqRow({ question, answer, slug }) {
   const [open, setOpen] = useState(false);
   const summaryId = `${slug}-summary`;
   const panelId = `${slug}-panel`;
@@ -24,7 +25,7 @@ function FaqRow({ q, a, slug }) {
           focus-visible:outline-2 focus-visible:outline-[#6d28d9] focus-visible:outline-offset-2
         "
       >
-        <span className="font-semibold text-neutral-900">{q}</span>
+        <span className="font-semibold text-neutral-900">{question}</span>
         <svg
           className="ml-2 h-5 w-5 shrink-0 text-neutral-800 transition-transform data-[open=true]:rotate-90"
           data-open={open}
@@ -42,39 +43,13 @@ function FaqRow({ q, a, slug }) {
       </summary>
 
       <div id={panelId} className="faqAnim mt-2 text-neutral-700">
-        <p>{a}</p>
+        <p>{answer}</p>
       </div>
     </details>
   );
 }
 
 export default function Faq() {
-  const items = useMemo(
-    () => [
-      {
-        q: "Podyum kurulumu ne kadar sürer?",
-        a: "Podyum kurulumu, ölçülere ve zemin koşullarına göre genellikle 1–3 saat arasında tamamlanır. Teknik ekibimiz güvenli ve hızlı montaj yapar.",
-        slug: "podyum-kurulumu-sure",
-      },
-      {
-        q: "LED ekranlar dış mekanda kullanılabilir mi?",
-        a: "Evet, IP65 korumalı LED ekranlarımız yağmur ve güneş ışığına karşı dayanıklıdır. Açık hava konserleri, mitingler ve festivaller için güvenle kullanılabilir.",
-        slug: "led-ekran-dis-mekan",
-      },
-      {
-        q: "Ses ve ışık sistemlerinde teknik ekip sağlıyor musunuz?",
-        a: "Evet, profesyonel ses ve ışık sistemleri kiralama hizmetimizde her zaman teknik ekip desteği sunuyoruz. Kurulum, canlı yönetim ve etkinlik boyunca anlık destek dahildir.",
-        slug: "ses-isik-teknik-ekip",
-      },
-      {
-        q: "Çadır kiralamada kurulum ve söküm hizmeti dahil mi?",
-        a: "Evet, çadır kiralama hizmetimizde kurulum ve söküm hizmeti fiyata dahildir. Ayrıca zemin kaplama, güvenlik önlemleri ve yan aksesuarlar da talebe göre eklenebilir.",
-        slug: "cadir-kiralama-kurulum-sokum",
-      },
-    ],
-    []
-  );
-
   return (
     <section className="container py-14 md:py-20" aria-labelledby="faq-heading">
       <h2
@@ -85,8 +60,8 @@ export default function Faq() {
       </h2>
 
       <div className="mx-auto max-w-3xl space-y-4">
-        {items.map((it) => (
-          <FaqRow key={it.slug} {...it} />
+        {FAQ_ITEMS.map((item) => (
+          <FaqRow key={item.slug} {...item} />
         ))}
       </div>
 

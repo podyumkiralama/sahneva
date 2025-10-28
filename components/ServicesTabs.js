@@ -1,7 +1,7 @@
 // components/ServicesTabs.js
 "use client";
 
-import { useId, useState, useRef, useCallback } from "react";
+import { useId, useState, useRef, useCallback, useEffect } from "react";
 import Image from "next/image";
 
 // Panel grid'i: <768px tek sütun; >=768px 2 sütun (gap-6 = 1.5rem)
@@ -75,46 +75,50 @@ const tabs = [
   },
 ];
 
-export default function ServicesTabs() {
+export default function ServicesTabs({ headingId: providedHeadingId, heading = "Hizmetlerimiz" }) {
   const rid = useId();
+  const headingId = providedHeadingId ?? `${rid}-services-heading`;
   const [active, setActive] = useState(0);
   const tabsRef = useRef([]);
   const liveRef = useRef(null);
+  const liveResetRef = useRef();
 
-  const onKeyDown = useCallback(
-    (e) => {
-      const last = tabs.length - 1;
-      if (e.key === "ArrowRight") {
-        e.preventDefault();
-        const next = active === last ? 0 : active + 1;
-        setActive(next);
-        tabsRef.current[next]?.focus();
-      } else if (e.key === "ArrowLeft") {
-        e.preventDefault();
-        const prev = active === 0 ? last : active - 1;
-        setActive(prev);
-        tabsRef.current[prev]?.focus();
-      } else if (e.key === "Home") {
-        e.preventDefault();
-        setActive(0);
-        tabsRef.current[0]?.focus();
-      } else if (e.key === "End") {
-        e.preventDefault();
-        setActive(last);
-        tabsRef.current[last]?.focus();
-      } else if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        setActive((v) => v);
+  useEffect(() => {
+    return () => {
+      if (liveResetRef.current) {
+        clearTimeout(liveResetRef.current);
       }
-    },
-    [active]
-  );
+    };
+  }, []);
 
-  const burst = useCallback((e) => {
-    const btn = e.currentTarget;
-    const rect = btn.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+  const announce = useCallback((message) => {
+    if (!liveRef.current || !message) return;
+    liveRef.current.textContent = message;
+    if (liveResetRef.current) {
+      clearTimeout(liveResetRef.current);
+    }
+    liveResetRef.current = setTimeout(() => {
+      if (liveRef.current) {
+        liveRef.current.textContent = "";
+      }
+    }, 800);
+  }, []);
+
+  const spawnBurst = useCallback((target, coords, message) => {
+    if (!target) return;
+
+    const formatCoord = (value) => {
+      if (typeof value === "number" && Number.isFinite(value)) {
+        return `${value}px`;
+      }
+      if (typeof value === "string" && value.trim() !== "") {
+        return value;
+      }
+      return "50%";
+    };
+
+    const originX = formatCoord(coords?.x);
+    const originY = formatCoord(coords?.y);
 
     const particleCount = 12;
     for (let i = 0; i < particleCount; i++) {
@@ -127,31 +131,92 @@ export default function ServicesTabs() {
       const distance = 28 + Math.random() * 14;
       s.style.width = `${size}px`;
       s.style.height = `${size}px`;
-      s.style.left = `${x}px`;
-      s.style.top = `${y}px`;
+      s.style.left = originX;
+      s.style.top = originY;
       s.style.setProperty("--dx", `${Math.cos(angle) * distance}px`);
       s.style.setProperty("--dy", `${Math.sin(angle) * distance}px`);
       s.style.setProperty("--dr", `${(Math.random() - 0.5) * 90}deg`);
       s.style.setProperty("--life", `${450 + Math.random() * 250}ms`);
       s.style.setProperty("--burst-c1", "#6d28d9");
       s.style.setProperty("--burst-c2", "#22c55e");
-      btn.appendChild(s);
+      target.appendChild(s);
       setTimeout(() => s.remove(), 700);
     }
-    if (liveRef.current) {
-      liveRef.current.textContent = `${tabs[active].title} sekmesi açık.`;
-      setTimeout(() => {
-        if (liveRef.current) liveRef.current.textContent = "";
-      }, 800);
-    }
-  }, [active]);
 
-  const headingId = `${rid}-services-heading`;
+    if (message) {
+      announce(message);
+    }
+  }, [announce]);
+
+  const burst = useCallback(
+    (e, message) => {
+      const btn = e.currentTarget;
+      if (!btn) return;
+      const native = e.nativeEvent ?? {};
+      const { offsetX, offsetY } = native;
+      const hasPointer =
+        typeof offsetX === "number" && Number.isFinite(offsetX) &&
+        typeof offsetY === "number" && Number.isFinite(offsetY);
+
+      spawnBurst(
+        btn,
+        {
+          x: hasPointer ? offsetX : "50%",
+          y: hasPointer ? offsetY : "50%",
+        },
+        message ?? `${tabs[active].title} sekmesi açık.`
+      );
+    },
+    [active, spawnBurst]
+  );
+
+  const focusBurst = useCallback(
+    (index) => {
+      const target = tabsRef.current[index];
+      if (!target) return;
+      spawnBurst(target, { x: "50%", y: "50%" }, `${tabs[index].title} sekmesi açık.`);
+    },
+    [spawnBurst]
+  );
+
+  const onKeyDown = useCallback(
+    (e) => {
+      const last = tabs.length - 1;
+      if (e.key === "ArrowRight") {
+        e.preventDefault();
+        const next = active === last ? 0 : active + 1;
+        setActive(next);
+        tabsRef.current[next]?.focus();
+        focusBurst(next);
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        const prev = active === 0 ? last : active - 1;
+        setActive(prev);
+        tabsRef.current[prev]?.focus();
+        focusBurst(prev);
+      } else if (e.key === "Home") {
+        e.preventDefault();
+        setActive(0);
+        tabsRef.current[0]?.focus();
+        focusBurst(0);
+      } else if (e.key === "End") {
+        e.preventDefault();
+        setActive(last);
+        tabsRef.current[last]?.focus();
+        focusBurst(last);
+      } else if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        setActive((v) => v);
+        focusBurst(active);
+      }
+    },
+    [active, focusBurst]
+  );
 
   return (
     <section className="container py-10 md:py-14" aria-labelledby={headingId}>
       <h2 id={headingId} className="text-2xl md:text-3xl font-bold text-center mb-8">
-        Hizmetlerimiz
+        {heading}
       </h2>
 
       <div
@@ -173,9 +238,12 @@ export default function ServicesTabs() {
               aria-selected={selected}
               aria-controls={`${rid}-panel-${i}`}
               tabIndex={selected ? 0 : -1}
-              onClick={() => setActive(i)}
+              onClick={(event) => {
+                setActive(i);
+                burst(event, `${t.title} sekmesi açık.`);
+              }}
               className={[
-                "whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold transition",
+                "relative whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold transition",
                 selected
                   ? "bg-[#6d28d9] text-white"
                   : "bg-white text-neutral-800 hover:bg-neutral-100",
@@ -226,7 +294,7 @@ export default function ServicesTabs() {
                   <a
                     className="relative inline-flex items-center justify-center rounded-lg px-4 py-2 font-semibold text-white bg-[#6d28d9] hover:bg-[#5b21b6] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6d28d9]/40"
                     href={t.href}
-                    onClick={burst}
+                    onClick={(event) => burst(event)}
                     aria-label={`${t.title} – detaylı incele`}
                   >
                     Detaylı İncele

@@ -14,13 +14,10 @@ export const viewport = {
   themeColor: "#6d28d9",
 };
 
-// Font: preload + swap (FOIT yok, render-blocking minimum)
-// Kullandığın ağırlıkları ekle; gereksiz ağırlık ekleme
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "600", "800"],
-  preload: true,     // ✅ Preload aktif
-  display: "optional", // ✅ LCP bloklanmadan render et
+  preload: false,        // render-blocking yok
+  display: "optional",   // FOIT yok, sistem fontu ile başla
   fallback: ["system-ui", "-apple-system", "Segoe UI", "Roboto", "Arial", "sans-serif"],
   adjustFontFallback: true,
 });
@@ -57,52 +54,10 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  const SITE = "https://www.sahneva.com";
-  const LB_ID = `${SITE}/#localbusiness`;
-
-  const ldLocalBusiness = {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "@id": LB_ID,
-    name: "Sahneva",
-    url: SITE,
-    image: `${SITE}/img/og.jpg`,
-    telephone: "+90 545 304 8671",
-    priceRange: "₺₺",
-    logo: { "@type": "ImageObject", url: `${SITE}/img/logo.png`, width: 512, height: 512 },
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "Anadolu Cd. 61/A, Hamidiye",
-      addressLocality: "Kağıthane",
-      addressRegion: "İstanbul",
-      postalCode: "34400",
-      addressCountry: "TR",
-    },
-    geo: { "@type": "GeoCoordinates", latitude: 41.0961692, longitude: 28.9792127 },
-    openingHoursSpecification: [{
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
-      opens: "09:00",
-      closes: "19:00",
-    }],
-    sameAs: [
-      "https://www.instagram.com/sahnevaorganizasyon",
-      "https://www.youtube.com/@sahneva",
-      "https://g.page/r/CZhkMzkNOdgnEBI",
-    ],
-    contactPoint: [{
-      "@type": "ContactPoint",
-      telephone: "+90 545 304 8671",
-      contactType: "customer service",
-      areaServed: "TR",
-      availableLanguage: ["Turkish"],
-    }],
-  };
-
   return (
     <html lang="tr" suppressHydrationWarning>
       <head>
-        {/* Minik kritik CSS */}
+        {/* Minik kritik CSS (render-blocking olmadan) */}
         <style id="critical-css">{`
           .pt-16{padding-top:4rem}
           @media (min-width:768px){.md\\:pt-20{padding-top:5rem}}
@@ -111,9 +66,11 @@ export default function RootLayout({ children }) {
           .object-cover{object-fit:cover}
           .container{max-width:1280px;margin-inline:auto;padding-inline:1rem}
         `}</style>
+        {/* Burada bilinçli olarak ek preconnect yok; font local yüklendiği için gerekmez */}
       </head>
+
       <body className={`${inter.className} scroll-smooth`}>
-        {/* Skip Link */}
+        {/* Erişilebilirlik: klavye kullanıcıları için skip link */}
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:z-[100] focus:top-3 focus:left-3 focus:px-3 focus:py-2 focus:rounded-lg focus:bg-white focus:shadow"
@@ -122,22 +79,118 @@ export default function RootLayout({ children }) {
         </a>
 
         <Navbar />
+
+        {/* UtilityBar mobilde alta oturduğu için sayfa içeriğine alt boşluk veriyoruz */}
         <main id="main" role="main" className="pt-16 md:pt-20 mb-24 lg:mb-0">
           {children}
         </main>
+
         <UtilityBar />
         <Footer />
 
-        {/* JSON-LD: Tekil LocalBusiness */}
+        {/* JSON-LD: Organization */}
         <Script
-          id="ld-localbusiness"
+          id="ld-org"
           type="application/ld+json"
           strategy="afterInteractive"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(ldLocalBusiness) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "Sahneva",
+              url: "https://www.sahneva.com",
+              logo: "https://www.sahneva.com/img/logo.png",
+              contactPoint: [
+                {
+                  "@type": "ContactPoint",
+                  telephone: "+90 545 304 8671",
+                  contactType: "customer service",
+                  areaServed: "TR",
+                  availableLanguage: ["Turkish"],
+                },
+              ],
+              sameAs: [
+                "https://www.instagram.com/sahneva",
+                "https://www.youtube.com/@sahneva",
+              ],
+            }),
+          }}
         />
 
-        {/* Vercel Speed Insights */}
-        <SpeedInsights />
+        {/* JSON-LD: LocalBusiness */}
+        <Script
+          id="ld-local"
+          type="application/ld+json"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "LocalBusiness",
+              name: "Sahneva",
+              image: "https://www.sahneva.com/img/logo.png",
+              url: "https://www.sahneva.com",
+              telephone: "+90 545 304 8671",
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "İstanbul",
+                addressCountry: "TR",
+              },
+              priceRange: "$$",
+              openingHours: "Mo-Fr 09:00-19:00",
+            }),
+          }}
+        />
+
+        {/* JSON-LD: FAQPage */}
+        <Script
+          id="ld-faq"
+          type="application/ld+json"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: [
+                {
+                  "@type": "Question",
+                  name: "Podyum kurulumu ne kadar sürer?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text:
+                      "Podyum kurulumu, ölçülere ve zemin koşullarına göre genellikle 1–3 saat sürer.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "LED ekranlar dış mekanda kullanılabilir mi?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text:
+                      "Evet, IP65 korumalı LED ekranlarımız açık havada güvenle kullanılabilir.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Ses ve ışık sistemlerinde teknik ekip sağlıyor musunuz?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text:
+                      "Evet, kurulum ve etkinlik boyunca teknik ekip desteği veriyoruz.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Çadır kiralamada kurulum ve söküm dahil mi?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text:
+                      "Evet, kurulum ve söküm dahildir; zemin kaplama ve aksesuarlar opsiyoneldir.",
+                  },
+                },
+              ],
+            }),
+          }}
+        />
       </body>
     </html>
   );

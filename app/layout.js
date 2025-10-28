@@ -120,8 +120,6 @@ export default function RootLayout({ children }) {
       <head>
         {/* Kritik CSS */}
         <style id="critical-css">{`
-          .pt-16{padding-top:4rem}
-          @media (min-width:768px){.md\\:pt-20{padding-top:5rem}}
           .full-bleed{position:relative;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);inline-size:100svw;width:100vw;min-height:60vh;overflow-x:clip}
           @media (min-width:768px){.full-bleed{min-height:70vh}}
           .object-cover{object-fit:cover}
@@ -129,6 +127,7 @@ export default function RootLayout({ children }) {
         `}</style>
       </head>
 
+      {/* ✅ BURADA PADDING KALDIRILDI */}
       <body className={`${inter.className} scroll-smooth`}>
         <a
           href="#main"
@@ -138,13 +137,16 @@ export default function RootLayout({ children }) {
         </a>
 
         <Navbar />
-        <main id="main" role="main" className="pt-16 md:pt-20 mb-24 lg:mb-0">
+
+        {/* ✅ PT KALDIRILDI */}
+        <main id="main" role="main" className="mb-24 lg:mb-0">
           {children}
         </main>
+
         <UtilityBar />
         <Footer />
 
-        {/* ✅ Tek LocalBusiness (Organization & FAQ kaldırıldı) */}
+        {/* ✅ LocalBusiness JSON-LD */}
         <Script
           id="ld-localbusiness"
           type="application/ld+json"

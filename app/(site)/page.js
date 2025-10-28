@@ -3,6 +3,11 @@ import Image from "next/image";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
+import heroBg from "@/public/img/hero-bg.webp";
+import heroBgBlur from "@/public/img/hero-bg-blur.webp";
+
+const heroPlaceholder = heroBgBlur.blurDataURL ?? heroBgBlur.src;
+
 import CorporateEvents from "../../components/CorporateEvents";
 import Faq from "../../components/Faq";
 import HeroCtasClient from "../../components/HeroCtasClient";
@@ -109,7 +114,7 @@ export default function HomePage() {
         role="region"
       >
         <Image
-          src="/img/hero-bg.webp"
+          src={heroBg}
           alt="Sahne, podyum, LED ekran ve ses-ışık ekipmanlarıyla kurulu etkinlik alanı"
           fill
           priority
@@ -117,7 +122,7 @@ export default function HomePage() {
           decoding="async"
           sizes="100vw"
           placeholder="blur"
-          blurDataURL="/img/hero-bg-low.webp"
+          blurDataURL={heroPlaceholder}
           className="object-cover"
         />
         <div

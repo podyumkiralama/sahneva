@@ -46,50 +46,16 @@ export default function UtilityBar() {
     const pct = Number.isNaN(current) ? 100 : current;
     const next = Math.min(130, Math.max(85, Math.round(pct + delta)));
     root.style.setProperty("--fs", `${next}%`);
-    burst();
   };
 
   // Yüksek kontrast modu
   const toggleContrast = () => {
     document.documentElement.classList.toggle("hc");
-    burst();
   };
 
   // En üste dön
   const scrollTopSmooth = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    burst();
-  };
-
-  // ==== Burst efekt ====
-  const burst = (e) => {
-    const x = e?.clientX ?? window.innerWidth / 2;
-    const y = e?.clientY ?? window.innerHeight - 80;
-    const n = 12;
-    const life = 600;
-    for (let i = 0; i < n; i++) {
-      const el = document.createElement("span");
-      el.className = "burst-particle";
-      const angle = (Math.PI * 2 * i) / n + Math.random() * 0.3;
-      const dist = 40 + Math.random() * 40;
-      el.style.setProperty("--dx", Math.cos(angle) * dist + "px");
-      el.style.setProperty("--dy", Math.sin(angle) * dist + "px");
-      el.style.setProperty("--dr", `${(Math.random() * 60 - 30).toFixed(1)}deg`);
-      el.style.setProperty("--life", `${life}ms`);
-      el.style.setProperty("--burst-c1", i % 2 === 0 ? "#6d28d9" : "#22c55e");
-      el.style.setProperty("--burst-c2", i % 2 === 0 ? "#22c55e" : "#6d28d9");
-      const s = 6 + Math.random() * 6;
-      el.style.width = el.style.height = `${s}px`;
-      el.style.left = `${x}px`;
-      el.style.top = `${y}px`;
-      document.body.appendChild(el);
-      setTimeout(() => el.remove(), life + 50);
-    }
-  };
-
-  const withBurst = (fn) => (e) => {
-    burst(e);
-    fn?.();
   };
 
   return (
@@ -105,7 +71,7 @@ export default function UtilityBar() {
             {/* Yazı küçült */}
             <button
               className="bar-item"
-              onClick={withBurst(() => bumpFont(-5))}
+              onClick={() => bumpFont(-5)}
               aria-label="Yazı boyutunu küçült"
               title="Yazı küçült"
             >
@@ -115,7 +81,7 @@ export default function UtilityBar() {
             {/* Yazı büyüt */}
             <button
               className="bar-item"
-              onClick={withBurst(() => bumpFont(+5))}
+              onClick={() => bumpFont(+5)}
               aria-label="Yazı boyutunu büyüt"
               title="Yazı büyüt"
             >
@@ -125,8 +91,7 @@ export default function UtilityBar() {
             {/* Arama */}
             <button
               className="bar-item"
-              onClick={(e) => {
-                burst(e);
+              onClick={() => {
                 setOpenSearch(true);
                 setTimeout(() => dialogRef.current?.querySelector("input")?.focus(), 60);
               }}
@@ -142,7 +107,7 @@ export default function UtilityBar() {
             {/* En üste dön */}
             <button
               className="bar-item"
-              onClick={withBurst(scrollTopSmooth)}
+              onClick={scrollTopSmooth}
               aria-label="En üste dön"
               title="En üste dön"
             >
@@ -154,7 +119,6 @@ export default function UtilityBar() {
               <details className="group">
                 <summary
                   className="bar-item list-none cursor-pointer"
-                  onClick={burst}
                   aria-label="Hızlı iletişim"
                   title="Hızlı iletişim"
                 >
@@ -164,7 +128,6 @@ export default function UtilityBar() {
                   <a
                     href="tel:+905453048671"
                     className="block rounded-md px-3 py-2 text-sm font-semibold text-white bg-[#6d28d9] hover:bg-[#5b21b6]"
-                    onClick={burst}
                   >
                     Hemen Ara
                   </a>
@@ -173,7 +136,6 @@ export default function UtilityBar() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-2 block rounded-md px-3 py-2 text-sm font-semibold text-white bg-[#15803d] hover:bg-[#166534]"
-                    onClick={burst}
                   >
                     WhatsApp Teklif
                   </a>
@@ -221,6 +183,7 @@ export default function UtilityBar() {
                 <li key={r.href}>
                   <Link
                     href={r.href}
+                    prefetch={false}
                     className="block rounded-md px-3 py-2 text-sm hover:bg-[#f3f0ff] hover:text-[#815be0]"
                     onClick={() => setOpenSearch(false)}
                   >

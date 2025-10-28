@@ -28,33 +28,6 @@ export default function Navbar() {
   const servicesBtnId = "nav-services-button";
   const servicesMenuId = "nav-services-menu";
 
-  const burst = useCallback((e) => {
-    try {
-      const x = e?.clientX ?? window.innerWidth / 2;
-      const y = e?.clientY ?? 80;
-      const n = 10;
-      const life = 600;
-      for (let i = 0; i < n; i++) {
-        const el = document.createElement("span");
-        el.className = "burst-particle";
-        const angle = (Math.PI * 2 * i) / n + Math.random() * 0.35;
-        const dist = 34 + Math.random() * 32;
-        el.style.setProperty("--dx", Math.cos(angle) * dist + "px");
-        el.style.setProperty("--dy", Math.sin(angle) * dist + "px");
-        el.style.setProperty("--dr", `${(Math.random() * 80 - 40).toFixed(1)}deg`);
-        el.style.setProperty("--life", `${life}ms`);
-        el.style.setProperty("--burst-c1", "#22c55e");
-        el.style.setProperty("--burst-c2", "#6d28d9");
-        const s = 6 + Math.random() * 6;
-        el.style.width = el.style.height = s + "px";
-        el.style.left = `${x}px`;
-        el.style.top = `${y}px`;
-        document.body.appendChild(el);
-        setTimeout(() => el.remove(), life + 80);
-      }
-    } catch {}
-  }, []);
-
   useEffect(() => {
     let ticking = false;
     const onScroll = () => {
@@ -146,13 +119,13 @@ export default function Navbar() {
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center gap-2" aria-label="Sahneva Anasayfa">
+            <Link href="/" prefetch={false} className="flex items-center gap-2" aria-label="Sahneva Anasayfa">
               <Image
                 src="/img/logo.png"
                 alt="Sahneva"
                 width={160}
                 height={40}
-                priority={pathname === "/"}
+                fetchPriority={pathname === "/" ? "low" : "auto"}
                 sizes="(max-width: 768px) 120px, 160px"
                 className="h-10 w-auto"
               />
@@ -161,6 +134,7 @@ export default function Navbar() {
             <nav className="hidden md:flex items-center gap-6" aria-label="Ana menü">
               <Link
                 href="/hakkimizda"
+                prefetch={false}
                 className={[
                   "text-sm font-medium transition",
                   active("/hakkimizda") ? "text-[#6d28d9]" : "text-neutral-800",
@@ -219,6 +193,7 @@ export default function Navbar() {
                         <Link
                           role="menuitem"
                           href={href}
+                          prefetch={false}
                           className="block px-4 py-2 text-sm text-neutral-800 hover:bg-[#f3f0ff] hover:text-[#6d28d9]"
                           onClick={() => setServicesOpen(false)}
                           aria-current={active(href) ? "page" : undefined}
@@ -233,6 +208,7 @@ export default function Navbar() {
 
               <Link
                 href="/iletisim"
+                prefetch={false}
                 className={[
                   "text-sm font-medium transition",
                   active("/iletisim") ? "text-[#6d28d9]" : "text-neutral-800",
@@ -251,7 +227,6 @@ export default function Navbar() {
                 className="ml-2 inline-flex items-center gap-2 rounded-lg px-3 py-2 text-white text-sm font-semibold
                            bg-[#15803d] hover:bg-[#166534] transition-colors focus:outline-none
                            focus-visible:ring-2 focus-visible:ring-[#6d28d9]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-                onClick={burst}
               >
                 WhatsApp Teklif
               </a>
@@ -319,6 +294,7 @@ export default function Navbar() {
         <div className="px-4 py-3 space-y-3 max-h-[70vh] overflow-y-auto">
           <Link
             href="/hakkimizda"
+            prefetch={false}
             onClick={() => setMobileOpen(false)}
             className="block py-3 border-b text-neutral-800 font-medium"
             aria-current={active("/hakkimizda") ? "page" : undefined}
@@ -362,6 +338,7 @@ export default function Navbar() {
                   <li key={href} className="border-b last:border-b-0 border-neutral-200">
                     <Link
                       href={href}
+                      prefetch={false}
                       onClick={() => setMobileOpen(false)}
                       className="block px-3 py-2 text-sm text-neutral-800 hover:bg-[#f3f0ff] hover:text-[#6d28d9]"
                       aria-current={active(href) ? "page" : undefined}
@@ -376,6 +353,7 @@ export default function Navbar() {
 
           <Link
             href="/iletisim"
+            prefetch={false}
             onClick={() => setMobileOpen(false)}
             className="block py-3 border-t text-neutral-800 font-medium"
             aria-current={active("/iletisim") ? "page" : undefined}
@@ -391,10 +369,7 @@ export default function Navbar() {
             className="block text-center mt-3 rounded-lg px-3 py-2 text-white text-sm font-semibold 
                        bg-[#15803d] hover:bg-[#166534] transition-colors focus:outline-none
                        focus-visible:ring-2 focus-visible:ring-[#6d28d9]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-            onClick={(e) => {
-              burst(e);
-              setMobileOpen(false);
-            }}
+            onClick={() => setMobileOpen(false)}
           >
             WhatsApp Teklif
           </a>

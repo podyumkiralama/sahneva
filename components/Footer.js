@@ -1,39 +1,7 @@
 // components/Footer.js
-"use client";
-
 import Link from "next/link";
-import { useCallback } from "react";
 
 export default function Footer() {
-  // Mini burst efekti (globals.css'teki .burst-particle ile uyumlu)
-  const burst = useCallback((e) => {
-    try {
-      const x = e?.clientX ?? window.innerWidth / 2;
-      const y = e?.clientY ?? window.innerHeight - 80;
-      const n = 10;
-      const life = 600;
-
-      for (let i = 0; i < n; i++) {
-        const el = document.createElement("span");
-        el.className = "burst-particle";
-        const angle = (Math.PI * 2 * i) / n + Math.random() * 0.3;
-        const dist = 36 + Math.random() * 36;
-        el.style.setProperty("--dx", Math.cos(angle) * dist + "px");
-        el.style.setProperty("--dy", Math.sin(angle) * dist + "px");
-        el.style.setProperty("--dr", `${(Math.random() * 60 - 30).toFixed(1)}deg`);
-        el.style.setProperty("--life", `${life}ms`);
-        el.style.setProperty("--burst-c1", i % 2 === 0 ? "#6d28d9" : "#22c55e");
-        el.style.setProperty("--burst-c2", i % 2 === 0 ? "#22c55e" : "#6d28d9");
-        const s = 6 + Math.random() * 6;
-        el.style.width = el.style.height = `${s}px`;
-        el.style.left = `${x}px`;
-        el.style.top = `${y}px`;
-        document.body.appendChild(el);
-        setTimeout(() => el.remove(), life + 60);
-      }
-    } catch {}
-  }, []);
-
   return (
     <footer
       role="contentinfo"
@@ -63,7 +31,6 @@ export default function Footer() {
               aria-label="Instagram (yeni sekmede açılır)"
               title="Instagram"
               className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 hover:border-white/30 hover:bg-white/5 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
-              onClick={burst}
             >
               <span aria-hidden="true">📷</span>
             </a>
@@ -74,7 +41,6 @@ export default function Footer() {
               aria-label="YouTube (yeni sekmede açılır)"
               title="YouTube"
               className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 hover:border-white/30 hover:bg-white/5 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
-              onClick={burst}
             >
               <span aria-hidden="true">▶</span>
             </a>
@@ -90,6 +56,7 @@ export default function Footer() {
             <li>
               <Link
                 href="/podyum-kiralama"
+                prefetch={false}
                 className="hover:text-white focus:underline hover:underline underline-offset-4 transition-colors"
               >
                 Podyum Kiralama
@@ -98,6 +65,7 @@ export default function Footer() {
             <li>
               <Link
                 href="/led-ekran-kiralama"
+                prefetch={false}
                 className="hover:text-white focus:underline hover:underline underline-offset-4 transition-colors"
               >
                 LED Ekran Kiralama
@@ -106,6 +74,7 @@ export default function Footer() {
             <li>
               <Link
                 href="/ses-isik-sistemleri"
+                prefetch={false}
                 className="hover:text-white focus:underline hover:underline underline-offset-4 transition-colors"
               >
                 Ses &amp; Işık Sistemleri
@@ -114,6 +83,7 @@ export default function Footer() {
             <li>
               <Link
                 href="/sahne-kiralama"
+                prefetch={false}
                 className="hover:text-white focus:underline hover:underline underline-offset-4 transition-colors"
               >
                 Sahne Kiralama
@@ -122,6 +92,7 @@ export default function Footer() {
             <li>
               <Link
                 href="/cadir-kiralama"
+                prefetch={false}
                 className="hover:text-white focus:underline hover:underline underline-offset-4 transition-colors"
               >
                 Çadır Kiralama
@@ -139,6 +110,7 @@ export default function Footer() {
             <li>
               <Link
                 href="/hakkimizda"
+                prefetch={false}
                 className="hover:text-white focus:underline hover:underline underline-offset-4 transition-colors"
               >
                 Hakkımızda
@@ -147,6 +119,7 @@ export default function Footer() {
             <li>
               <Link
                 href="/hizmetler"
+                prefetch={false}
                 className="hover:text-white focus:underline hover:underline underline-offset-4 transition-colors"
               >
                 Hizmetler
@@ -155,6 +128,7 @@ export default function Footer() {
             <li>
               <Link
                 href="/sss"
+                prefetch={false}
                 className="hover:text-white focus:underline hover:underline underline-offset-4 transition-colors"
               >
                 Sık Sorulan Sorular
@@ -163,6 +137,7 @@ export default function Footer() {
             <li>
               <Link
                 href="/kvkk"
+                prefetch={false}
                 className="hover:text-white focus:underline hover:underline underline-offset-4 transition-colors"
               >
                 KVKK / Gizlilik
@@ -215,14 +190,13 @@ export default function Footer() {
                 <span className="text-gray-400" aria-hidden="true">
                   📞
                 </span>
-                <a
-                  href="tel:+905453048671"
-                  className="hover:text-white font-semibold focus:underline hover:underline underline-offset-4"
-                  onClick={burst}
-                  aria-label="Hemen Ara – Telefon: +90 545 304 8671"
-                >
-                  +90 545 304 8671
-                </a>
+              <a
+                href="tel:+905453048671"
+                className="hover:text-white font-semibold focus:underline hover:underline underline-offset-4"
+                aria-label="Hemen Ara – Telefon: +90 545 304 8671"
+              >
+                +90 545 304 8671
+              </a>
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-gray-400" aria-hidden="true">
@@ -231,7 +205,6 @@ export default function Footer() {
                 <a
                   href="mailto:info@sahneva.com"
                   className="hover:text-white focus:underline hover:underline underline-offset-4"
-                  onClick={burst}
                   aria-label="E-posta: info@sahneva.com"
                 >
                   info@sahneva.com
@@ -251,7 +224,6 @@ export default function Footer() {
             <a
               href="tel:+905453048671"
               className="inline-flex items-center gap-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f1115]"
-              onClick={burst}
               aria-label="Hemen Ara – Telefon: +90 545 304 8671"
             >
               <span aria-hidden="true">📞</span>
@@ -263,7 +235,6 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-full bg-green-700 hover:bg-green-800 text-white text-sm font-semibold px-4 py-2 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f1115]"
-              onClick={burst}
               aria-label="WhatsApp Teklif – üzerinden teklif iste (yeni sekmede açılır)"
               title="WhatsApp Teklif"
             >

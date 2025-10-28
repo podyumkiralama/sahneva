@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef, useCallback } from "react";
+import useBurst from "@/lib/useBurst";
 
 const serviceLinks = [
   { href: "/podyum-kiralama", label: "Podyum Kiralama" },
@@ -28,32 +29,16 @@ export default function Navbar() {
   const servicesBtnId = "nav-services-button";
   const servicesMenuId = "nav-services-menu";
 
-  const burst = useCallback((e) => {
-    try {
-      const x = e?.clientX ?? window.innerWidth / 2;
-      const y = e?.clientY ?? 80;
-      const n = 10;
-      const life = 600;
-      for (let i = 0; i < n; i++) {
-        const el = document.createElement("span");
-        el.className = "burst-particle";
-        const angle = (Math.PI * 2 * i) / n + Math.random() * 0.35;
-        const dist = 34 + Math.random() * 32;
-        el.style.setProperty("--dx", Math.cos(angle) * dist + "px");
-        el.style.setProperty("--dy", Math.sin(angle) * dist + "px");
-        el.style.setProperty("--dr", `${(Math.random() * 80 - 40).toFixed(1)}deg`);
-        el.style.setProperty("--life", `${life}ms`);
-        el.style.setProperty("--burst-c1", "#22c55e");
-        el.style.setProperty("--burst-c2", "#6d28d9");
-        const s = 6 + Math.random() * 6;
-        el.style.width = el.style.height = s + "px";
-        el.style.left = `${x}px`;
-        el.style.top = `${y}px`;
-        document.body.appendChild(el);
-        setTimeout(() => el.remove(), life + 80);
-      }
-    } catch {}
-  }, []);
+  const burst = useBurst({
+    mode: "body",
+    radius: 36,
+    spread: 36,
+    life: 600,
+    lifeJitter: 140,
+    size: [6, 12],
+    colors: ["#22c55e", "#6d28d9"],
+    fallback: () => ({ x: window.innerWidth / 2, y: 88 }),
+  });
 
   useEffect(() => {
     let ticking = false;

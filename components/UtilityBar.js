@@ -3,6 +3,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import useBurst from "@/lib/useBurst";
 
 const ROUTES = [
   { href: "/", label: "Anasayfa" },
@@ -30,6 +31,20 @@ export default function UtilityBar() {
     return () => window.removeEventListener("keydown", onEsc);
   }, [openSearch]);
 
+  const burst = useBurst({
+    mode: "body",
+    radius: 42,
+    spread: 40,
+    life: 600,
+    lifeJitter: 180,
+    size: [6, 12],
+    colors: ["#6d28d9", "#22c55e"],
+    fallback: () => ({
+      x: window.innerWidth / 2,
+      y: window.innerHeight - 80,
+    }),
+  });
+
   const filtered =
     query.trim().length === 0
       ? ROUTES
@@ -46,45 +61,16 @@ export default function UtilityBar() {
     const pct = Number.isNaN(current) ? 100 : current;
     const next = Math.min(130, Math.max(85, Math.round(pct + delta)));
     root.style.setProperty("--fs", `${next}%`);
-    burst();
   };
 
   // Yüksek kontrast modu
   const toggleContrast = () => {
     document.documentElement.classList.toggle("hc");
-    burst();
   };
 
   // En üste dön
   const scrollTopSmooth = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    burst();
-  };
-
-  // ==== Burst efekt ====
-  const burst = (e) => {
-    const x = e?.clientX ?? window.innerWidth / 2;
-    const y = e?.clientY ?? window.innerHeight - 80;
-    const n = 12;
-    const life = 600;
-    for (let i = 0; i < n; i++) {
-      const el = document.createElement("span");
-      el.className = "burst-particle";
-      const angle = (Math.PI * 2 * i) / n + Math.random() * 0.3;
-      const dist = 40 + Math.random() * 40;
-      el.style.setProperty("--dx", Math.cos(angle) * dist + "px");
-      el.style.setProperty("--dy", Math.sin(angle) * dist + "px");
-      el.style.setProperty("--dr", `${(Math.random() * 60 - 30).toFixed(1)}deg`);
-      el.style.setProperty("--life", `${life}ms`);
-      el.style.setProperty("--burst-c1", i % 2 === 0 ? "#6d28d9" : "#22c55e");
-      el.style.setProperty("--burst-c2", i % 2 === 0 ? "#22c55e" : "#6d28d9");
-      const s = 6 + Math.random() * 6;
-      el.style.width = el.style.height = `${s}px`;
-      el.style.left = `${x}px`;
-      el.style.top = `${y}px`;
-      document.body.appendChild(el);
-      setTimeout(() => el.remove(), life + 50);
-    }
   };
 
   const withBurst = (fn) => (e) => {

@@ -94,6 +94,7 @@ html.hc a{ text-decoration:underline; }
   background:radial-gradient(circle, var(--burst-c1,#6d28d9), var(--burst-c2,#22c55e));
   border-radius:9999px;
   transform:translate(-50%,-50%);
+  opacity:0;
   animation:burst-move var(--life,550ms) ease-out forwards, burst-fade var(--life,550ms) ease-out forwards;
   pointer-events:none;
   will-change:transform,opacity;

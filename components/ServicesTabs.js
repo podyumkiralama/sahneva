@@ -1,8 +1,9 @@
 // components/ServicesTabs.js
 "use client";
 
-import { useId, useState, useRef, useCallback, useEffect } from "react";
+import { useId, useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
+import useBurst from "@/lib/useBurst";
 
 // Panel grid'i: <768px tek sütun; >=768px 2 sütun (gap-6 = 1.5rem)
 // Container padding ≈ 2rem
@@ -120,35 +121,14 @@ export default function ServicesTabs({ headingId: providedHeadingId, heading = "
     return () => clearTimeout(timer);
   }, [active]);
 
-  const burst = useCallback((e) => {
-    const btn = e.currentTarget;
-    const rect = btn.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    const particleCount = 12;
-    for (let i = 0; i < particleCount; i++) {
-      const s = document.createElement("span");
-      s.className = "burst-particle";
-      s.setAttribute("aria-hidden", "true");
-      s.setAttribute("role", "presentation");
-      const size = Math.random() * 10 + 6;
-      const angle = (Math.PI * 2 * i) / particleCount + Math.random() * 0.6;
-      const distance = 28 + Math.random() * 14;
-      s.style.width = `${size}px`;
-      s.style.height = `${size}px`;
-      s.style.left = `${x}px`;
-      s.style.top = `${y}px`;
-      s.style.setProperty("--dx", `${Math.cos(angle) * distance}px`);
-      s.style.setProperty("--dy", `${Math.sin(angle) * distance}px`);
-      s.style.setProperty("--dr", `${(Math.random() - 0.5) * 90}deg`);
-      s.style.setProperty("--life", `${450 + Math.random() * 250}ms`);
-      s.style.setProperty("--burst-c1", "#6d28d9");
-      s.style.setProperty("--burst-c2", "#22c55e");
-      btn.appendChild(s);
-      setTimeout(() => s.remove(), 700);
-    }
-  }, [active]);
+  const burst = useBurst({
+    radius: 28,
+    spread: 18,
+    life: 520,
+    lifeJitter: 220,
+    size: [6, 16],
+    colors: ["#6d28d9", "#22c55e"],
+  });
 
   return (
     <section className="container py-10 md:py-14" aria-labelledby={headingId}>

@@ -7,100 +7,44 @@ import CorporateEvents from "../../components/CorporateEvents";
 import Faq from "../../components/Faq";
 import HeroCtasClient from "../../components/HeroCtasClient";
 import ReviewBanner from "../../components/ReviewBanner";
-import { FAQ_ITEMS } from "../../lib/faqData";
 
 // Client bileşenlerini sadece dinamik yükle – ssr:false KULLANMIYORUZ
 const ServicesTabsLazy = dynamic(
   () => import("../../components/ServicesTabs"),
-  { suspense: true }
+  { loading: () => <SectionSkeleton label="Hizmetler yükleniyor" /> }
 );
 const ProjectsGalleryLazy = dynamic(
   () => import("../../components/ProjectsGallery"),
-  { suspense: true }
+  { loading: () => <SectionSkeleton label="Projeler yükleniyor" /> }
 );
 
 export const revalidate = 3600; // 1 saat
 
-const faqJsonLd = JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: FAQ_ITEMS.map(({ question, answer }) => ({
-    "@type": "Question",
-    name: question,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: answer,
-    },
-  })),
-}).replace(/</g, "\\u003c");
-
-function ServicesSectionFallback() {
+function SectionSkeleton({ label = "İçerik yükleniyor" }) {
   return (
-    <section
-      className="container py-10 md:py-14"
-      aria-labelledby="hizmetler-heading"
-      aria-busy="true"
+    <div
+      className="container py-12"
+      role="status"
+      aria-live="polite"
+      aria-label={label}
     >
-      <h2
-        id="hizmetler-heading"
-        className="text-2xl md:text-3xl font-bold text-center mb-8"
-      >
-        Hizmetlerimiz
-      </h2>
-      <div role="status" aria-live="polite" className="sr-only">
-        Hizmet içerikleri yükleniyor...
-      </div>
-      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3" aria-hidden="true">
-        {Array.from({ length: 3 }).map((_, index) => (
-          <div
-            key={index}
-            className="rounded-2xl border bg-white p-6 shadow-sm"
-          >
-            <div className="h-48 w-full rounded-xl bg-neutral-100 animate-pulse" />
-            <div className="mt-5 h-4 w-3/4 rounded bg-neutral-100 animate-pulse" />
-            <div className="mt-3 space-y-2">
-              <div className="h-3 w-full rounded bg-neutral-100 animate-pulse" />
-              <div className="h-3 w-5/6 rounded bg-neutral-100 animate-pulse" />
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function ProjectsSectionFallback() {
-  return (
-    <section
-      className="container py-14 md:py-16"
-      aria-labelledby="projeler-heading"
-      aria-busy="true"
-    >
-      <h2
-        id="projeler-heading"
-        className="text-2xl md:text-3xl font-bold text-center mb-8"
-      >
-        Yaptıklarımız
-      </h2>
-      <div role="status" aria-live="polite" className="sr-only">
-        Proje galerisi yükleniyor...
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" aria-hidden="true">
-        {Array.from({ length: 3 }).map((_, index) => (
-          <div key={index} className="space-y-3">
-            <div className="h-56 w-full rounded-2xl bg-neutral-100 animate-pulse" />
-            <div className="h-4 w-2/3 rounded bg-neutral-100 animate-pulse" />
-            <div className="h-3 w-1/2 rounded bg-neutral-100 animate-pulse" />
-          </div>
-        ))}
-      </div>
-    </section>
+      <div className="h-10 w-40 mb-4 rounded bg-neutral-100 animate-pulse" />
+      <div className="h-40 rounded-2xl bg-neutral-100 animate-pulse" />
+    </div>
   );
 }
 
 export default function HomePage() {
   return (
     <div className="overflow-x-hidden">
+      {/* Klavye kullanıcıları için “içeriğe atla” */}
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:z-[9999] focus:top-3 focus:left-3 focus:bg-white focus:text-black focus:px-3 focus:py-2 focus:rounded"
+      >
+        Ana içeriğe atla
+      </a>
+
       {/* HERO */}
       <section
         className="full-bleed relative overflow-x-hidden"
@@ -117,7 +61,7 @@ export default function HomePage() {
           decoding="async"
           sizes="100vw"
           placeholder="blur"
-          blurDataURL="data:image/webp;base64,UklGRp4AAABXRUJQVlA4IJIAAABQBgCdASowABsAPo08lUg1pqenNVgMAKARiWRg60YZQI3+QgDv2INC0Nc6BIo+izsJB6swIhg7Nm8IkAD+/EbKxBB4dhHx41NSA7OjjbjWPuehTPNLdCqzAPMQkP86SbpYsoYSifpIhEZMQYF7EcKdLTZ9RYL8a28zC/W80sLJERgj2Jqa+NCFqVAnuBdSKgAAAA=="
+          blurDataURL="/img/hero-bg-low.webp"
           className="object-cover"
         />
         <div
@@ -176,29 +120,37 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Ana içerik başlangıcı */}
-      <div id="ana-icerik">
+      {/* Ana içerik başlangıcı (landmark) */}
+      <main id="main">
+
         {/* Google yorum banner’ı */}
         <ReviewBanner />
 
         {/* Hizmetler sekmeleri */}
-        <div className="section-lazy">
-          <Suspense fallback={<ServicesSectionFallback />}>
-            <ServicesTabsLazy headingId="hizmetler-heading" />
+        <section className="section-lazy" aria-labelledby="hizmetler-title">
+        
+          <Suspense fallback={<SectionSkeleton label="Hizmetler yükleniyor" />}>
+            <ServicesTabsLazy />
           </Suspense>
-        </div>
+        </section>
 
         {/* Projeler galerisi */}
-        <div className="section-lazy">
-          <Suspense fallback={<ProjectsSectionFallback />}>
-            <ProjectsGalleryLazy headingId="projeler-heading" />
+        <section className="section-lazy" aria-labelledby="projeler-title">
+          <h2 id="projeler-title" className="sr-only">
+            Projeler
+          </h2>
+          <Suspense fallback={<SectionSkeleton label="Projeler yükleniyor" />}>
+            <ProjectsGalleryLazy />
           </Suspense>
-        </div>
+        </section>
 
         {/* Kurumsal etkinlikler */}
-        <div className="section-lazy">
+        <section className="section-lazy" aria-labelledby="kurumsal-title">
+          <h2 id="kurumsal-title" className="sr-only">
+            Kurumsal Etkinlikler
+          </h2>
           <CorporateEvents />
-        </div>
+        </section>
 
         {/* Bizi Neden Tercih Etmelisiniz */}
         <section
@@ -212,7 +164,7 @@ export default function HomePage() {
             Bizi Neden Tercih Etmelisiniz?
           </h2>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {[
               [
                 "⭐",
@@ -409,16 +361,14 @@ export default function HomePage() {
         </section>
 
         {/* SSS */}
-        <div className="section-lazy">
+        <section className="section-lazy" aria-labelledby="faq-title">
+          <h2 id="faq-title" className="sr-only">
+            Sıkça Sorulan Sorular
+          </h2>
           <Faq />
-        </div>
+        </section>
 
-        <script
-          id="home-faq-schema"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: faqJsonLd }}
-        />
-      </div>
+      </main>
     </div>
   );
 }

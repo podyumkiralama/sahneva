@@ -13,13 +13,28 @@ const nextConfig = {
   },
 
   experimental: {
-    // İstersen bırak; uyarı vermez
+    // (Next 15+) legacyBrowsers kaldırıldı; modern çıktıyı browserslist ile alıyoruz.
     optimizePackageImports: ["lucide-react"],
   },
 
   compiler: {
     removeConsole:
       process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
+  },
+
+  // ⬇️ ESKİ JS POLYFILL'LERİNİ TAMAMEN DEVRE DIŞI BIRAK
+  webpack(config) {
+    config.resolve = config.resolve || {};
+    config.resolve.alias = {
+      ...(config.resolve.alias || {}),
+      // Lighthouse "Eski JavaScript"te listelenen polyfill paketleri:
+      "array.prototype.flat": false,
+      "array.prototype.flatmap": false,
+      "object.fromentries": false,
+      "string.prototype.trimend": false,
+      "string.prototype.trimstart": false,
+    };
+    return config;
   },
 
   async headers() {
